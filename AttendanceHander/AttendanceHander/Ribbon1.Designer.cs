@@ -58,6 +58,7 @@
             // 
             this.buttonProcess.Label = "Process";
             this.buttonProcess.Name = "buttonProcess";
+            this.buttonProcess.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonProcess_Click);
             // 
             // Ribbon1
             // 

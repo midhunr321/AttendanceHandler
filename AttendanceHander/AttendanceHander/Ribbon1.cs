@@ -12,5 +12,11 @@ namespace AttendanceHander
         {
 
         }
+
+        private void buttonProcess_Click(object sender, RibbonControlEventArgs e)
+        {
+            FormMain form = new FormMain();
+            form.Show();
+        }
     }
 }
