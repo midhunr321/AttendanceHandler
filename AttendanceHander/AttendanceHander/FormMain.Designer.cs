@@ -49,7 +49,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.button1);
             this.Name = "FormMain";
-            this.Text = "Attendance Hander";
+            this.Text = "Attendance Handler";
             this.ResumeLayout(false);
 
         }

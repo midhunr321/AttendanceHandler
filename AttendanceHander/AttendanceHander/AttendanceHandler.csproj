@@ -157,12 +157,14 @@
   -->
   <ItemGroup>
     <Compile Include="AttendHelper.cs" />
+    <Compile Include="DailyTransWrap.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="MultiTransWrap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

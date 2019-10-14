@@ -19,7 +19,8 @@ namespace AttendanceHander
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            Excel.Worksheet current_worksheet = Globals.ThisAddIn.get_active_worksheet();
+            AttendHelper attendHelper = new AttendHelper();
         }
     }
 }

@@ -18,6 +18,11 @@ namespace AttendanceHander
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
         }
+        public Excel.Worksheet get_active_worksheet()
+        {
+            return (Excel.Worksheet)Application.ActiveSheet;
+
+        }
 
         #region VSTO generated code
 
