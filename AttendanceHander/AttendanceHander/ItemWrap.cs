@@ -10,9 +10,20 @@ namespace AttendanceHander
 {
     class ItemWrap
     {
-        public String content;
         public  Excel.Range fullCell;
 
+    }
+    class DateItemWrap : ItemWrap
+    {
+        public DateTime content;
+    }
+    class StrItemWrap: ItemWrap
+    {
+        public String content;
+    }
+    class LongItemWrap : ItemWrap
+    {
+        public long content;
     }
 
 }
