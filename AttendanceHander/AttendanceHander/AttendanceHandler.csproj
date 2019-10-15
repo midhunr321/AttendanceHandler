@@ -165,6 +165,8 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="GlobalVar.cs" />
+    <Compile Include="ItemWrap.cs" />
     <Compile Include="MultiTransWrap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
