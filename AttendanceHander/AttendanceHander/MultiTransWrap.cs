@@ -10,14 +10,14 @@ namespace AttendanceHander
 {
     class MultiTransWrap
     {
-        Dictionary<Excel.Range, long> personalNo;
-        Dictionary<Excel.Range, String> firstName;
-        Dictionary<Excel.Range, String> position;
-        Dictionary<Excel.Range, String> department;
-       Dictionary<Excel.Range,DateTime> checkIn;
-        Dictionary<Excel.Range,DateTime> checkOut;
-        Dictionary<Excel.Range, DateTime> date;
-        Dictionary<Excel.Range, DateTime> totalTimeWorked;
+        LongItemWrap personalNo;
+        StrItemWrap firstName;
+        StrItemWrap designation;
+        StrItemWrap department;
+        DateItemWrap checkIn;
+        DateItemWrap checkOut;
+        DateItemWrap date;
+        DateItemWrap totalTimeWorked;
 
     }
 }
