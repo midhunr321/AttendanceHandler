@@ -158,6 +158,7 @@
   <ItemGroup>
     <Compile Include="AttendHelper.cs" />
     <Compile Include="DailyTransWrap.cs" />
+    <Compile Include="EXCEL_HELPER.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>

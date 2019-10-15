@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttendanceHandler", "AttendanceHander\AttendanceHandler.csproj", "{158C2F50-03CD-4145-AB50-93D1E11895E5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B95D895A-B239-4F32-8324-3CAC67502FDC}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\..\Documents\my visual proj\MIDEX\MIDEX\EXCEL_HELPER.cs = ..\..\..\..\Documents\my visual proj\MIDEX\MIDEX\EXCEL_HELPER.cs
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
