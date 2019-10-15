@@ -17,7 +17,7 @@ namespace AttendanceHander
             this.openFileDialog = openFileDialog;
         }
 
-        private void open_file(IfileOpenAction ifileOpenAction)
+        public void open_file(IfileOpenAction ifileOpenAction)
         {
             DialogResult dialogResult;
             List<String> filenames = new List<String>();
@@ -45,7 +45,7 @@ namespace AttendanceHander
             }
             return files;
         }
-        private void open_files(IfileOpenAction ifileOpenAction)
+        public void open_files(IfileOpenAction ifileOpenAction)
         {
             DialogResult dialogResult;
             dialogResult = openFileDialog.ShowDialog();
