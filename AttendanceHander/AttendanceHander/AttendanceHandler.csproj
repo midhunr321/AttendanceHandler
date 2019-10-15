@@ -156,6 +156,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="All_const.cs" />
     <Compile Include="AttendHelper.cs" />
     <Compile Include="DailyTransWrap.cs" />
     <Compile Include="EXCEL_HELPER.cs" />
@@ -167,6 +168,7 @@
     </Compile>
     <Compile Include="GlobalVar.cs" />
     <Compile Include="ItemWrap.cs" />
+    <Compile Include="List_helper_for_excel.cs" />
     <Compile Include="MultiTransWrap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -187,6 +189,7 @@
       <DependentUpon>Ribbon1.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="AttendanceHander_TemporaryKey.pfx" />
+    <None Include="AttendanceHandler_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -201,6 +204,7 @@
     <Compile Include="Ribbon1.Designer.cs">
       <DependentUpon>Ribbon1.cs</DependentUpon>
     </Compile>
+    <Compile Include="String_handler.cs" />
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -220,10 +224,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>AttendanceHander_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>AttendanceHandler_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>10C1DE2357D2BB54F0516CD15743CB504F227C26</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>CE66C73DF71BD24C70ADEF51CDE873B0509062ED</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

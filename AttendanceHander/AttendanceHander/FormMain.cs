@@ -25,5 +25,10 @@ namespace AttendanceHander
             Excel.Worksheet current_worksheet = Globals.ThisAddIn.get_active_worksheet();
             AttendHelper attendHelper = new AttendHelper();
         }
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
