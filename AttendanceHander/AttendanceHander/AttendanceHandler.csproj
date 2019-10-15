@@ -167,6 +167,8 @@
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalVar.cs" />
+    <Compile Include="InputOutHandler.cs" />
+    <Compile Include="IfileOpenAction.cs" />
     <Compile Include="ItemWrap.cs" />
     <Compile Include="List_helper_for_excel.cs" />
     <Compile Include="MultiTransWrap.cs" />
