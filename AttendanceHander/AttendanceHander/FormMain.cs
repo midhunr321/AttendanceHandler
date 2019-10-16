@@ -32,27 +32,40 @@ namespace AttendanceHander
 
         }
 
-        private void openMultipleTransactionExcelFile()
+        private Excel.Workbook openFile()
         {
             InputOutHandler inputOutHandler =
                new InputOutHandler(openFileDialog1);
             FileInfo file = inputOutHandler.open_file();
             String filename = file.FullName;
             if (file == null)
-                return;
+                return null;
 
             Excel.Application application = Globals.ThisAddIn.getApplication();
-            application.Workbooks.Open(filename);
+            return (application.Workbooks.Open(filename));
 
 
         }
 
-        private void Button2_Click(object sender, EventArgs e)
+        private void ButtonOpenMepStyle_Click(object sender, EventArgs e)
         {
+            Excel.Workbook workbook = openFile();
+            if (workbook == null)
+                return;
 
-            Excel.Worksheet current_worksheet = Globals.ThisAddIn.get_active_worksheet();
-            label1.Text = current_worksheet.Name;
-            AttendHelper attendHelper = new AttendHelper();
+            SI_GlobalVars.Instance.mepStyleTimeSheet = workbook;
+            FormSheetSelector form = new FormSheetSelector(workbook,
+                this);
+            form.Show();
+
+        }
+
+        private void ButtonTestMepStyle_Click(object sender, EventArgs e)
+        {
+            TestMepStyleTime testMepStyleTime
+                = new TestMepStyleTime();
+            this.Hide();
+            testMepStyleTime.Show();
         }
     }
 }

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace AttendanceHander
 {
-    public class GlobalVar
+    class MepStyleTimeHelper
     {
+
         
     }
 }
