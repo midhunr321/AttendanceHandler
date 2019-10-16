@@ -17,7 +17,7 @@ namespace AttendanceHander
             this.openFileDialog = openFileDialog;
         }
 
-        public void open_file(IfileOpenAction ifileOpenAction)
+        public List<FileInfo> open_files()
         {
             DialogResult dialogResult;
             List<String> filenames = new List<String>();
@@ -27,14 +27,12 @@ namespace AttendanceHander
             {
                 filenames = openFileDialog.FileNames.ToList<String>();
                 List<FileInfo> files = get_file_from_filename_strings(filenames);
-                ifileOpenAction.okButtonPressed(files);
+                return files;
             }
-            else
-            {
-                ifileOpenAction.cancelled();
-            }
+            return null;
 
         }
+
         private List<FileInfo> get_file_from_filename_strings(List<String> filenames)
         {
             List<FileInfo> files = new List<FileInfo>();
@@ -45,7 +43,7 @@ namespace AttendanceHander
             }
             return files;
         }
-        public void open_files(IfileOpenAction ifileOpenAction)
+        public FileInfo open_file()
         {
             DialogResult dialogResult;
             dialogResult = openFileDialog.ShowDialog();
@@ -54,12 +52,9 @@ namespace AttendanceHander
             {
                 String filename = openFileDialog.FileName;
                 FileInfo file = new FileInfo(filename);
-                ifileOpenAction.okButtonPressed(file);
+                return file;
             }
-            else
-            {
-                ifileOpenAction.cancelled();
-            }
+            return null;
 
         }
     }
