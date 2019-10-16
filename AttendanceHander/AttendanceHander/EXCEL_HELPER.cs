@@ -14,9 +14,9 @@ using System.Diagnostics;
 
 namespace AttendanceHander
 {
-   public class EXCEL_HELPER
+    public class EXCEL_HELPER
     {
-       
+
         public Excel.Worksheet worksheet;
         public EXCEL_HELPER(Excel.Worksheet worksheet_arg)
         {
@@ -24,6 +24,13 @@ namespace AttendanceHander
             worksheet = worksheet_arg;
             //CONSTRUCTOR
 
+        }
+        public void turnOff_filters(Excel.Worksheet worksheet)
+        {
+            if (worksheet.AutoFilter != null && worksheet.AutoFilterMode == true)
+            {
+                worksheet.AutoFilter.ShowAllData();
+            }
         }
         public Excel.Range return_next_adjacent_range(Excel.Range current_range)
         {
@@ -45,51 +52,51 @@ namespace AttendanceHander
                 if (next_cell.Column > next_cell_required_col)
                     return null;
 
-                next_cell =return_next_adjacent_range(
+                next_cell = return_next_adjacent_range(
                     next_cell);
             }
-             
+
             return (next_cell);
-           
+
         }
-      private Dictionary<Excel.Range,String> get_cell_with_address(List<Excel.Range> list_of_cell)
+        private Dictionary<Excel.Range, String> get_cell_with_address(List<Excel.Range> list_of_cell)
         {
             string complete_address;
             Dictionary<Excel.Range, String> cells_with_address
                 = new Dictionary<Excel.Range, string>();
-            foreach(Excel.Range cell in list_of_cell)
+            foreach (Excel.Range cell in list_of_cell)
             {
                 complete_address = cell.MergeArea.Address;
                 cells_with_address.Add(cell, complete_address);
 
             }
             return cells_with_address;
-           
+
         }
         public List<String> return_same_address_cells(
             List<List<Excel.Range>> list, int no_of_repeatings_required)
         {
-            
+
             var list_of_address = from each_list in list
-                                     from range in each_list
-                                     select range.MergeArea.Address;
+                                  from range in each_list
+                                  select range.MergeArea.Address;
 
             var grouped_addresses = from address in list_of_address
                                     group address by address into g
-                                    select new {g};
+                                    select new { g };
 
             //to select the largest count;
             int largest_count = 0;
 
-            List<String> list_of_most_repeated_cell_addresses = 
+            List<String> list_of_most_repeated_cell_addresses =
                 new List<string>();
-            foreach(var group_ in grouped_addresses)
+            foreach (var group_ in grouped_addresses)
             {
-               if(group_.g.Count()> largest_count)
+                if (group_.g.Count() > largest_count)
                 {
                     largest_count = group_.g.Count();
                 }
-                   
+
             }
             //second iteration is to cross check if there is any tie
             //for example if the largest_count = 2 but
@@ -100,22 +107,22 @@ namespace AttendanceHander
             //so for this application lets carryout second iteration
             foreach (var group_ in grouped_addresses)
             {
-                if (group_.g.Count()== largest_count)
+                if (group_.g.Count() == largest_count)
                 {
 
                     list_of_most_repeated_cell_addresses.Add(group_.g.Key);
                 }
 
             }
-            
-        
-           
+
+
+
             return list_of_most_repeated_cell_addresses;
         }
         public class Match_percent_cell
         {
             public Excel.Range cell_;
-           public Double match_percent;
+            public Double match_percent;
 
         }
 
@@ -144,13 +151,13 @@ namespace AttendanceHander
 
             String_handler string_Handler =
                     new String_handler();
-          
+
             List<Match_percent_cell> match_percent_list =
                 new List<Match_percent_cell>();
 
-            foreach(KeyValuePair<String,Excel.Range> item in cell_dic)
+            foreach (KeyValuePair<String, Excel.Range> item in cell_dic)
             {
-                Double  matching_percent = string_Handler
+                Double matching_percent = string_Handler
                     .similar_word_percent(item.Key, source_search_string
                     , false);
                 Match_percent_cell match_Percent_Cell = new Match_percent_cell();
@@ -163,7 +170,7 @@ namespace AttendanceHander
             //now return the larger percent
             Double largest_percent = 0;
             List<Excel.Range> search_results = new List<Excel.Range>();
-            foreach(Match_percent_cell item in match_percent_list)
+            foreach (Match_percent_cell item in match_percent_list)
             {
                 if (item.match_percent > largest_percent)
                 {
@@ -186,9 +193,9 @@ namespace AttendanceHander
 
                 }
             }
-         
 
-          
+
+
 
             if (largest_percent >= 80)
                 return search_results;
@@ -196,7 +203,7 @@ namespace AttendanceHander
                 return null;
 
         }
-        private String[] get_all_words_of_senten_without_punct (String source_string)
+        private String[] get_all_words_of_senten_without_punct(String source_string)
         {
             if (source_string == null)
                 return null;
@@ -206,7 +213,7 @@ namespace AttendanceHander
             char[] word_separating_chars = { ' ', '-', '.' };
             return (string_Handler.get_all_words_in_a_sentence(
                 source_string, word_separating_chars));
-         
+
         }
         private String join_words_to_sentence(String[] all_words)
         {
@@ -231,7 +238,7 @@ namespace AttendanceHander
         private List<Excel.Range> search_smartly_by_similarity_check(
             String search_string)
         {
-            
+
             String[] all_search_words;
 
             all_search_words = get_all_words_of_senten_without_punct(search_string);
@@ -251,12 +258,12 @@ namespace AttendanceHander
             foreach (String word in all_search_words)
             {
                 var s = search_for_cell(word);
-                if (s!=null)
-                s_result_for_word.Add( s);
+                if (s != null)
+                    s_result_for_word.Add(s);
                 search_results_dic.Add(word, s_result_for_word);
             }
             int word_count = all_search_words.Length;
-            int minimum_required_repetition = (int) Math.Round( 0.8 * word_count,0);
+            int minimum_required_repetition = (int)Math.Round(0.8 * word_count, 0);
             List<String> search_results_with_common_cell_address;
             search_results_with_common_cell_address =
                 return_same_address_cells(s_result_for_word,
@@ -278,62 +285,62 @@ namespace AttendanceHander
             String search_str_without_punctua = null;
             search_str_without_punctua = join_words_to_sentence(all_search_words);
 
-              search_results = 
-                compare_the_search_result_with_source(search_str_without_punctua,
-                search_results_with_common_cell_address,true);
+            search_results =
+              compare_the_search_result_with_source(search_str_without_punctua,
+              search_results_with_common_cell_address, true);
 
 
             if (search_results != null)
                 return search_results;
             else
                 return null;
-            
-          
-            
+
+
+
         }
 
-    
+
         public List<Excel.Range> find_fix_column_heading(String table_col_name)
         {
             List<Excel.Range> sresult = new List<Excel.Range>();
             sresult = search_for_cell(table_col_name);
-            if (sresult.Count==0)
+            if (sresult.Count == 0)
                 sresult = search_smartly_by_similarity_check(table_col_name);
             //if have more than 1 search result for table column name
             // then what we will do?
-           // an idea...search for rest of the headings.
-           //if majority of the heading is in one particular raw number
-           // that means that row should be heading.
-           //so if more than one search results then
-           // we can filter it out.
+            // an idea...search for rest of the headings.
+            //if majority of the heading is in one particular raw number
+            // that means that row should be heading.
+            //so if more than one search results then
+            // we can filter it out.
             List<Excel.Range> heading_cell = new List<Excel.Range>();
             //to find the top most cell; we find the lowest row no & cell no address cell
-            List_helper_for_excel list_Helper_For_Excel = 
+            List_helper_for_excel list_Helper_For_Excel =
                 new List_helper_for_excel();
             //so even if more than one search result lets keep it for time being
             heading_cell = sresult;
             return heading_cell;
         }
-        
+
         public Excel.Range return_top_search_range(List<Excel.Range> search_list)
         {
-            if (search_list==null || search_list.Count == 0)
+            if (search_list == null || search_list.Count == 0)
                 return null;
             Excel.Range top_most_search_result = search_list[0];//assume first
-            int lowest_row=search_list[0].Row;//assume first result is top most
-            foreach(Excel.Range item in search_list)
+            int lowest_row = search_list[0].Row;//assume first result is top most
+            foreach (Excel.Range item in search_list)
             {
                 if (item.Row < lowest_row)
-                    top_most_search_result = item;        
+                    top_most_search_result = item;
             }
 
             return top_most_search_result;
         }
 
-        public int insert_text_infront_in_cells (Excel.Range cell_range, String text_to_insert)
+        public int insert_text_infront_in_cells(Excel.Range cell_range, String text_to_insert)
         {
             int count = 0;
-            foreach(Excel.Range cell in cell_range)
+            foreach (Excel.Range cell in cell_range)
             {
                 String filled_content = cell.Value2;
                 cell.Value2 = text_to_insert + " " + filled_content;
@@ -346,15 +353,15 @@ namespace AttendanceHander
         public string get_value_of_merge_cell(Excel.Range merge_cell)
         {
             String cell_value = "";
-            foreach(Excel.Range cell_ in merge_cell)
+            foreach (Excel.Range cell_ in merge_cell)
                 cell_value = cell_value + cell_.Value2;
 
             return cell_value;
-            
+
         }
         public Excel.Range return_full_merg_cell(Excel.Range part_of_merge_cell)
         {
-            
+
             if (part_of_merge_cell.MergeCells)
             {
                 string complete_address;
@@ -368,11 +375,11 @@ namespace AttendanceHander
                 return part_of_merge_cell;
             }
         }
-        public void change_cell_interior_color(ref Excel.Range  cell_, System.Drawing.Color color)
+        public void change_cell_interior_color(ref Excel.Range cell_, System.Drawing.Color color)
         {
-            if(cell_ != null)
-            cell_.Interior.Color = color;
-           
+            if (cell_ != null)
+                cell_.Interior.Color = color;
+
         }
         private List<Excel.Range> search_for_cell(String find_text)
         {
@@ -391,9 +398,9 @@ namespace AttendanceHander
             //for first result.
             //first search result is stored as sresult[0]
             //start search from first cell
-      
+
             Excel.Range current_find = usedRange.Find(find_text);
-            
+
             if (current_find != null)
                 sresult.Add(current_find);
 
@@ -410,14 +417,14 @@ namespace AttendanceHander
                 {
                     i++;
                     //i.e we already got one result. now check if there is any next one.
-                    
-                    Excel.Range temp_result = usedRange.FindNext(sresult[i-1]);
+
+                    Excel.Range temp_result = usedRange.FindNext(sresult[i - 1]);
                     //bcz to findnext from the last object ..last object is sresult[i-1]
                     //now adding next find to list make sure the following:
                     //1. found one is not empty
                     //2. the found result again repeated . ie if it is the same
                     //first value or not.
-                    if (temp_result != null && temp_result.Address!= sresult[0].Address)
+                    if (temp_result != null && temp_result.Address != sresult[0].Address)
                         sresult.Add(temp_result);
                     else
                         return sresult;
@@ -425,12 +432,12 @@ namespace AttendanceHander
                 }
             } while (sresult[i] != null && sresult[i].Address != sresult[0].Address);
 
-           
+
             return sresult;
 
         }
 
-     
+
 
     }
 
