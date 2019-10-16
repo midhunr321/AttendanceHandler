@@ -50,7 +50,6 @@ namespace AttendanceHander
         private void Button2_Click(object sender, EventArgs e)
         {
 
-
             Excel.Worksheet current_worksheet = Globals.ThisAddIn.get_active_worksheet();
             label1.Text = current_worksheet.Name;
             AttendHelper attendHelper = new AttendHelper();
