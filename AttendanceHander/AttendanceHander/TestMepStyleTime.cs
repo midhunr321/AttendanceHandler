@@ -28,14 +28,22 @@ namespace AttendanceHander
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
 
             var headings = SiGlobalVars.Instance.mepStyleHeadings;
-            
-            foreach(HeadingWrap heading in headings)
+            Color lastColour=Color.Red;
+
+            foreach (HeadingWrap heading in headings)
             {
+                
                 Color color = ColourHandler.get_random_colour();
+                while (color != lastColour)
+                {
+                    color = ColourHandler.get_random_colour();
+                    if (color != lastColour)
+                        break;
+                }
                 eXCEL_HELPER
                     .change_cell_interior_color(ref heading.fullCell,
                     color);
-
+                lastColour = color;
             }
             worksheet.Activate();
             return true;
