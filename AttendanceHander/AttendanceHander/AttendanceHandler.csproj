@@ -166,7 +166,9 @@
     <Compile Include="FormSheetSelector.Designer.cs">
       <DependentUpon>FormSheetSelector.cs</DependentUpon>
     </Compile>
+    <Compile Include="HeadingWrap.cs" />
     <Compile Include="MepStyleTimeHelper.cs" />
+    <Compile Include="SearchHelper.cs" />
     <Compile Include="SI_GlobalVars.cs" />
     <Compile Include="TestMepStyleTime.cs">
       <SubType>Form</SubType>
