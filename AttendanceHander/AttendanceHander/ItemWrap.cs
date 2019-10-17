@@ -25,5 +25,11 @@ namespace AttendanceHander
     {
         public long content;
     }
+    class DateOvertime : ItemWrap
+    {
+        public int date_day;
+        public DateTime date;
+        public int overtime;
+    }
 
 }

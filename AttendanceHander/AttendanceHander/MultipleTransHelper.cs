@@ -11,7 +11,7 @@ namespace AttendanceHander
     {
         public class Heading: IEnumerable<String>
         {
-            public static String SERIAL_NO = "NO";
+            public  String SERIAL_NO = "NO";
 
             public IEnumerator<String> GetEnumerator()
             {
