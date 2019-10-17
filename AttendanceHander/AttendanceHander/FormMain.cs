@@ -47,16 +47,37 @@ namespace AttendanceHander
 
         }
 
+        private void initiate_understanding_MEP_style_timesheet()
+        {
+            var heading = SiGlobalVars.Instance.mepStyleHeadings;
+            if (heading == null)
+                heading = new MepStyleHelper.Headings();
+
+            var workbook = SiGlobalVars.Instance.mepStyleTimeSheet;
+            var worksheet = SiGlobalVars.Instance.mepStyleCurrentMonthWorkSheet;
+            //TODO: later the headings should be loaded from the settings
+            //code for the same should be implemented
+            //now the name of the columns are hard coded
+            //but later a settings shall be introduced to change the
+            //heading names dynamically
+
+            MepStyleHelper mepStyleHelper =
+                new MepStyleHelper(heading, workbook,
+                worksheet);
+            mepStyleHelper.understand_the_excel_sheet();
+        }
+
         private void ButtonOpenMepStyle_Click(object sender, EventArgs e)
         {
             Excel.Workbook workbook = openFile();
             if (workbook == null)
                 return;
 
-            SI_GlobalVars.Instance.mepStyleTimeSheet = workbook;
+            SiGlobalVars.Instance.mepStyleTimeSheet = workbook;
             FormSheetSelector form = new FormSheetSelector(workbook,
                 this);
             form.Show();
+
 
         }
 

@@ -167,9 +167,10 @@
       <DependentUpon>FormSheetSelector.cs</DependentUpon>
     </Compile>
     <Compile Include="HeadingWrap.cs" />
-    <Compile Include="MepStyleTimeHelper.cs" />
+    <Compile Include="MepStyle\MepStyleHelper.cs" />
+    <Compile Include="MepStyle\MepStyleWrap.cs" />
     <Compile Include="SearchHelper.cs" />
-    <Compile Include="SI_GlobalVars.cs" />
+    <Compile Include="SiGlobalVars.cs" />
     <Compile Include="TestMepStyleTime.cs">
       <SubType>Form</SubType>
     </Compile>

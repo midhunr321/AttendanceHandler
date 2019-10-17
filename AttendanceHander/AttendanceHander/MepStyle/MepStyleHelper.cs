@@ -10,20 +10,14 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace AttendanceHander
 {
-    class MepStyleTimeHelper
+    public class MepStyleHelper
     {
-        public LongItemWrap serialNo;
-        public LongItemWrap code; //Employee no.
-        public StrItemWrap name;
-        public StrItemWrap designation;
-        public StrItemWrap siteNo;
-        public LongItemWrap totalOvertime;
-        public List<DateOvertime> dateOvertimes;
-        private MepStyleTimeHelper.Headings headings;
+
+        private MepStyleHelper.Headings headings;
         private Excel.Worksheet worksheet;
         private Excel.Workbook workbook;
 
-        public MepStyleTimeHelper(MepStyleTimeHelper.Headings headings,
+        public MepStyleHelper(MepStyleHelper.Headings headings,
             Excel.Workbook workbook, Excel.Worksheet worksheet)
         {
             this.headings = headings;
@@ -62,23 +56,29 @@ namespace AttendanceHander
                 return;
             }
 
-            find_the_heading_cell(headings);
+            find_the_heading_cells(headings);//if all the headings
+            //are found, it means the opened excel file is Mep style 
+            //plumbers time sheet
         }
-        private Boolean check_the_loaded_excel_is_MEP_style_time()
-        {
+     
 
-        }
-
-        private Boolean find_the_heading_cells(MepStyleTimeHelper.Headings headings)
+        private Boolean find_the_heading_cells(MepStyleHelper.Headings headings)
         {
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
             foreach (HeadingWrap heading in headings)
             {
                 List<Excel.Range> temp_heading = new List<Excel.Range>();
-                temp_heading = 
+                temp_heading =
                     eXCEL_HELPER.find_fix_column_heading(heading.headingName,
                     Excel.XlSearchDirection.xlNext,
                     Excel.XlSearchOrder.xlByRows);
+
+                if(temp_heading==null)
+                {
+                    MessageBox.Show("Couldn't find the heading = "
+                        + heading.headingName);
+                    return false;
+                }
                 //TODO: Should carryout the search from the top
 
                 // if the search count is not more than 1 then,
@@ -97,6 +97,8 @@ namespace AttendanceHander
                 }
 
             }
+
+            return true;
         }
 
 

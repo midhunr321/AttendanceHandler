@@ -28,7 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(133, 150);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(196, 39);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Highlight Mep Style Timesheet Headings";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.ButtonMepStyleHeadingTest_Click);
             // 
             // TestMepStyleTime
             // 
@@ -36,12 +47,15 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button1);
             this.Name = "TestMepStyleTime";
-            this.Text = "Form1";
+            this.Text = "Mep Style TimeSheet Tester";
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Button button1;
     }
 }

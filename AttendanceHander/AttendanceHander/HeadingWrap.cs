@@ -7,7 +7,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace AttendanceHander
 {
-    class HeadingWrap
+  public  class HeadingWrap
     {
 
         public Excel.Range fullCell;

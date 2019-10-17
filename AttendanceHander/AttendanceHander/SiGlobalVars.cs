@@ -7,14 +7,14 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace AttendanceHander
 {
-    public sealed class SI_GlobalVars
+    public sealed class SiGlobalVars
     {
-        private static volatile SI_GlobalVars instance;
+        private static volatile SiGlobalVars instance;
         private static object syncRoot = new Object();
 
-        private SI_GlobalVars() { }
+        private SiGlobalVars() { }
 
-        public static SI_GlobalVars Instance
+        public static SiGlobalVars Instance
         {
             get
             {
@@ -23,7 +23,7 @@ namespace AttendanceHander
                     lock (syncRoot)
                     {
                         if (instance == null)
-                            instance = new SI_GlobalVars();
+                            instance = new SiGlobalVars();
                     }
                 }
 
@@ -32,7 +32,9 @@ namespace AttendanceHander
         }
 
         public Excel.Workbook mepStyleTimeSheet;
-        public Excel.Worksheet mepStyleCurrentMonth;
+        public Excel.Worksheet mepStyleCurrentMonthWorkSheet;
+        public List<MepStyleWrap> mepStyleWraps;
+        public MepStyleHelper.Headings mepStyleHeadings;
     }
 
 
