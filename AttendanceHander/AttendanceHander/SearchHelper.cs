@@ -10,11 +10,7 @@ namespace AttendanceHander
     class SearchHelper
     {
 
-        public Excel.Range searchTextWithoutPunctSpaceCase(String sourceString)
-        {
-
-
-        }
+       
 
         
         private String extract_string_without_punct_and_space(String sourceString)

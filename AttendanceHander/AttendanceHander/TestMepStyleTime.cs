@@ -31,9 +31,10 @@ namespace AttendanceHander
             
             foreach(HeadingWrap heading in headings)
             {
+                Color color = ColourHandler.get_random_colour();
                 eXCEL_HELPER
                     .change_cell_interior_color(ref heading.fullCell,
-                    Color.Yellow);
+                    color);
 
             }
             worksheet.Activate();

@@ -31,6 +31,9 @@ namespace AttendanceHander
                 .SelectedItem).Value;
 
             SiGlobalVars.Instance.mepStyleCurrentMonthWorkSheet = currentMonthSheet;
+            this.Hide();
+            this.DialogResult = DialogResult.OK;
+            previousForm.Activate();
 
         }
 

@@ -31,7 +31,7 @@ namespace AttendanceHander
             }
         }
 
-        public Excel.Workbook mepStyleTimeSheet;
+        public Excel.Workbook mepStyleWorkbook;
         public Excel.Worksheet mepStyleCurrentMonthWorkSheet;
         public List<MepStyleWrap> mepStyleWraps;
         public MepStyleHelper.Headings mepStyleHeadings;

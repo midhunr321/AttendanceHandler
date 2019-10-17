@@ -21,6 +21,10 @@ namespace AttendanceHander
             InitializeComponent();
         }
 
+        public void enableDisableMepStyleTestButton(Boolean enable)
+        {
+            buttonTestMepStyle.Enabled = enable;
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             Excel.Worksheet current_worksheet = Globals.ThisAddIn.get_active_worksheet();
@@ -49,11 +53,8 @@ namespace AttendanceHander
 
         private void initiate_understanding_MEP_style_timesheet()
         {
-            var heading = SiGlobalVars.Instance.mepStyleHeadings;
-            if (heading == null)
-                heading = new MepStyleHelper.Headings();
-
-            var workbook = SiGlobalVars.Instance.mepStyleTimeSheet;
+           
+            var workbook = SiGlobalVars.Instance.mepStyleWorkbook;
             var worksheet = SiGlobalVars.Instance.mepStyleCurrentMonthWorkSheet;
             //TODO: later the headings should be loaded from the settings
             //code for the same should be implemented
@@ -62,7 +63,7 @@ namespace AttendanceHander
             //heading names dynamically
 
             MepStyleHelper mepStyleHelper =
-                new MepStyleHelper(heading, workbook,
+                new MepStyleHelper(workbook,
                 worksheet);
             mepStyleHelper.understand_the_excel_sheet();
         }
@@ -73,10 +74,16 @@ namespace AttendanceHander
             if (workbook == null)
                 return;
 
-            SiGlobalVars.Instance.mepStyleTimeSheet = workbook;
+            SiGlobalVars.Instance.mepStyleWorkbook = workbook;
             FormSheetSelector form = new FormSheetSelector(workbook,
-                this);
-            form.Show();
+               (FormMain) this);
+            form.ShowDialog();
+
+            if (form.DialogResult == DialogResult.OK)
+            {
+                initiate_understanding_MEP_style_timesheet();
+                this.Activate();
+            }
 
 
         }
@@ -87,6 +94,12 @@ namespace AttendanceHander
                 = new TestMepStyleTime();
             this.Hide();
             testMepStyleTime.Show();
+        }
+
+        private void FormMain_Activated(object sender, EventArgs e)
+        {
+            if (SiGlobalVars.Instance.mepStyleCurrentMonthWorkSheet != null)
+                buttonTestMepStyle.Enabled = true;
         }
     }
 }

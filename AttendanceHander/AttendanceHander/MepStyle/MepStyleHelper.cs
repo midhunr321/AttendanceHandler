@@ -13,14 +13,11 @@ namespace AttendanceHander
     public class MepStyleHelper
     {
 
-        private MepStyleHelper.Headings headings;
         private Excel.Worksheet worksheet;
         private Excel.Workbook workbook;
 
-        public MepStyleHelper(MepStyleHelper.Headings headings,
-            Excel.Workbook workbook, Excel.Worksheet worksheet)
+        public MepStyleHelper(Excel.Workbook workbook, Excel.Worksheet worksheet)
         {
-            this.headings = headings;
             this.workbook = workbook;
             this.worksheet = worksheet;
         }
@@ -50,19 +47,19 @@ namespace AttendanceHander
         }
         public void understand_the_excel_sheet()
         {
-            if (headings == null)
+            if (SiGlobalVars.Instance.mepStyleHeadings == null)
             {
-                MessageBox.Show("Heading Strings is null");
-                return;
+                SiGlobalVars.Instance.mepStyleHeadings = new Headings();   
             }
 
-            find_the_heading_cells(headings);//if all the headings
+            find_the_heading_cells(ref SiGlobalVars.
+                Instance.mepStyleHeadings);//if all the headings
             //are found, it means the opened excel file is Mep style 
             //plumbers time sheet
         }
      
 
-        private Boolean find_the_heading_cells(MepStyleHelper.Headings headings)
+        private Boolean find_the_heading_cells(ref MepStyleHelper.Headings headings)
         {
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
             foreach (HeadingWrap heading in headings)
@@ -84,8 +81,9 @@ namespace AttendanceHander
                 // if the search count is not more than 1 then,
                 if (temp_heading != null && temp_heading.Count == 1)
                 {
-                    if (temp_heading[0] != null)
-                        heading.fullCell = temp_heading[0];
+                    Excel.Range fullcell = eXCEL_HELPER
+                        .return_full_merg_cell(temp_heading[0]);
+                    heading.fullCell = fullcell;
                 }
                 else
                 {

@@ -116,6 +116,7 @@
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "FormMain";
             this.Text = "Attendance Handler";
+            this.Activated += new System.EventHandler(this.FormMain_Activated);
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
