@@ -31,13 +31,17 @@ namespace AttendanceHander
             public HeadingWrap name = new HeadingWrap("Name");
             public HeadingWrap designation = new HeadingWrap("Design");
             public HeadingWrap siteNO = new HeadingWrap("Site Nos.");
+            public HeadingWrap totalOvertime = new HeadingWrap("Total Over Time");
+            public HeadingWrap date = new HeadingWrap("Date:");
+            public Dictionary<int, HeadingWrap> overtimeDays;
 
             public IEnumerator<HeadingWrap> GetEnumerator()
             {
 
                 return (new List<HeadingWrap>()
                 {mepStyleHeading,serialNo,
-                    code,name,designation,siteNO }.GetEnumerator());
+                    code,name,designation,siteNO,
+                    totalOvertime,date }.GetEnumerator());
             }
 
             IEnumerator IEnumerable.GetEnumerator()
@@ -49,17 +53,94 @@ namespace AttendanceHander
         {
             if (SiGlobalVars.Instance.mepStyleHeadings == null)
             {
-                SiGlobalVars.Instance.mepStyleHeadings = new Headings();   
+                SiGlobalVars.Instance.mepStyleHeadings = new Headings();
             }
 
-            find_the_heading_cells(ref SiGlobalVars.
+            find_headings_except_overtimeDates(ref SiGlobalVars.
                 Instance.mepStyleHeadings);//if all the headings
             //are found, it means the opened excel file is Mep style 
             //plumbers time sheet
+            understand_the_month_and_year_of_the_sheet();
+            find_overtime_dates_headings();
         }
-     
 
-        private Boolean find_the_heading_cells(ref MepStyleHelper.Headings headings)
+        private void understand_the_month_and_year_of_the_sheet()
+        {
+            EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
+            var headings = SiGlobalVars.Instance.mepStyleHeadings;
+            var dateHeading = headings.date.fullCell;
+            Excel.Range date = eXCEL_HELPER.
+                return_next_adjacent_range(dateHeading);
+            Excel.Range fullcell = eXCEL_HELPER.return_full_merg_cell(date);
+            String timesheetDate =
+                eXCEL_HELPER.get_value_of_merge_cell(fullcell);
+
+            if (SiGlobalVars.Instance.mepStyleWraps == null)
+                SiGlobalVars.Instance.mepStyleWraps = new MepStyleWrap();
+
+            if (SiGlobalVars.Instance.mepStyleWraps.
+                timesheetDate == null)
+            {
+                SiGlobalVars.Instance.
+                    mepStyleWraps.timesheetDate = new DateTime();
+            }
+
+            SiGlobalVars.Instance.
+                mepStyleWraps.timesheetDate =
+                DateTime.Parse(timesheetDate);
+
+        }
+
+
+
+        private void find_overtime_dates_headings()
+        {
+            var timesheetDate = SiGlobalVars.Instance
+                .mepStyleWraps.timesheetDate;
+            int currentMonthDaysCount
+                 = DateTime.DaysInMonth(timesheetDate.Year,
+                 timesheetDate.Month);
+            EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
+
+            for (int day = 1; day <= currentMonthDaysCount; day++)
+            {
+                HeadingWrap newDay = new HeadingWrap(day.ToString());
+
+                SiGlobalVars.Instance.mepStyleHeadings.overtimeDays
+                    .Add(day, newDay);
+            }
+
+            //to find the over time day cells
+            //we need to find the cell range next or adjacent to total overtime
+
+            Excel.Range totalOvertimeHeading = SiGlobalVars.Instance.
+                mepStyleHeadings.totalOvertime.fullCell;
+            //after the total over time heading 
+            //the day 1 is starting.
+            //so get the next cell
+
+            Excel.Range day1 = eXCEL_HELPER.
+                return_next_adjacent_range(totalOvertimeHeading);
+            //now that we got the day 1 overtime heading cell
+            //lets put it in the wrap
+            SiGlobalVars.Instance.
+                mepStyleHeadings.overtimeDays[1].fullCell = day1;
+
+            //now for the other days
+            Excel.Range lastDay = day1;
+            for (int i = 2; i <= currentMonthDaysCount; i++)
+            {
+                Excel.Range nextday = eXCEL_HELPER
+                    .return_next_adjacent_range(lastDay);
+                SiGlobalVars.Instance.mepStyleHeadings
+                    .overtimeDays[i].fullCell = nextday;
+
+                lastDay = nextday;
+            }
+
+        }
+
+        private Boolean find_headings_except_overtimeDates(ref MepStyleHelper.Headings headings)
         {
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
             foreach (HeadingWrap heading in headings)
@@ -70,7 +151,7 @@ namespace AttendanceHander
                     Excel.XlSearchDirection.xlNext,
                     Excel.XlSearchOrder.xlByRows);
 
-                if(temp_heading==null)
+                if (temp_heading == null)
                 {
                     MessageBox.Show("Couldn't find the heading = "
                         + heading.headingName);
@@ -95,6 +176,8 @@ namespace AttendanceHander
                 }
 
             }
+
+
 
             return true;
         }

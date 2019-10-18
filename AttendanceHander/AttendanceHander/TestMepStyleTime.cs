@@ -34,16 +34,19 @@ namespace AttendanceHander
             {
                 
                 Color color = ColourHandler.get_random_colour();
-                while (color != lastColour)
-                {
-                    color = ColourHandler.get_random_colour();
-                    if (color != lastColour)
-                        break;
-                }
+                
                 eXCEL_HELPER
                     .change_cell_interior_color(ref heading.fullCell,
                     color);
-                lastColour = color;
+            }
+
+            foreach (var overTimedateheading in
+                SiGlobalVars.Instance.mepStyleHeadings.overtimeDays)
+            {
+                Color color = ColourHandler.get_random_colour();
+                eXCEL_HELPER
+                    .change_cell_interior_color(ref overTimedateheading.Value.fullCell,
+                    color);
             }
             worksheet.Activate();
             return true;
