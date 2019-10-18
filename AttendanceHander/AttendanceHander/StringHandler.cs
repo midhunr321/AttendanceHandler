@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AttendanceHander
 {
-    class String_handler
+    class StringHandler
     {
        
         public All_const.str_type is_this_string_alpha_numeric_or_numeric_or_alpha_only(String string_to_check)
@@ -180,6 +180,28 @@ namespace AttendanceHander
             //so return 
             return oDate;
           
+
+        }
+        public Boolean start_end_index_of_substring(String sourceString,
+            String toFind,
+            out int startIndex, out int endIndex)
+        {
+            startIndex = -1;//initilizing simply
+            endIndex = -1;//initialising simply
+
+            if (sourceString == null)
+            {
+                
+                return false;
+
+            }
+
+            startIndex = sourceString.IndexOf(toFind);
+            if (startIndex == -1) 
+                return false;
+
+            endIndex = startIndex + toFind.Length;
+            return true;
 
         }
         public String[] get_all_words_in_a_sentence(String current_sentence,

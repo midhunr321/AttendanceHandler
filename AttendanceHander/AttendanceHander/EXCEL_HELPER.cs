@@ -16,6 +16,7 @@ namespace AttendanceHander
 {
     public class EXCEL_HELPER
     {
+        //LAST UPDATED ON 18-OCTOBER 2019
 
         public Excel.Worksheet worksheet;
         public EXCEL_HELPER(Excel.Worksheet worksheet_arg)
@@ -31,6 +32,17 @@ namespace AttendanceHander
             {
                 worksheet.AutoFilter.ShowAllData();
             }
+        }
+
+        public Excel.Range return_immediate_below_cell
+            (Excel.Range nonMergedSingleCell)
+        {
+            int currentrow = nonMergedSingleCell.Row;
+                    
+            int nextRowNo = currentrow + 1;
+            Excel.Range beneathCell = worksheet.Cells[nextRowNo, 
+                nonMergedSingleCell.Column];
+            return beneathCell;
         }
         public Excel.Range return_next_adjacent_range(Excel.Range current_range)
         {
@@ -149,8 +161,8 @@ namespace AttendanceHander
             //now that we initiated the cell_dic 
             //lets compare it with source_search_string
 
-            String_handler string_Handler =
-                    new String_handler();
+            StringHandler string_Handler =
+                    new StringHandler();
 
             List<Match_percent_cell> match_percent_list =
                 new List<Match_percent_cell>();
@@ -208,7 +220,7 @@ namespace AttendanceHander
             if (source_string == null)
                 return null;
 
-            String_handler string_Handler = new String_handler();
+            StringHandler string_Handler = new StringHandler();
 
             char[] word_separating_chars = { ' ', '-', '.' };
             return (string_Handler.get_all_words_in_a_sentence(

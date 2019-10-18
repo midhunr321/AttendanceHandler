@@ -168,6 +168,7 @@
       <DependentUpon>FormSheetSelector.cs</DependentUpon>
     </Compile>
     <Compile Include="HeadingWrap.cs" />
+    <Compile Include="MepStyle\MepStyleSiteNoCodeAnalyzer.cs" />
     <Compile Include="MepStyle\MepStyleHelper.cs" />
     <Compile Include="MepStyle\MepStyleWrap.cs" />
     <Compile Include="SearchHelper.cs" />
@@ -230,7 +231,7 @@
     <Compile Include="Ribbon1.Designer.cs">
       <DependentUpon>Ribbon1.cs</DependentUpon>
     </Compile>
-    <Compile Include="String_handler.cs" />
+    <Compile Include="StringHandler.cs" />
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>

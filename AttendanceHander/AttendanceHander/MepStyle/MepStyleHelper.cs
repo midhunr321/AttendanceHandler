@@ -64,6 +64,60 @@ namespace AttendanceHander
             find_overtime_dates_headings();
             //now that we got all headings
             //we need to start with the rows
+            read_each_rows_of_data();
+        }
+
+        private void read_siteNos()
+        {
+
+        }
+        private Boolean read_row(Excel.Range row)
+        {
+            //one way to identify whether we are in empty space
+            //that means whether we already passed 50 numbers of plumbers
+            //is by detecting if serial no,employee no and name etc are empty
+            //if the serial no, employee no and name is empty means 
+            //we have reached the end of the time sheet
+
+            foreach (Excel.Range column in row.Columns)
+            {
+                int lastColumnNo = SiGlobalVars.Instance
+                      .mepStyleHeadings.overtimeDays.Last()
+                      .Value.fullCell.Column;
+            }
+        }
+        private void read_each_rows_of_data()
+        {
+            EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
+
+            //now we have to read the rows
+            //our beginning position to start reading the rows will be
+            //below the serial no heading cell
+
+            Excel.Range serialNo = SiGlobalVars.Instance
+                .mepStyleHeadings.serialNo.fullCell;
+
+            //now go to below adjacent cell to serial no.
+            Excel.Range firstDataRowCell =
+                eXCEL_HELPER
+                .return_immediate_below_cell(serialNo);
+
+            foreach (Excel.Range row in worksheet.UsedRange.Rows)
+            {
+                //our first data row starts from firstDataRowCell
+                //so skip the rows above (which are headings)
+                if (row.Row < firstDataRowCell.Row)
+                    continue;
+
+                //read row will fail at the end of time sheet
+                //we need to stop the iteration after plumber no 50
+                //after that it is just empty space
+                //so if read row is false that means we came accross the empty space
+                //thus this iteration can be stopped.
+                if (read_row(row) == false)
+                    break;
+            }
+
         }
 
         private void understand_the_month_and_year_of_the_sheet()
@@ -156,7 +210,7 @@ namespace AttendanceHander
                 temp_heading =
                     eXCEL_HELPER.find_fix_column_heading(heading.headingName,
                     Excel.XlSearchDirection.xlNext,
-                    Excel.XlSearchOrder.xlByRows,false);
+                    Excel.XlSearchOrder.xlByRows, false);
 
                 if (temp_heading == null)
                 {

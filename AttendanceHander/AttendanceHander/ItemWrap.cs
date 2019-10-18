@@ -29,6 +29,7 @@ namespace AttendanceHander
     {
         public int date_day;
         public DateTime date;
+        public String siteNo;//for each overtime there might be a site no
         public int overtime;
     }
 
