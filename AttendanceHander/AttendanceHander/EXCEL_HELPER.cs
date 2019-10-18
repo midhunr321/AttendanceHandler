@@ -237,7 +237,8 @@ namespace AttendanceHander
         }
         private List<Excel.Range> search_smartly_by_similarity_check(
             String search_string,
-            Excel.XlSearchOrder xlSearchOrder, Excel.XlSearchDirection xlSearchDirection)
+            Excel.XlSearchOrder xlSearchOrder, Excel.XlSearchDirection xlSearchDirection,
+            Boolean matchcase = false)
         {
 
             String[] all_search_words;
@@ -258,7 +259,8 @@ namespace AttendanceHander
             List<List<Excel.Range>> s_result_for_word = new List<List<Excel.Range>>();
             foreach (String word in all_search_words)
             {
-                var s = search_for_cell(word, xlSearchOrder, xlSearchDirection);
+                var s = search_for_cell(word, xlSearchOrder, xlSearchDirection,
+                    matchCase:matchcase);
                 if (s != null)
                     s_result_for_word.Add(s);
                 search_results_dic.Add(word, s_result_for_word);
@@ -303,14 +305,15 @@ namespace AttendanceHander
 
         public List<Excel.Range> find_fix_column_heading(String table_col_name,
             Excel.XlSearchDirection xlSearchDirection,
-            Excel.XlSearchOrder xlSearchOrder)
+            Excel.XlSearchOrder xlSearchOrder,
+            Boolean matchcase)
         {
             List<Excel.Range> sresult = new List<Excel.Range>();
             sresult = search_for_cell(table_col_name,
-                xlSearchOrder,xlSearchDirection);
+                xlSearchOrder,xlSearchDirection,matchcase);
             if (sresult.Count == 0)
                 sresult = search_smartly_by_similarity_check(table_col_name,
-                    xlSearchOrder, xlSearchDirection);
+                    xlSearchOrder, xlSearchDirection, matchcase);
             //if have more than 1 search result for table column name
             // then what we will do?
             // an idea...search for rest of the headings.
@@ -388,7 +391,8 @@ namespace AttendanceHander
         }
         private List<Excel.Range> search_for_cell(String find_text,
             Excel.XlSearchOrder xlSearchOrder,
-            Excel.XlSearchDirection xlSearchDirection)
+            Excel.XlSearchDirection xlSearchDirection,
+            Boolean matchCase )
         {
             //Get the used Range
             Excel.Range usedRange = worksheet.UsedRange;
@@ -407,7 +411,8 @@ namespace AttendanceHander
             //start search from first cell
 
             Excel.Range current_find = usedRange.Find(What: find_text,
-               SearchOrder: xlSearchOrder,SearchDirection: xlSearchDirection);
+               SearchOrder: xlSearchOrder,SearchDirection: xlSearchDirection,
+               MatchCase:matchCase);
 
             if (current_find != null)
                 sresult.Add(current_find);

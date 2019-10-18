@@ -36,7 +36,7 @@ namespace AttendanceHander
 
         }
 
-        private Excel.Workbook openFile()
+        private Excel.Workbook openFile(Boolean readOnly)
         {
             InputOutHandler inputOutHandler =
                new InputOutHandler(openFileDialog1);
@@ -46,7 +46,7 @@ namespace AttendanceHander
                 return null;
 
             Excel.Application application = Globals.ThisAddIn.getApplication();
-            return (application.Workbooks.Open(filename));
+            return (application.Workbooks.Open(filename,ReadOnly:readOnly));
 
 
         }
@@ -70,7 +70,7 @@ namespace AttendanceHander
 
         private void ButtonOpenMepStyle_Click(object sender, EventArgs e)
         {
-            Excel.Workbook workbook = openFile();
+            Excel.Workbook workbook = openFile(true);
             if (workbook == null)
                 return;
 

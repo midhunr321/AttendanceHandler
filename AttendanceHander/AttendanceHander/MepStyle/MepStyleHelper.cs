@@ -62,6 +62,8 @@ namespace AttendanceHander
             //plumbers time sheet
             understand_the_month_and_year_of_the_sheet();
             find_overtime_dates_headings();
+            //now that we got all headings
+            //we need to start with the rows
         }
 
         private void understand_the_month_and_year_of_the_sheet()
@@ -106,6 +108,11 @@ namespace AttendanceHander
             {
                 HeadingWrap newDay = new HeadingWrap(day.ToString());
 
+                if (SiGlobalVars.Instance.mepStyleHeadings.overtimeDays
+                    == null)
+                    SiGlobalVars.Instance.mepStyleHeadings.overtimeDays
+                        = new Dictionary<int, HeadingWrap>();
+
                 SiGlobalVars.Instance.mepStyleHeadings.overtimeDays
                     .Add(day, newDay);
             }
@@ -149,7 +156,7 @@ namespace AttendanceHander
                 temp_heading =
                     eXCEL_HELPER.find_fix_column_heading(heading.headingName,
                     Excel.XlSearchDirection.xlNext,
-                    Excel.XlSearchOrder.xlByRows);
+                    Excel.XlSearchOrder.xlByRows,false);
 
                 if (temp_heading == null)
                 {
