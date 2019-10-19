@@ -8,6 +8,12 @@ namespace AttendanceHander
 {
     class MepStyleSiteNoCodeAnalyzer
     {
+        DateTime timesheetMonthYear;
+
+        public MepStyleSiteNoCodeAnalyzer(DateTime timesheetMonthYear)
+        {
+            this.timesheetMonthYear = timesheetMonthYear;
+        }
 
         class Codewrap
         {
@@ -15,12 +21,22 @@ namespace AttendanceHander
             public String text;
             public int EndIndex;
 
+
+
+
             public Codewrap(int startIndex, string text, int endIndex)
             {
                 StartIndex = startIndex;
                 this.text = text;
                 EndIndex = endIndex;
             }
+        }
+
+        class ExtractedDataWrap
+        {
+            DateTime transferStartDate;
+            DateTime transferEndDate;
+            String siteNo;
         }
 
         private Boolean find_start_of_transfer_date(String transferCode,
@@ -50,7 +66,26 @@ namespace AttendanceHander
                 return false;
 
             transferStartDate = startDAte;
+
+
             return true;
+        }
+
+        private void feed_data_to_ExtractedDataWrap()
+        {
+
+        }
+        
+        private Boolean convert_int_to_DateTime(DateTime monthYear, int day,out DateTime result)
+        {
+            result = new DateTime();
+            if (monthYear == null)
+                return false;
+
+            DateTime convertedDate = new DateTime(day,monthYear.Month, monthYear.Year);
+            result = convertedDate;
+            return true;
+          
         }
 
         private Codewrap find_TO(String transferCode)
@@ -132,6 +167,7 @@ namespace AttendanceHander
                 == false)
                 return false;
 
+            return true;
         }
 
         private Boolean invalidate_siteNo(String siteno)
