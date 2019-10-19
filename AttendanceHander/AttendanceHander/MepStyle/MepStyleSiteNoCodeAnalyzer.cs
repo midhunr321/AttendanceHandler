@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace AttendanceHander
 {
-    class MepStyleSiteNoCodeAnalyzer
+    public class MepStyleSiteNoCodeAnalyzer
     {
         DateTime timesheetMonthYear;
 
@@ -32,11 +33,11 @@ namespace AttendanceHander
             }
         }
 
-        class ExtractedDataWrap
+    public class ExtractedDataWrap
         {
-            DateTime transferStartDate;
-            DateTime transferEndDate;
-            String siteNo;
+            public DateTime transferStartDate;
+            public DateTime transferEndDate;
+            public String siteNo;
         }
 
         private Boolean find_start_of_transfer_date(String transferCode,
@@ -71,21 +72,52 @@ namespace AttendanceHander
             return true;
         }
 
-        private void feed_data_to_ExtractedDataWrap()
+        private Boolean feed_data_to_ExtractedDataWrap(String siteno,
+           DateTime timesheetMonthYear, String startDay, String endDay,
+           ExtractedDataWrap extractedDataWrap)
         {
 
+            extractedDataWrap.siteNo = siteno;
+
+            int startDayinInt;
+            if (int.TryParse(startDay, out startDayinInt)
+                  == false)
+                return false;
+
+            int endDayinInt;
+
+            if (int.TryParse(startDay, out endDayinInt)
+                 == false)
+                return false;
+
+            DateTime startDate;
+            if (convert_int_to_DateTime(timesheetMonthYear,
+               startDayinInt, out startDate)
+                == false)
+                return false;
+
+            DateTime endDate;
+            if (convert_int_to_DateTime(timesheetMonthYear,
+                   endDayinInt, out endDate)
+                  == false)
+                return false;
+
+            extractedDataWrap.transferStartDate = startDate;
+            extractedDataWrap.transferEndDate = endDate;
+            return true;
+
         }
-        
-        private Boolean convert_int_to_DateTime(DateTime monthYear, int day,out DateTime result)
+
+        private Boolean convert_int_to_DateTime(DateTime monthYear, int day, out DateTime result)
         {
             result = new DateTime();
             if (monthYear == null)
                 return false;
 
-            DateTime convertedDate = new DateTime(day,monthYear.Month, monthYear.Year);
+            DateTime convertedDate = new DateTime(day, monthYear.Month, monthYear.Year);
             result = convertedDate;
             return true;
-          
+
         }
 
         private Codewrap find_TO(String transferCode)
@@ -167,10 +199,16 @@ namespace AttendanceHander
                 == false)
                 return false;
 
+            ExtractedDataWrap extractedDataWrap = new ExtractedDataWrap();
+            if (feed_data_to_ExtractedDataWrap(siteno, timesheetMonthYear,
+                transferStartDate, transferEndDate, extractedDataWrap)
+                 == false)
+                return false;
+
             return true;
         }
 
-        private Boolean invalidate_siteNo(String siteno)
+        public Boolean invalidate_siteNo(String siteno)
         {
             StringHandler stringHandler = new StringHandler();
             if (stringHandler
@@ -207,7 +245,7 @@ namespace AttendanceHander
             transferEndDate = EndDAte;
             return true;
         }
-        public Boolean invalidate_transfer_date(String transferDate,
+        private Boolean invalidate_transfer_date(String transferDate,
             out int parsedTransferDate)
         {
             parsedTransferDate = -1;
