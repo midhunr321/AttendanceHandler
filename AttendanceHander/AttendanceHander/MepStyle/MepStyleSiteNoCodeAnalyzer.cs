@@ -114,7 +114,7 @@ namespace AttendanceHander
             if (monthYear == null)
                 return false;
 
-            DateTime convertedDate = new DateTime(day, monthYear.Month, monthYear.Year);
+            DateTime convertedDate = new DateTime(monthYear.Year, monthYear.Month, day);
             result = convertedDate;
             return true;
 
@@ -155,9 +155,10 @@ namespace AttendanceHander
             Codewrap underscore = new Codewrap(to.StartIndex, "_", to.EndIndex);
             return underscore;
         }
-        public Boolean analyze_string(String transferCode)
+        public ExtractedDataWrap analyze_string(String transferCode)
         {
-            //first check if the string is in the code format
+            
+                //first check if the string is in the code format
             //an example format is 10to10_M265;
 
             //first find "to"
@@ -166,13 +167,13 @@ namespace AttendanceHander
 
             Codewrap to = find_TO(transferCode);
             if (to == null)
-                return false;
+                return null;
 
             //now find the underscore "_"
 
             Codewrap underscore = find_underscore(transferCode, to);
             if (underscore == null)
-                return false;
+                return null;
 
             //now find the start date of plumber transfer
             //start date of site transfer is before "to"
@@ -180,7 +181,7 @@ namespace AttendanceHander
 
             if (find_start_of_transfer_date(transferCode, to, out transferStartDate)
                  == false)
-                return false;
+                return null;
 
 
             //now find the end date of plumber site shift 
@@ -188,7 +189,7 @@ namespace AttendanceHander
             if (find_end_date_of_site_transfer(transferCode,
                  to, underscore, out transferEndDate)
                  == false)
-                return false;
+                return null;
 
             //now to get the site no "eg. M273"
             //Site no is after the underscore
@@ -197,15 +198,15 @@ namespace AttendanceHander
             String siteno = transferCode.Substring(sitenoStartIndex);
             if (invalidate_siteNo(siteno)
                 == false)
-                return false;
+                return null;
 
             ExtractedDataWrap extractedDataWrap = new ExtractedDataWrap();
             if (feed_data_to_ExtractedDataWrap(siteno, timesheetMonthYear,
                 transferStartDate, transferEndDate, extractedDataWrap)
                  == false)
-                return false;
+                return null;
 
-            return true;
+            return extractedDataWrap;
         }
 
         public Boolean invalidate_siteNo(String siteno)

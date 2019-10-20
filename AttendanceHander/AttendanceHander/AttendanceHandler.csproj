@@ -254,7 +254,7 @@
     <ManifestKeyFile>AttendanceHandler_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>CE66C73DF71BD24C70ADEF51CDE873B0509062ED</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>AA1AE28A7BA0D7538B70C3205A9EA49974182B08</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
