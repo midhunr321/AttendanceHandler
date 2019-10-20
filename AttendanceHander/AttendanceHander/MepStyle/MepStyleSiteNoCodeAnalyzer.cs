@@ -140,8 +140,7 @@ namespace AttendanceHander
 
         }
 
-        private Codewrap find_underscore(String transferCode,
-            Codewrap to)
+        private Codewrap find_underscore(String transferCode)
         {
             StringHandler stringHandler = new StringHandler();
             //now find the underscore "_"
@@ -152,7 +151,7 @@ namespace AttendanceHander
                   == false)
                 return null;
 
-            Codewrap underscore = new Codewrap(to.StartIndex, "_", to.EndIndex);
+            Codewrap underscore = new Codewrap(startindex_, "_", endIndex_);
             return underscore;
         }
         public ExtractedDataWrap analyze_string(String transferCode)
@@ -171,7 +170,7 @@ namespace AttendanceHander
 
             //now find the underscore "_"
 
-            Codewrap underscore = find_underscore(transferCode, to);
+            Codewrap underscore = find_underscore(transferCode);
             if (underscore == null)
                 return null;
 

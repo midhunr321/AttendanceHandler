@@ -200,7 +200,7 @@ namespace AttendanceHander
             if (startIndex == -1) 
                 return false;
 
-            endIndex = startIndex + toFind.Length;
+            endIndex = startIndex + (toFind.Length-1);
             return true;
 
         }
