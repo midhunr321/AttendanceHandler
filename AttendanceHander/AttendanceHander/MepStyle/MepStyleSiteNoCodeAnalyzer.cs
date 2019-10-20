@@ -31,6 +31,19 @@ namespace AttendanceHander
                 this.text = text;
                 EndIndex = endIndex;
             }
+
+            public override bool Equals(object obj)
+            {
+                if(obj is Codewrap)
+                {
+                    var thatObj = obj as Codewrap;
+                    if (this.EndIndex == thatObj.EndIndex &&
+                        this.StartIndex == thatObj.StartIndex
+                        && this.text == thatObj.text)
+                        return true;
+                }
+                return false;
+            }
         }
 
     public class ExtractedDataWrap
@@ -38,6 +51,19 @@ namespace AttendanceHander
             public DateTime transferStartDate;
             public DateTime transferEndDate;
             public String siteNo;
+
+            public override bool Equals(object obj)
+            {
+                if(obj is ExtractedDataWrap)
+                {
+                    var thatObj = obj as ExtractedDataWrap;
+                    if (this.transferStartDate == thatObj.transferStartDate
+                        && this.transferEndDate == thatObj.transferEndDate
+                        && this.siteNo == thatObj.siteNo)
+                        return true;
+                }
+                return false;
+            }
         }
 
         private Boolean find_start_of_transfer_date(String transferCode,
@@ -48,7 +74,7 @@ namespace AttendanceHander
             //start date of site transfer is before "to"
 
             //now check how may digits for transfer start date is available
-            int length_of_transfer_start_date = to.StartIndex + 1;
+            int length_of_transfer_start_date = to.StartIndex;
             //+1 because index always start from 0; but length is the magnitude
 
             if (length_of_transfer_start_date > 2)
@@ -86,7 +112,7 @@ namespace AttendanceHander
 
             int endDayinInt;
 
-            if (int.TryParse(startDay, out endDayinInt)
+            if (int.TryParse(endDay, out endDayinInt)
                  == false)
                 return false;
 
@@ -228,9 +254,9 @@ namespace AttendanceHander
             transferEndDate = null;
             //now find the end date of plumber site shift 
 
-            int start_index = to.EndIndex;
-            int end_index = underscore.StartIndex;
-            int length = (start_index - end_index) - 1;
+            int start_index = to.EndIndex +1;
+            int end_index = underscore.StartIndex-1;
+            int length = Math.Abs(start_index - end_index)+ 1;
 
             int start_index_after_TO = to.EndIndex + 1;
             String EndDAte = transferCode.Substring(start_index_after_TO,
