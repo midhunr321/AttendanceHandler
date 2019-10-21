@@ -123,7 +123,7 @@ namespace AttendanceHander
 
                     //same column number means the current cell is 
                     //the value for this heading
-                   if (heading == headings.serialNo)
+                   if (heading.Equals( headings.serialNo))
                     {
                         //that is this particular cell is serial no data
                         mepStyleWrap.serialNo.content = eXCEL_HELPER

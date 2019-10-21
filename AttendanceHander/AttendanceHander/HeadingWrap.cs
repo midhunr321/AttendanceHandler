@@ -23,7 +23,8 @@ namespace AttendanceHander
             if(obj is HeadingWrap)
             {
                 var thatObj = obj as HeadingWrap;
-                if (this.fullCell == thatObj.fullCell &&
+                
+                if (this.fullCell.Equals(thatObj.fullCell) &&
                     this.headingName == thatObj.headingName)
                     return true;
             }
