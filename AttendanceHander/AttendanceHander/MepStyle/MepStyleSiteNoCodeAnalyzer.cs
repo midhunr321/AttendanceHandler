@@ -226,6 +226,8 @@ namespace AttendanceHander
                  == false)
                 return null;
 
+           
+
             //now to get the site no "eg. M273"
             //Site no is after the underscore
 
@@ -239,6 +241,10 @@ namespace AttendanceHander
             if (feed_data_to_ExtractedDataWrap(siteno, timesheetMonthYear,
                 transferStartDate, transferEndDate, extractedDataWrap)
                  == false)
+                return null;
+
+            //Transfer start date should be always less than transfer End date
+            if (extractedDataWrap.transferStartDate > extractedDataWrap.transferEndDate)
                 return null;
 
             return extractedDataWrap;
