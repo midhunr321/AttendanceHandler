@@ -35,6 +35,8 @@ namespace AttendanceHander
         public Excel.Worksheet mepStyleCurrentMonthWorkSheet;
         public List< MepStyleWrap> mepStyleWraps;
         public MepStyleHelper.Headings mepStyleHeadings;
+        public DateTime mepStyleTimesheetMonthYear;
+
     }
 
 

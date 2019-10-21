@@ -75,15 +75,13 @@ namespace AttendanceHander
             //Todo: should check there is no merged cells in the timesheet data in future
             if (mepStyleWraps == null)
                 mepStyleWraps = new List<MepStyleWrap>();
-            
 
-            
+            MepStyleWrap mepStyleWrap = new MepStyleWrap();
             foreach(HeadingWrap heading in headings)
             {
                 if(cell.Column == heading.fullCell.Column)
                 {
                     //same column no means the current cell is the value for this heading
-                    
                 }
             }
 
@@ -102,7 +100,7 @@ namespace AttendanceHander
                       .mepStyleHeadings.overtimeDays.Last()
                       .Value.fullCell.Column;
 
-                feed_data_into_mepStylewrap(ref mepStyleWraps);
+                feed_data_into_mepStylewrap(ref mepStyleWraps,cell);
             }
             return true;
         }
@@ -155,15 +153,14 @@ namespace AttendanceHander
                 SiGlobalVars.Instance.mepStyleWraps = new List<MepStyleWrap>();
            
             
-            if (SiGlobalVars.Instance.mepStyleWraps.
-                timesheetDate == null)
+            if (SiGlobalVars.Instance.mepStyleTimesheetMonthYear == null)
             {
                 SiGlobalVars.Instance.
-                    mepStyleWraps.timesheetDate = new DateTime();
+                    mepStyleTimesheetMonthYear = new DateTime();
             }
 
             SiGlobalVars.Instance.
-                mepStyleWraps.timesheetDate =
+                mepStyleTimesheetMonthYear =
                 DateTime.Parse(timesheetDate);
 
         }
@@ -172,8 +169,8 @@ namespace AttendanceHander
 
         private void find_overtime_dates_headings()
         {
-            var timesheetDate = SiGlobalVars.Instance
-                .mepStyleWraps.timesheetDate;
+            var timesheetDate = SiGlobalVars.Instance.
+                mepStyleTimesheetMonthYear;
             int currentMonthDaysCount
                  = DateTime.DaysInMonth(timesheetDate.Year,
                  timesheetDate.Month);

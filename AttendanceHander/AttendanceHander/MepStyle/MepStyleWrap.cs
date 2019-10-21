@@ -8,10 +8,7 @@ namespace AttendanceHander
 {
    public class MepStyleWrap
     {
-        public DateTime timesheetDate;
-        public List<DataRow> dataRows;
-       public class DataRow
-        {
+        
             public LongItemWrap serialNo;
             public LongItemWrap code; //Employee no.
             public StrItemWrap name;
@@ -19,7 +16,7 @@ namespace AttendanceHander
             public StrItemWrap siteNo;
             public LongItemWrap totalOvertime;
             public List<DateOvertime> dateOvertimes;
-        }
+        
  
     }
 }
