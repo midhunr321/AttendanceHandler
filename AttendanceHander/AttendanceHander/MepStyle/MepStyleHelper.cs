@@ -105,6 +105,11 @@ namespace AttendanceHander
             (ref List<MepStyleWrap> mepStyleWraps,
            Excel.Range fullCell, MepStyleHelper.Headings headings)
         {
+            if (fullCell.Column > headings.totalOvertime.fullCell.Column)
+                return true;//because we limit this iteration before 
+            //overtime datas and we don't want the iteration to 
+            //run into overtime data columns
+            
             //Todo: should check there is no merged cells in the timesheet data in future
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
 
@@ -115,6 +120,11 @@ namespace AttendanceHander
             MepStyleWrap mepStyleWrap = new MepStyleWrap();
             foreach (HeadingWrap heading in headings)
             {
+                if (heading.Equals(headings.mepStyleHeading))
+                    continue;//because the title of the time sheet that is
+                //" Plumbers timesheet september 2019"
+                //is not required for data extraction
+
                 if (fullCell.Column == heading.fullCell.Column)
                 {
                     if (check_if_this_cell_a_merged_cell(fullCell, heading)
