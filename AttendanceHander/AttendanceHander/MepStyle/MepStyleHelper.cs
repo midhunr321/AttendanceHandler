@@ -67,11 +67,28 @@ namespace AttendanceHander
             read_each_rows_of_data();
         }
 
-        private void read_siteNos()
+      
+
+        private Boolean feed_data_into_mepStylewrap(ref List<MepStyleWrap> mepStyleWraps,
+           Excel.Range cell, MepStyleHelper.Headings headings )
         {
+            //Todo: should check there is no merged cells in the timesheet data in future
+            if (mepStyleWraps == null)
+                mepStyleWraps = new List<MepStyleWrap>();
+            
+
+            
+            foreach(HeadingWrap heading in headings)
+            {
+                if(cell.Column == heading.fullCell.Column)
+                {
+                    //same column no means the current cell is the value for this heading
+                    
+                }
+            }
 
         }
-        private Boolean read_row(Excel.Range row)
+        private Boolean read_row(Excel.Range row, ref List<MepStyleWrap> mepStyleWraps)
         {
             //one way to identify whether we are in empty space
             //that means whether we already passed 50 numbers of plumbers
@@ -79,11 +96,13 @@ namespace AttendanceHander
             //if the serial no, employee no and name is empty means 
             //we have reached the end of the time sheet
 
-            foreach (Excel.Range column in row.Columns)
+            foreach (Excel.Range cell in row.Columns)
             {
                 int lastColumnNo = SiGlobalVars.Instance
                       .mepStyleHeadings.overtimeDays.Last()
                       .Value.fullCell.Column;
+
+                feed_data_into_mepStylewrap(ref mepStyleWraps);
             }
             return true;
         }
@@ -133,8 +152,9 @@ namespace AttendanceHander
                 eXCEL_HELPER.get_value_of_merge_cell(fullcell);
 
             if (SiGlobalVars.Instance.mepStyleWraps == null)
-                SiGlobalVars.Instance.mepStyleWraps = new MepStyleWrap();
-
+                SiGlobalVars.Instance.mepStyleWraps = new List<MepStyleWrap>();
+           
+            
             if (SiGlobalVars.Instance.mepStyleWraps.
                 timesheetDate == null)
             {

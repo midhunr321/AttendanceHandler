@@ -16,18 +16,26 @@ namespace AttendanceHander
     public class DateItemWrap : ItemWrap
     {
         public DateTime content;
+        public HeadingWrap heading;
+        
+        
     }
     public class StrItemWrap : ItemWrap
     {
         public String content;
+        public HeadingWrap heading;
+
     }
     public class LongItemWrap : ItemWrap
     {
         public long content;
+        public HeadingWrap heading;
+
     }
     public class DateOvertime : ItemWrap
     {
         public int date_day;
+        public HeadingWrap heading;
         public DateTime date;
         public String siteNo;//for each overtime there might be a site no
         public int overtime;
