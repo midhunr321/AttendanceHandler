@@ -17,5 +17,17 @@ namespace AttendanceHander
         {
             this.headingName = headingName;
         }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is HeadingWrap)
+            {
+                var thatObj = obj as HeadingWrap;
+                if (this.fullCell == thatObj.fullCell &&
+                    this.headingName == thatObj.headingName)
+                    return true;
+            }
+            return false;
+        }
     }
 }
