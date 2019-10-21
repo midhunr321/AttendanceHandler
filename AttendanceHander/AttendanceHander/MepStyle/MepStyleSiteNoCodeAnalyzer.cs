@@ -139,8 +139,18 @@ namespace AttendanceHander
             result = new DateTime();
             if (monthYear == null)
                 return false;
+            DateTime convertedDate;
+            try
+            {
+                convertedDate = new DateTime(monthYear.Year, monthYear.Month, day);
 
-            DateTime convertedDate = new DateTime(monthYear.Year, monthYear.Month, day);
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+            
             result = convertedDate;
             return true;
 

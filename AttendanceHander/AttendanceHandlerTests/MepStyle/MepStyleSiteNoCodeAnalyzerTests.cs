@@ -22,7 +22,7 @@ namespace AttendanceHander.Tests
         public void analyze_stringTest()
         {
             //Arrange
-            String code = "31to32_M274";
+            String code = "28to31_M274";
 
             //ACT
             DateTime monthyear = new DateTime(2019, 10, 11);
@@ -33,8 +33,9 @@ namespace AttendanceHander.Tests
             MepStyleSiteNoCodeAnalyzer.ExtractedDataWrap expectedREsult
                 = new MepStyleSiteNoCodeAnalyzer.ExtractedDataWrap();
             expectedREsult.siteNo = "M274";
-            expectedREsult.transferEndDate = new DateTime(2019, 10, 32);
-            expectedREsult.transferStartDate = new DateTime(2019, 10, 31);
+            expectedREsult.transferStartDate = new DateTime(2019, 10, 28);
+            expectedREsult.transferEndDate = new DateTime(2019, 10, 31);
+           
 
             var actualResult = mepStyleSiteNoCodeAnalyzer.analyze_string(code);
 
