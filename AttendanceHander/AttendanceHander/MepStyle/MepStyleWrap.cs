@@ -14,7 +14,7 @@ namespace AttendanceHander
             public StrItemWrap name;
             public StrItemWrap designation;
             public StrItemWrap siteNo;
-            public LongItemWrap totalOvertime;
+            public StrItemWrap totalOvertime;
             public List<DateOvertime> dateOvertimes;
         
  
