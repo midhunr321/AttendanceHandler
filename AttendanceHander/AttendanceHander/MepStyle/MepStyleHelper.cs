@@ -88,7 +88,7 @@ namespace AttendanceHander
 
             return false;
         }
-        private Boolean feed_overtime_datas_of_single_row(ref List<MepStyleWrap> mepStyleWraps,
+        private Boolean feed_overtime_datas_of_single_row(MepStyleWrap mepStyleWraps,
            Excel.Range fullCell, MepStyleHelper.Headings headings)
         {
             
@@ -101,7 +101,6 @@ namespace AttendanceHander
 
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
 
-            MepStyleWrap mepStyleWrap = new MepStyleWrap();
             foreach (var heading in  headings.overtimeDays)
             {
                 
@@ -116,12 +115,10 @@ namespace AttendanceHander
                     //if no merge cells then
                     var currMonthYear = SiGlobalVars.Instance
                         .mepStyleTimesheetMonthYear;
-                    var totalMonthDays = DateTime.DaysInMonth(currMonthYear.Year,
+                    int totalMonthDays = DateTime.DaysInMonth(currMonthYear.Year,
                         currMonthYear.Month);
-                    for(int i=1; i<= totalMonthDays; i++)
-                    {
 
-                    }
+                    
                     
 
                     //same column number means the current cell is 
@@ -155,22 +152,18 @@ namespace AttendanceHander
             return false;
         }
         private Boolean feed_non_overtime_datas_of_single_row
-            (ref List<MepStyleWrap> mepStyleWraps,
+            (ref MepStyleWrap mepStyleWrap,
            Excel.Range fullCell, MepStyleHelper.Headings headings)
         {
             if (fullCell.Column > headings.totalOvertime.fullCell.Column)
-                return true;//because we limit this iteration before 
+                return false;//because we limit this iteration before 
             //overtime datas and we don't want the iteration to 
             //run into overtime data columns
             
             //Todo: should check there is no merged cells in the timesheet data in future
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
+            
 
-    
-            if (mepStyleWraps == null)
-                mepStyleWraps = new List<MepStyleWrap>();
-
-            MepStyleWrap mepStyleWrap = new MepStyleWrap();
             foreach (HeadingWrap heading in headings)
             {
                 if (heading.Equals(headings.mepStyleHeading))
@@ -199,28 +192,28 @@ namespace AttendanceHander
                         //that is employee no
                         mepStyleWrap.code.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.code.fullCell = fullCell;
-                        return true;
+                        return mepStyleWrap;
                     }
                     else if (heading.Equals(headings.name))
                     {
                         //that is employee no
                         mepStyleWrap.name.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.name.fullCell = fullCell;
-                        return true;
+                        return mepStyleWrap;
                     }
                     else if (heading.Equals(headings.designation))
                     {
                         //that is employee no
                         mepStyleWrap.designation.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.designation.fullCell = fullCell;
-                        return true;
+                        return mepStyleWrap;
                     }
                     else if (heading.Equals(headings.siteNO))
                     {
                         //that is employee no
                         mepStyleWrap.siteNo.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.siteNo.fullCell = fullCell;
-                        return true;
+                        return mepStyleWrap;
                     }
                     else if (heading.Equals(headings.totalOvertime))
                     {
@@ -232,14 +225,14 @@ namespace AttendanceHander
                         //as you know after total over time it is overtime datas
                         //so we need to break from this iteration now
 
-                        return true;
+                        return mepStyleWrap;
 
                     }
 
 
                 }
             }
-            return true;
+            return null;
         }
         private Boolean read_row(Excel.Range row, ref List<MepStyleWrap> mepStyleWraps)
         {
@@ -261,7 +254,10 @@ namespace AttendanceHander
                 //first nextFullCell is firstFullCell
                 //so 
                 var currentFullCell = nextFullCell;
-                feed_non_overtime_datas_of_single_row(ref mepStyleWraps, currentFullCell,
+                MepStyleWrap mepStyleWrap = new MepStyleWrap();
+
+                mepStyleWrap = 
+                feed_non_overtime_datas_of_single_row(mepStyleWraps, currentFullCell,
                        SiGlobalVars.Instance.mepStyleHeadings);
 
                 feed_overtime_datas_of_single_row(ref mepStyleWraps, currentFullCell,
