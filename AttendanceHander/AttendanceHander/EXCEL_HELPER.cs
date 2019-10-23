@@ -71,6 +71,27 @@ namespace AttendanceHander
             return (next_cell);
 
         }
+        public int get_last_column_no_of_a_merge_cell(Excel.Range fullCell)
+        {
+            if (fullCell == null)
+                return -1;
+
+            if (fullCell.MergeArea.Cells.Count > 1)
+            {
+                //ie contains Merge Cells
+                int last_column_no=0;
+                foreach(Excel.Range cell in fullCell.MergeCells)
+                {
+                    if (cell.Column > last_column_no)
+                        last_column_no = cell.Column;
+                }
+                return last_column_no;
+            }
+            else
+            {
+                return (fullCell.Column);
+            }
+        }
         private Dictionary<Excel.Range, String> get_cell_with_address(List<Excel.Range> list_of_cell)
         {
             string complete_address;

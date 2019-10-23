@@ -88,10 +88,76 @@ namespace AttendanceHander
 
             return false;
         }
-        private Boolean feed_overtime_datas_of_single_row(MepStyleWrap mepStyleWraps,
+        private Boolean feed_site_transfer_data_of_a_cell(ref MepStyleWrap mepStyleWrap,
            Excel.Range fullCell, MepStyleHelper.Headings headings)
         {
-            
+            //inorder to feed site transfer data
+            //first we have to make sure that 
+            //the column of the current cell is after the day 31 or day 30  of this month
+
+            EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
+            int lastColNo =
+            eXCEL_HELPER.get_last_column_no_of_a_merge_cell(fullCell);
+
+
+
+
+
+
+
+            //if (fullCell.Column > headings.overtimeDays.Last().Value.fullCell.Column)
+            //    return true;//because we limit this iteration before 
+            //                //till last 30 or 31 days (depending on corresponding months)
+            //                //and we don't want the iteration after that
+
+
+            //EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
+
+            //foreach (var heading in headings.overtimeDays)
+            //{
+
+            //    if (fullCell.Column == heading.Value.fullCell.Column)
+
+            //    {
+            //        //same column number means the current cell is 
+            //        //the data for this heading
+
+            //        //if more than one merge cell is found
+            //        //simply ignore it as they must be in vacation.
+            //        if (plumber_is_on_vacation_or_has_merged_cells(fullCell)
+            //     == true)
+            //            return true;
+
+            //        //if no merge cells then
+            //        var currMonthYear = SiGlobalVars.Instance
+            //            .mepStyleTimesheetMonthYear;
+            //        int totalMonthDays = DateTime.DaysInMonth(currMonthYear.Year,
+            //            currMonthYear.Month);
+
+            //        int overtimeDay;
+            //        if (int.TryParse(heading.Value.headingName, out overtimeDay)
+            //               == true)
+            //        {
+            //            mepStyleWrap.dateOvertimes[overtimeDay].overtime
+            //           = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
+
+            //        }
+            //        else
+            //        {
+            //            MessageBox.Show("Couldn't convert heading name to index." +
+            //                "Heading name might not be a number");
+            //            return false;
+            //        }
+
+
+            //    }
+            //}
+
+        }
+        private Boolean feed_overtime_datas_of_a_cell(ref MepStyleWrap mepStyleWrap,
+           Excel.Range fullCell, MepStyleHelper.Headings headings)
+        {
+
 
             if (fullCell.Column > headings.overtimeDays.Last().Value.fullCell.Column)
                 return true;//because we limit this iteration before 
@@ -101,11 +167,15 @@ namespace AttendanceHander
 
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
 
-            foreach (var heading in  headings.overtimeDays)
+            foreach (var heading in headings.overtimeDays)
             {
-                
+
                 if (fullCell.Column == heading.Value.fullCell.Column)
+
                 {
+                    //same column number means the current cell is 
+                    //the data for this heading
+
                     //if more than one merge cell is found
                     //simply ignore it as they must be in vacation.
                     if (plumber_is_on_vacation_or_has_merged_cells(fullCell)
@@ -118,25 +188,26 @@ namespace AttendanceHander
                     int totalMonthDays = DateTime.DaysInMonth(currMonthYear.Year,
                         currMonthYear.Month);
 
-                    
-                    
-
-                    //same column number means the current cell is 
-                    //the value for this heading
-                    if (heading.Equals(headings.serialNo))
+                    int overtimeDay;
+                    if (int.TryParse(heading.Value.headingName, out overtimeDay)
+                           == true)
                     {
-                        //that is this particular cell is serial no data
-                        mepStyleWrap.serialNo.content = eXCEL_HELPER
-                            .get_value_of_merge_cell(fullCell);
-                        mepStyleWrap.serialNo.fullCell = fullCell;
-                        return true;
+                        mepStyleWrap.dateOvertimes[overtimeDay].overtime
+                       = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
+
                     }
-                   
+                    else
+                    {
+                        MessageBox.Show("Couldn't convert heading name to index." +
+                            "Heading name might not be a number");
+                        return false;
+                    }
+
 
                 }
             }
 
-
+            return true;
         }
 
         private Boolean check_if_this_cell_a_merged_cell(Excel.Range fullCell,
@@ -157,12 +228,12 @@ namespace AttendanceHander
         {
             if (fullCell.Column > headings.totalOvertime.fullCell.Column)
                 return false;//because we limit this iteration before 
-            //overtime datas and we don't want the iteration to 
-            //run into overtime data columns
-            
+                             //overtime datas and we don't want the iteration to 
+                             //run into overtime data columns
+
             //Todo: should check there is no merged cells in the timesheet data in future
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
-            
+
 
             foreach (HeadingWrap heading in headings)
             {
@@ -179,7 +250,7 @@ namespace AttendanceHander
 
                     //same column number means the current cell is 
                     //the value for this heading
-                   if (heading.Equals( headings.serialNo))
+                    if (heading.Equals(headings.serialNo))
                     {
                         //that is this particular cell is serial no data
                         mepStyleWrap.serialNo.content = eXCEL_HELPER
@@ -187,33 +258,33 @@ namespace AttendanceHander
                         mepStyleWrap.serialNo.fullCell = fullCell;
                         return true;
                     }
-                   else if (heading.Equals(headings.code))
+                    else if (heading.Equals(headings.code))
                     {
                         //that is employee no
                         mepStyleWrap.code.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.code.fullCell = fullCell;
-                        return mepStyleWrap;
+                        return true;
                     }
                     else if (heading.Equals(headings.name))
                     {
                         //that is employee no
                         mepStyleWrap.name.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.name.fullCell = fullCell;
-                        return mepStyleWrap;
+                        return true;
                     }
                     else if (heading.Equals(headings.designation))
                     {
                         //that is employee no
                         mepStyleWrap.designation.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.designation.fullCell = fullCell;
-                        return mepStyleWrap;
+                        return true;
                     }
                     else if (heading.Equals(headings.siteNO))
                     {
                         //that is employee no
                         mepStyleWrap.siteNo.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.siteNo.fullCell = fullCell;
-                        return mepStyleWrap;
+                        return true;
                     }
                     else if (heading.Equals(headings.totalOvertime))
                     {
@@ -225,14 +296,14 @@ namespace AttendanceHander
                         //as you know after total over time it is overtime datas
                         //so we need to break from this iteration now
 
-                        return mepStyleWrap;
+                        return true;
 
                     }
 
 
                 }
             }
-            return null;
+            return false;
         }
         private Boolean read_row(Excel.Range row, ref List<MepStyleWrap> mepStyleWraps)
         {
@@ -250,23 +321,32 @@ namespace AttendanceHander
             int totalNoUsedColumns = worksheet.UsedRange.Columns.Count;
 
             int i = 1;
-            do{
+            do
+            {
                 //first nextFullCell is firstFullCell
                 //so 
                 var currentFullCell = nextFullCell;
                 MepStyleWrap mepStyleWrap = new MepStyleWrap();
 
-                mepStyleWrap = 
-                feed_non_overtime_datas_of_single_row(mepStyleWraps, currentFullCell,
+
+                feed_non_overtime_datas_of_single_row(ref mepStyleWrap, currentFullCell,
+                          SiGlobalVars.Instance.mepStyleHeadings);
+
+
+                feed_overtime_datas_of_a_cell(ref mepStyleWrap, currentFullCell,
                        SiGlobalVars.Instance.mepStyleHeadings);
 
-                feed_overtime_datas_of_single_row(ref mepStyleWraps, currentFullCell,
+                //now get the site transfer start and end dates
+
+                feed_site_transfer_data_of_a_cell(ref mepStyleWrap, currentFullCell,
                        SiGlobalVars.Instance.mepStyleHeadings);
+
+
                 var nextCell = firstFullCell.Next;
                 nextFullCell = eXCEL_HELPER.return_full_merg_cell(nextCell);
 
-            } while (i <= totalNoUsedColumns) ;
-            
+            } while (i <= totalNoUsedColumns);
+
             //foreach (Excel.Range cell in row.Columns)
             //{
             //    int lastColumnNo = SiGlobalVars.Instance
@@ -387,7 +467,7 @@ namespace AttendanceHander
                     .return_next_adjacent_range(lastDay);
                 SiGlobalVars.Instance.mepStyleHeadings
                     .overtimeDays[i].fullCell = nextday;
-                if (check_overtime_heading_content_is_valid(nextday,i)
+                if (check_overtime_heading_content_is_valid(nextday, i)
                     == false)
                     return false;
                 lastDay = nextday;
@@ -397,13 +477,13 @@ namespace AttendanceHander
 
         }
 
-        private Boolean check_overtime_heading_content_is_valid(Excel.Range cell,int day)
+        private Boolean check_overtime_heading_content_is_valid(Excel.Range cell, int day)
         {
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
             String cellContentStr = eXCEL_HELPER.get_value_of_merge_cell(cell);
 
             StringHandler stringHandler = new StringHandler();
-            if(stringHandler
+            if (stringHandler
                 .is_this_string_alpha_numeric_or_numeric_or_alpha_only(cellContentStr)
                 != All_const.str_type.Numeric)
             {

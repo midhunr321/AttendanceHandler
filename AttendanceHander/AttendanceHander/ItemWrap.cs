@@ -38,7 +38,7 @@ namespace AttendanceHander
         public HeadingWrap heading;
         public DateTime date;
         public String siteNo;//for each overtime there might be a site no
-        public int overtime;
+        public String overtime;
     }
 
 }
