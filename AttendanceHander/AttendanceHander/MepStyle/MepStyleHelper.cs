@@ -88,9 +88,11 @@ namespace AttendanceHander
 
             return false;
         }
-        private Boolean feed_site_transfer_data_of_a_cell(ref MepStyleWrap mepStyleWrap,
-           Excel.Range fullCell, MepStyleHelper.Headings headings)
+        private void feed_site_transfer_data_of_a_cell(ref List<DateOvertime> dateOvertime,
+           Excel.Range fullCell, MepStyleHelper.Headings headings,
+          out Boolean stopThisRowIteration)
         {
+            stopThisRowIteration = false;
             //inorder to feed site transfer data
             //first we have to make sure that 
             //the column of the current cell is after the day 31 or day 30  of this month
@@ -99,61 +101,60 @@ namespace AttendanceHander
             int lastColNo =
             eXCEL_HELPER.get_last_column_no_of_a_merge_cell(fullCell);
 
+            if (lastColNo > headings.overtimeDays.Last().Value.fullCell.Column)
+            {
+                //ie this full cell is after the overtime dates
+                //that means now on we need to check for site transfer no details
+                //if any cell doesn't contain site transfer details then
+                // we need to stop the iteration along this row
 
+                MepStyleSiteNoCodeAnalyzer codeAnalyzer
+                        = new MepStyleSiteNoCodeAnalyzer
+                        (SiGlobalVars.Instance.mepStyleTimesheetMonthYear);
 
+                MepStyleSiteNoCodeAnalyzer.ExtractedDataWrap extractedDataWrap
+                    = new MepStyleSiteNoCodeAnalyzer.ExtractedDataWrap();
 
+                String transferCode = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
+                extractedDataWrap = codeAnalyzer.analyze_string(transferCode);
+                if (extractedDataWrap == null)
+                {
+                    stopThisRowIteration = true;
+                    return;
+                }
+                else
+                {
+                    insert_transfer_dates_into_datawrap();
+                }
 
+            }
+        }
 
+        private List<DateOvertime> filter_overtime_for_these_dates(DateTime dateForFilter,
+            List<DateOvertime> dateOvertime)
+        {
+            List<DateOvertime> filtered = new List<DateOvertime>();
+            foreach(var item in dateOvertime)
+            {
+                if (item.date.Equals(dateForFilter))
+                    filtered.Add(item);
+            }
+            return filtered;
+        }
+        private void insert_transfer_dates_into_datawrap(ref List<DateOvertime> dateOvertime,
+            MepStyleSiteNoCodeAnalyzer.ExtractedDataWrap extractedDataWrap)
+        {
+            DateTime startDate = extractedDataWrap.transferStartDate;
+            DateTime endDate = extractedDataWrap.transferEndDate;
 
-            //if (fullCell.Column > headings.overtimeDays.Last().Value.fullCell.Column)
-            //    return true;//because we limit this iteration before 
-            //                //till last 30 or 31 days (depending on corresponding months)
-            //                //and we don't want the iteration after that
-
-
-            //EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
-
-            //foreach (var heading in headings.overtimeDays)
-            //{
-
-            //    if (fullCell.Column == heading.Value.fullCell.Column)
-
-            //    {
-            //        //same column number means the current cell is 
-            //        //the data for this heading
-
-            //        //if more than one merge cell is found
-            //        //simply ignore it as they must be in vacation.
-            //        if (plumber_is_on_vacation_or_has_merged_cells(fullCell)
-            //     == true)
-            //            return true;
-
-            //        //if no merge cells then
-            //        var currMonthYear = SiGlobalVars.Instance
-            //            .mepStyleTimesheetMonthYear;
-            //        int totalMonthDays = DateTime.DaysInMonth(currMonthYear.Year,
-            //            currMonthYear.Month);
-
-            //        int overtimeDay;
-            //        if (int.TryParse(heading.Value.headingName, out overtimeDay)
-            //               == true)
-            //        {
-            //            mepStyleWrap.dateOvertimes[overtimeDay].overtime
-            //           = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
-
-            //        }
-            //        else
-            //        {
-            //            MessageBox.Show("Couldn't convert heading name to index." +
-            //                "Heading name might not be a number");
-            //            return false;
-            //        }
-
-
-            //    }
-            //}
+           for(var i = startDate;i<=endDate;i.AddDays(1))
+            {
+                var filteredOvertime
+                    = filter_overtime_for_these_dates(i, dateOvertime);
+            }
 
         }
+
         private Boolean feed_overtime_datas_of_a_cell(ref MepStyleWrap mepStyleWrap,
            Excel.Range fullCell, MepStyleHelper.Headings headings)
         {
