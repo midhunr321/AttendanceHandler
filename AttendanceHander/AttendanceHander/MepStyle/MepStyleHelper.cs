@@ -119,12 +119,15 @@ namespace AttendanceHander
                 extractedDataWrap = codeAnalyzer.analyze_string(transferCode);
                 if (extractedDataWrap == null)
                 {
+                    //if no valid site tranfer code is found, we can break from
+                    //iteration of the row.
                     stopThisRowIteration = true;
                     return;
                 }
                 else
                 {
-                    insert_transfer_dates_into_datawrap();
+                    insert_transfer_dates_into_datawrap(ref dateOvertime,
+                        extractedDataWrap);
                 }
 
             }
@@ -134,7 +137,7 @@ namespace AttendanceHander
             List<DateOvertime> dateOvertime)
         {
             List<DateOvertime> filtered = new List<DateOvertime>();
-            foreach(var item in dateOvertime)
+            foreach (var item in dateOvertime)
             {
                 if (item.date.Equals(dateForFilter))
                     filtered.Add(item);
@@ -147,9 +150,9 @@ namespace AttendanceHander
             DateTime startDate = extractedDataWrap.transferStartDate;
             DateTime endDate = extractedDataWrap.transferEndDate;
 
-           for(var i = startDate;i<=endDate;i.AddDays(1))
+            for (var i = startDate; i <= endDate; i.AddDays(1))
             {
-                
+
                 //var filteredOvertime
                 //    = filter_overtime_for_these_dates(i, dateOvertime);
                 //if (filteredOvertime.Count > 1)
@@ -158,13 +161,13 @@ namespace AttendanceHander
                 //        "Issue Overtime Heading Date = " + dateOvertime.Last().heading.headingName);
                 //    return false;
                 //}
-                
-                foreach(var date in dateOvertime)
+
+                foreach (var item in dateOvertime)
                 {
-                   if(date.date.Equals(i.Date))
+                    if (item.date.Equals(i.Date))
                     {
-                        date.siteNo = extractedDataWrap.siteNo;
-                        
+                        item.siteNo = extractedDataWrap.siteNo;
+
                     }
                 }
 
@@ -180,7 +183,7 @@ namespace AttendanceHander
 
 
             if (fullCell.Column > headings.overtimeDays.Last().Value.fullCell.Column)
-                return true;//because we limit this iteration before 
+                return false;//because we limit this iteration before 
                             //till last 30 or 31 days (depending on corresponding months)
                             //and we don't want the iteration after that
 
@@ -214,6 +217,18 @@ namespace AttendanceHander
                     {
                         mepStyleWrap.dateOvertimes[overtimeDay].overtime
                        = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
+                        mepStyleWrap.dateOvertimes[overtimeDay]
+                            .heading = heading.Value;
+                        mepStyleWrap.dateOvertimes[overtimeDay]
+                          .date_day = heading.Value.headingName;
+                        int day;
+
+
+                        DateTime date = new DateTime(currMonthYear.Year,
+                            currMonthYear.Month, overtimeDay);
+
+                        mepStyleWrap.dateOvertimes[overtimeDay]
+                            .date = date;
 
                     }
                     else
@@ -348,19 +363,24 @@ namespace AttendanceHander
                 var currentFullCell = nextFullCell;
                 MepStyleWrap mepStyleWrap = new MepStyleWrap();
 
-
-                feed_non_overtime_datas_of_single_row(ref mepStyleWrap, currentFullCell,
+                Boolean result1;
+                result1 = feed_non_overtime_datas_of_single_row(ref mepStyleWrap, 
+                    currentFullCell,
                           SiGlobalVars.Instance.mepStyleHeadings);
 
-
+                Boolean result2;
                 feed_overtime_datas_of_a_cell(ref mepStyleWrap, currentFullCell,
                        SiGlobalVars.Instance.mepStyleHeadings);
 
                 //now get the site transfer start and end dates
+                Boolean stop_this_row_iteration = false;
+                feed_site_transfer_data_of_a_cell(ref mepStyleWrap.dateOvertimes,
+                    currentFullCell,
+                       SiGlobalVars.Instance.mepStyleHeadings,
+                      out stop_this_row_iteration);
 
-                feed_site_transfer_data_of_a_cell(ref mepStyleWrap, currentFullCell,
-                       SiGlobalVars.Instance.mepStyleHeadings);
-
+                if (stop_this_row_iteration == true)
+                    break;
 
                 var nextCell = firstFullCell.Next;
                 nextFullCell = eXCEL_HELPER.return_full_merg_cell(nextCell);
@@ -377,6 +397,7 @@ namespace AttendanceHander
             //        SiGlobalVars.Instance.mepStyleHeadings);
             //}
             //return true;
+            return true;
         }
         private void read_each_rows_of_data()
         {
@@ -388,6 +409,7 @@ namespace AttendanceHander
 
             Excel.Range serialNo = SiGlobalVars.Instance
                 .mepStyleHeadings.serialNo.fullCell;
+
 
             //now go to below adjacent cell to serial no.
             Excel.Range firstDataRowCell =
@@ -406,7 +428,8 @@ namespace AttendanceHander
                 //after that it is just empty space
                 //so if read row is false that means we came accross the empty space
                 //thus this iteration can be stopped.
-                if (read_row(row) == false)
+                if (read_row(row, 
+                    ref SiGlobalVars.Instance.mepStyleWraps) == false)
                     break;
             }
 

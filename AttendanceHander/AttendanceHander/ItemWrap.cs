@@ -34,7 +34,7 @@ namespace AttendanceHander
     }
     public class DateOvertime : ItemWrap
     {
-        public int date_day;
+        public String date_day;
         public HeadingWrap heading;
         public DateTime date;
         public String siteNo;//for each overtime there might be a site no
