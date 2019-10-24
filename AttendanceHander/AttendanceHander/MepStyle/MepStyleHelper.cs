@@ -49,7 +49,7 @@ namespace AttendanceHander
                 return GetEnumerator();
             }
         }
-        public Boolean understand_the_excel_sheet()
+        public Boolean MAIN_understand_the_excel_sheet()
         {
             if (SiGlobalVars.Instance.mepStyleHeadings == null)
             {
@@ -141,7 +141,7 @@ namespace AttendanceHander
             }
             return filtered;
         }
-        private void insert_transfer_dates_into_datawrap(ref List<DateOvertime> dateOvertime,
+        private Boolean insert_transfer_dates_into_datawrap(ref List<DateOvertime> dateOvertime,
             MepStyleSiteNoCodeAnalyzer.ExtractedDataWrap extractedDataWrap)
         {
             DateTime startDate = extractedDataWrap.transferStartDate;
@@ -149,9 +149,28 @@ namespace AttendanceHander
 
            for(var i = startDate;i<=endDate;i.AddDays(1))
             {
-                var filteredOvertime
-                    = filter_overtime_for_these_dates(i, dateOvertime);
+                
+                //var filteredOvertime
+                //    = filter_overtime_for_these_dates(i, dateOvertime);
+                //if (filteredOvertime.Count > 1)
+                //{
+                //    MessageBox.Show("Identical Overtime dates detected in the Overtime Date headings"+
+                //        "Issue Overtime Heading Date = " + dateOvertime.Last().heading.headingName);
+                //    return false;
+                //}
+                
+                foreach(var date in dateOvertime)
+                {
+                   if(date.date.Equals(i.Date))
+                    {
+                        date.siteNo = extractedDataWrap.siteNo;
+                        
+                    }
+                }
+
             }
+
+            return true;
 
         }
 

@@ -64,6 +64,7 @@ namespace AttendanceHander
                 }
                 return false;
             }
+            
         }
 
         private Boolean find_start_of_transfer_date(String transferCode,

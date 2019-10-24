@@ -65,7 +65,7 @@ namespace AttendanceHander
             MepStyleHelper mepStyleHelper =
                 new MepStyleHelper(workbook,
                 worksheet);
-            mepStyleHelper.understand_the_excel_sheet();
+            mepStyleHelper.MAIN_understand_the_excel_sheet();
         }
 
         private void ButtonOpenMepStyle_Click(object sender, EventArgs e)
