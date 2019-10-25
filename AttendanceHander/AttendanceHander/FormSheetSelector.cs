@@ -48,6 +48,8 @@ namespace AttendanceHander
             comboBoxSheets.DataSource = new BindingSource(keyValuePairs, null);
             comboBoxSheets.DisplayMember = "Key";
             comboBoxSheets.ValueMember = "Value";
+            int last = comboBoxSheets.Items.Count;
+            comboBoxSheets.SelectedIndex = last-1;
         }
         private void FormSheetSelector_Load(object sender, EventArgs e)
         {

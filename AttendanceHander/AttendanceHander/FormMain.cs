@@ -41,6 +41,8 @@ namespace AttendanceHander
             InputOutHandler inputOutHandler =
                new InputOutHandler(openFileDialog1);
             FileInfo file = inputOutHandler.open_file();
+            if (file == null)
+                return null;
             String filename = file.FullName;
             if (file == null)
                 return null;

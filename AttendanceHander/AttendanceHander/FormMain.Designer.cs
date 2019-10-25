@@ -53,17 +53,18 @@
             this.buttonOpenMepTimesheet.Name = "buttonOpenMepTimesheet";
             this.buttonOpenMepTimesheet.Size = new System.Drawing.Size(143, 41);
             this.buttonOpenMepTimesheet.TabIndex = 1;
-            this.buttonOpenMepTimesheet.Text = "Open";
+            this.buttonOpenMepTimesheet.Text = "Open and Process";
             this.buttonOpenMepTimesheet.UseVisualStyleBackColor = true;
             this.buttonOpenMepTimesheet.Click += new System.EventHandler(this.ButtonOpenMepStyle_Click);
             // 
             // labelMepStyle
             // 
             this.labelMepStyle.AutoSize = true;
+            this.labelMepStyle.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.labelMepStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelMepStyle.Location = new System.Drawing.Point(217, 156);
+            this.labelMepStyle.Location = new System.Drawing.Point(217, 146);
             this.labelMepStyle.Name = "labelMepStyle";
-            this.labelMepStyle.Size = new System.Drawing.Size(323, 18);
+            this.labelMepStyle.Size = new System.Drawing.Size(325, 20);
             this.labelMepStyle.TabIndex = 2;
             this.labelMepStyle.Text = "Open Plumbers Time Sheet (Default MEP Style)";
             // 
@@ -93,9 +94,9 @@
             // buttonTestMepStyle
             // 
             this.buttonTestMepStyle.Enabled = false;
-            this.buttonTestMepStyle.Location = new System.Drawing.Point(558, 146);
+            this.buttonTestMepStyle.Location = new System.Drawing.Point(560, 146);
             this.buttonTestMepStyle.Name = "buttonTestMepStyle";
-            this.buttonTestMepStyle.Size = new System.Drawing.Size(143, 41);
+            this.buttonTestMepStyle.Size = new System.Drawing.Size(101, 41);
             this.buttonTestMepStyle.TabIndex = 5;
             this.buttonTestMepStyle.Text = "Test MEP Style Timesheet";
             this.buttonTestMepStyle.UseVisualStyleBackColor = true;

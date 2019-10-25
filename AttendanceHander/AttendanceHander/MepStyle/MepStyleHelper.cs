@@ -131,11 +131,12 @@ namespace AttendanceHander
                 {
                     insert_transfer_dates_into_datawrap(ref dateOvertime,
                         extractedDataWrap);
+                    return true;
                 }
 
 
             }
-            return true;
+            return false;
         }
 
         private List<DateOvertime> filter_overtime_for_these_dates(DateTime dateForFilter,
@@ -193,6 +194,11 @@ namespace AttendanceHander
                              //till last 30 or 31 days (depending on corresponding months)
                              //and we don't want the iteration after that
 
+            //also overtime date comes only after total overtime heading
+            //so before that we can skip
+
+            if (fullCell.Column < headings.totalOvertime.fullCell.Column)
+                return false;
 
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
 
@@ -221,19 +227,18 @@ namespace AttendanceHander
                     if (int.TryParse(heading.Value.headingName, out overtimeDay)
                            == true)
                     {
-                        mepStyleWrap.dateOvertimes[overtimeDay].overtime
+                        if (mepStyleWrap.dateOvertimes == null)
+                            mepStyleWrap.dateOvertimes = new List<DateOvertime>();
+                        DateOvertime newItem = new DateOvertime();
+
+                        newItem.overtime
                        = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
-                        mepStyleWrap.dateOvertimes[overtimeDay]
-                            .heading = heading.Value;
-                        mepStyleWrap.dateOvertimes[overtimeDay]
-                          .date_day = heading.Value.headingName;
-
-
+                        newItem.heading = heading.Value;
+                        newItem.date_day = heading.Value.headingName;
                         DateTime date = new DateTime(currMonthYear.Year,
-                            currMonthYear.Month, overtimeDay);
-
-                        mepStyleWrap.dateOvertimes[overtimeDay]
-                            .date = date;
+                        currMonthYear.Month, overtimeDay);
+                        newItem.date = date;
+                        mepStyleWrap.dateOvertimes.Add(newItem);
 
                     }
                     else
@@ -306,6 +311,8 @@ namespace AttendanceHander
                     if (heading.Equals(headings.serialNo))
                     {
                         //that is this particular cell is serial no data
+                        if (mepStyleWrap.serialNo == null)
+                            mepStyleWrap.serialNo = new StrItemWrap();
                         mepStyleWrap.serialNo.content = eXCEL_HELPER
                             .get_value_of_merge_cell(fullCell);
                         mepStyleWrap.serialNo.fullCell = fullCell;
@@ -315,6 +322,8 @@ namespace AttendanceHander
                     else if (heading.Equals(headings.code))
                     {
                         //that is employee no
+                        if (mepStyleWrap.code == null)
+                            mepStyleWrap.code = new StrItemWrap();
                         mepStyleWrap.code.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.code.fullCell = fullCell;
                         mepStyleWrap.code.heading = heading;
@@ -324,6 +333,8 @@ namespace AttendanceHander
                     else if (heading.Equals(headings.name))
                     {
                         //that is employee no
+                        if (mepStyleWrap.name == null)
+                            mepStyleWrap.name = new StrItemWrap();
                         mepStyleWrap.name.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.name.fullCell = fullCell;
                         mepStyleWrap.name.heading = heading;
@@ -333,6 +344,8 @@ namespace AttendanceHander
                     else if (heading.Equals(headings.designation))
                     {
                         //that is employee no
+                        if (mepStyleWrap.designation == null)
+                            mepStyleWrap.designation = new StrItemWrap();
                         mepStyleWrap.designation.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.designation.fullCell = fullCell;
                         mepStyleWrap.designation.heading = heading;
@@ -342,6 +355,8 @@ namespace AttendanceHander
                     else if (heading.Equals(headings.siteNO))
                     {
                         //that is employee no
+                        if (mepStyleWrap.siteNo == null)
+                            mepStyleWrap.siteNo = new StrItemWrap();
                         mepStyleWrap.siteNo.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.siteNo.fullCell = fullCell;
                         mepStyleWrap.siteNo.heading = heading;
@@ -351,6 +366,8 @@ namespace AttendanceHander
                     else if (heading.Equals(headings.totalOvertime))
                     {
                         //that is employee no
+                        if (mepStyleWrap.totalOvertime == null)
+                            mepStyleWrap.totalOvertime = new StrItemWrap();
                         mepStyleWrap.totalOvertime.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.totalOvertime.fullCell = fullCell;
                         mepStyleWrap.totalOvertime.heading = heading;
@@ -381,9 +398,11 @@ namespace AttendanceHander
             //if the serial no, employee no and name is empty means 
             //we have reached the end of the time sheet
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
+            int rowIndex = row.Row;
 
-            Excel.Range firstCell = worksheet.Cells[row, 1];
+            Excel.Range firstCell = worksheet.Cells[rowIndex, 1];
             Excel.Range firstFullCell = eXCEL_HELPER.return_full_merg_cell(firstCell);
+            Excel.Range nextCell = null;
 
             Excel.Range nextFullCell = firstFullCell;
             int totalNoUsedColumns = worksheet.UsedRange.Columns.Count;
@@ -396,12 +415,13 @@ namespace AttendanceHander
             //if 3 results was not true atleast once in a row means, the 
             //row in which now the iteration is being carried out is empty or
             //contains some other useless datas.
+            MepStyleWrap mepStyleWrap = new MepStyleWrap();
             do
             {
                 //first nextFullCell is firstFullCell
                 //so 
                 var currentFullCell = nextFullCell;
-                MepStyleWrap mepStyleWrap = new MepStyleWrap();
+
 
                 Boolean result1;
                 result1 = feed_non_overtime_datas_of_single_row(ref mepStyleWrap,
@@ -434,10 +454,13 @@ namespace AttendanceHander
 
                 if (result1 = true || result2 == true || result3 == true)
                     atleast_one_result_was_true_in_this_row = true;
-
-                var nextCell = firstFullCell.Next;
+                if (nextCell == null)
+                    nextCell = firstFullCell.Next;
+                else
+                    nextCell = nextCell.Next;
                 nextFullCell = eXCEL_HELPER.return_full_merg_cell(nextCell);
 
+                i++;
             } while (i <= totalNoUsedColumns);
 
 
@@ -450,6 +473,10 @@ namespace AttendanceHander
 
                 reached_empty_space_area = true;
                 return;
+            }
+            else
+            {
+                mepStyleWraps.Add(mepStyleWrap);
             }
 
             //foreach (Excel.Range cell in row.Columns)
