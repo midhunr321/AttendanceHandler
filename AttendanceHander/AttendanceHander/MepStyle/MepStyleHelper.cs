@@ -69,7 +69,10 @@ namespace AttendanceHander
 
             //now that we got all headings
             //we need to start with the rows
-            read_each_rows_of_data();
+            Boolean error_ocurred = false;
+            read_each_rows_of_data(out error_ocurred);
+            if (error_ocurred == true)
+                return false;
 
             return true;
         }
@@ -88,7 +91,7 @@ namespace AttendanceHander
 
             return false;
         }
-        private void feed_site_transfer_data_of_a_cell(ref List<DateOvertime> dateOvertime,
+        private Boolean feed_site_transfer_data_of_a_cell(ref List<DateOvertime> dateOvertime,
            Excel.Range fullCell, MepStyleHelper.Headings headings,
           out Boolean stopThisRowIteration)
         {
@@ -122,7 +125,7 @@ namespace AttendanceHander
                     //if no valid site tranfer code is found, we can break from
                     //iteration of the row.
                     stopThisRowIteration = true;
-                    return;
+                    return false;
                 }
                 else
                 {
@@ -130,7 +133,9 @@ namespace AttendanceHander
                         extractedDataWrap);
                 }
 
+
             }
+            return true;
         }
 
         private List<DateOvertime> filter_overtime_for_these_dates(DateTime dateForFilter,
@@ -178,14 +183,15 @@ namespace AttendanceHander
         }
 
         private Boolean feed_overtime_datas_of_a_cell(ref MepStyleWrap mepStyleWrap,
-           Excel.Range fullCell, MepStyleHelper.Headings headings)
+           Excel.Range fullCell, MepStyleHelper.Headings headings,
+           out Boolean error_occured)
         {
-
+            error_occured = false;
 
             if (fullCell.Column > headings.overtimeDays.Last().Value.fullCell.Column)
                 return false;//because we limit this iteration before 
-                            //till last 30 or 31 days (depending on corresponding months)
-                            //and we don't want the iteration after that
+                             //till last 30 or 31 days (depending on corresponding months)
+                             //and we don't want the iteration after that
 
 
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
@@ -221,7 +227,6 @@ namespace AttendanceHander
                             .heading = heading.Value;
                         mepStyleWrap.dateOvertimes[overtimeDay]
                           .date_day = heading.Value.headingName;
-                        int day;
 
 
                         DateTime date = new DateTime(currMonthYear.Year,
@@ -235,13 +240,14 @@ namespace AttendanceHander
                     {
                         MessageBox.Show("Couldn't convert heading name to index." +
                             "Heading name might not be a number");
+                        error_occured = true;
                         return false;
                     }
 
 
                 }
             }
-
+            error_occured = false;
             return true;
         }
 
@@ -259,8 +265,10 @@ namespace AttendanceHander
         }
         private Boolean feed_non_overtime_datas_of_single_row
             (ref MepStyleWrap mepStyleWrap,
-           Excel.Range fullCell, MepStyleHelper.Headings headings)
+           Excel.Range fullCell, MepStyleHelper.Headings headings,
+           out Boolean error_occured)
         {
+            error_occured = false;
             if (fullCell.Column > headings.totalOvertime.fullCell.Column)
                 return false;//because we limit this iteration before 
                              //overtime datas and we don't want the iteration to 
@@ -281,7 +289,17 @@ namespace AttendanceHander
                 {
                     if (check_if_this_cell_a_merged_cell(fullCell, heading)
                          == true)
+                    {
+                        //if data under non overtime headings such as serial no
+                        //name etc are having merged cells then
+                        //some error is there
+                        //we don't enterain merge cells here
+                        error_occured = true;
+                        MessageBox.Show("Merge cells were found under the heading " +
+                            heading.headingName);
                         return false;
+
+                    }
 
                     //same column number means the current cell is 
                     //the value for this heading
@@ -291,6 +309,7 @@ namespace AttendanceHander
                         mepStyleWrap.serialNo.content = eXCEL_HELPER
                             .get_value_of_merge_cell(fullCell);
                         mepStyleWrap.serialNo.fullCell = fullCell;
+                        mepStyleWrap.serialNo.heading = heading;
                         return true;
                     }
                     else if (heading.Equals(headings.code))
@@ -298,6 +317,8 @@ namespace AttendanceHander
                         //that is employee no
                         mepStyleWrap.code.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.code.fullCell = fullCell;
+                        mepStyleWrap.code.heading = heading;
+
                         return true;
                     }
                     else if (heading.Equals(headings.name))
@@ -305,6 +326,8 @@ namespace AttendanceHander
                         //that is employee no
                         mepStyleWrap.name.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.name.fullCell = fullCell;
+                        mepStyleWrap.name.heading = heading;
+
                         return true;
                     }
                     else if (heading.Equals(headings.designation))
@@ -312,6 +335,8 @@ namespace AttendanceHander
                         //that is employee no
                         mepStyleWrap.designation.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.designation.fullCell = fullCell;
+                        mepStyleWrap.designation.heading = heading;
+
                         return true;
                     }
                     else if (heading.Equals(headings.siteNO))
@@ -319,6 +344,8 @@ namespace AttendanceHander
                         //that is employee no
                         mepStyleWrap.siteNo.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.siteNo.fullCell = fullCell;
+                        mepStyleWrap.siteNo.heading = heading;
+
                         return true;
                     }
                     else if (heading.Equals(headings.totalOvertime))
@@ -326,6 +353,7 @@ namespace AttendanceHander
                         //that is employee no
                         mepStyleWrap.totalOvertime.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.totalOvertime.fullCell = fullCell;
+                        mepStyleWrap.totalOvertime.heading = heading;
 
                         //reaching the total over time
                         //as you know after total over time it is overtime datas
@@ -340,8 +368,13 @@ namespace AttendanceHander
             }
             return false;
         }
-        private Boolean read_row(Excel.Range row, ref List<MepStyleWrap> mepStyleWraps)
+        private void read_row(Excel.Range row,
+            ref List<MepStyleWrap> mepStyleWraps,
+           out Boolean error_occured,
+           out Boolean reached_empty_space_area)
         {
+            reached_empty_space_area = false;
+            error_occured = false;
             //one way to identify whether we are in empty space
             //that means whether we already passed 50 numbers of plumbers
             //is by detecting if serial no,employee no and name etc are empty
@@ -356,6 +389,13 @@ namespace AttendanceHander
             int totalNoUsedColumns = worksheet.UsedRange.Columns.Count;
 
             int i = 1;
+            Boolean atleast_one_result_was_true_in_this_row = false;
+            ///atleast_one_result_was_true_in_this_row is used
+            //to check if we have reached the empty space or blank area after 
+            //the iterating through all plumbers data
+            //if 3 results was not true atleast once in a row means, the 
+            //row in which now the iteration is being carried out is empty or
+            //contains some other useless datas.
             do
             {
                 //first nextFullCell is firstFullCell
@@ -364,28 +404,53 @@ namespace AttendanceHander
                 MepStyleWrap mepStyleWrap = new MepStyleWrap();
 
                 Boolean result1;
-                result1 = feed_non_overtime_datas_of_single_row(ref mepStyleWrap, 
+                result1 = feed_non_overtime_datas_of_single_row(ref mepStyleWrap,
                     currentFullCell,
-                          SiGlobalVars.Instance.mepStyleHeadings);
+                          SiGlobalVars.Instance.mepStyleHeadings,
+                         out error_occured);
+
+                if (error_occured == true)
+                    return;
 
                 Boolean result2;
-                feed_overtime_datas_of_a_cell(ref mepStyleWrap, currentFullCell,
-                       SiGlobalVars.Instance.mepStyleHeadings);
+
+                result2 = feed_overtime_datas_of_a_cell(ref mepStyleWrap, currentFullCell,
+                       SiGlobalVars.Instance.mepStyleHeadings,
+                       out error_occured);
+                if (error_occured == true)
+                    return;
 
                 //now get the site transfer start and end dates
                 Boolean stop_this_row_iteration = false;
-                feed_site_transfer_data_of_a_cell(ref mepStyleWrap.dateOvertimes,
-                    currentFullCell,
-                       SiGlobalVars.Instance.mepStyleHeadings,
-                      out stop_this_row_iteration);
+
+                Boolean result3;
+                result3 = feed_site_transfer_data_of_a_cell
+                      (ref mepStyleWrap.dateOvertimes, currentFullCell,
+                         SiGlobalVars.Instance.mepStyleHeadings,
+                        out stop_this_row_iteration);
 
                 if (stop_this_row_iteration == true)
                     break;
+
+                if (result1 = true || result2 == true || result3 == true)
+                    atleast_one_result_was_true_in_this_row = true;
 
                 var nextCell = firstFullCell.Next;
                 nextFullCell = eXCEL_HELPER.return_full_merg_cell(nextCell);
 
             } while (i <= totalNoUsedColumns);
+
+
+            if (atleast_one_result_was_true_in_this_row == false)
+            {
+                // if atleast_one_result_was_true_in_this_row is false means
+                //we have reached the empty space or unnecessary data areas.
+                //in this case we need to completely stop both iterations (ie. 
+                //iteration along row and iteration along column)
+
+                reached_empty_space_area = true;
+                return;
+            }
 
             //foreach (Excel.Range cell in row.Columns)
             //{
@@ -397,10 +462,10 @@ namespace AttendanceHander
             //        SiGlobalVars.Instance.mepStyleHeadings);
             //}
             //return true;
-            return true;
         }
-        private void read_each_rows_of_data()
+        private void read_each_rows_of_data(out Boolean error_occured)
         {
+            error_occured = false;
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
 
             //now we have to read the rows
@@ -428,9 +493,15 @@ namespace AttendanceHander
                 //after that it is just empty space
                 //so if read row is false that means we came accross the empty space
                 //thus this iteration can be stopped.
-                if (read_row(row, 
-                    ref SiGlobalVars.Instance.mepStyleWraps) == false)
+                Boolean reached_empty_space_area = false;
+                read_row(row,
+                    ref SiGlobalVars.Instance.mepStyleWraps,
+                    out error_occured, out reached_empty_space_area);
+                if (error_occured == true)
+                    return;
+                if (reached_empty_space_area == true)
                     break;
+
             }
 
         }
