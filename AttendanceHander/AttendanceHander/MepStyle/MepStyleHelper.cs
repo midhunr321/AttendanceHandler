@@ -87,9 +87,9 @@ namespace AttendanceHander
             //becasue the plumber would have gone for vacation
             //and hence the overtime cells would be merged together
             //labelled as "Vacation"k
+            
 
-
-            if (fullCell.MergeArea.Count > 1)
+            if (fullCell.MergeCells ==true)
                 return true;
 
             return false;

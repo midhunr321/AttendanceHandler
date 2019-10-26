@@ -193,9 +193,12 @@ namespace AttendanceHander
         }
         public ExtractedDataWrap analyze_string(String transferCode)
         {
-            
-                //first check if the string is in the code format
+
+            //first check if the string is in the code format
             //an example format is 10to10_M265;
+
+            //trim extra white space from string
+            transferCode = transferCode.Trim();
 
             //first find "to"
             StringHandler stringHandler = new StringHandler();

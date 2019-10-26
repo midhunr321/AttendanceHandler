@@ -76,11 +76,11 @@ namespace AttendanceHander
             if (fullCell == null)
                 return -1;
 
-            if (fullCell.MergeArea.Cells.Count > 1)
+            if (fullCell.MergeCells ==true)
             {
                 //ie contains Merge Cells
                 int last_column_no=0;
-                foreach(Excel.Range cell in fullCell.MergeCells)
+                foreach(Excel.Range cell in fullCell.Cells)
                 {
                     if (cell.Column > last_column_no)
                         last_column_no = cell.Column;
