@@ -30,7 +30,7 @@ namespace AttendanceHander
                 = ((KeyValuePair<string, Excel.Worksheet>)comboBoxSheets
                 .SelectedItem).Value;
 
-            SiGlobalVars.Instance.mepStyleCurrentMonthWorkSheet = currentMonthSheet;
+            SiGlobalVars.Instance.mepStyleCurrentWorkSheet = currentMonthSheet;
             this.Hide();
             this.DialogResult = DialogResult.OK;
             previousForm.Activate();

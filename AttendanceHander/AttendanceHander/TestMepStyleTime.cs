@@ -19,7 +19,7 @@ namespace AttendanceHander
 
         private Boolean highlight_heading_of_mep_style_worksheet()
         {
-            var worksheet = SiGlobalVars.Instance.mepStyleCurrentMonthWorkSheet;
+            var worksheet = SiGlobalVars.Instance.mepStyleCurrentWorkSheet;
             if (worksheet == null)
             {
                 MessageBox.Show("MEP Style Worksheet is not found in memory");

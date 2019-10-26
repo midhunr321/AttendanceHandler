@@ -57,7 +57,7 @@ namespace AttendanceHander
         {
            
             var workbook = SiGlobalVars.Instance.mepStyleWorkbook;
-            var worksheet = SiGlobalVars.Instance.mepStyleCurrentMonthWorkSheet;
+            var worksheet = SiGlobalVars.Instance.mepStyleCurrentWorkSheet;
             //TODO: later the headings should be loaded from the settings
             //code for the same should be implemented
             //now the name of the columns are hard coded
@@ -100,7 +100,7 @@ namespace AttendanceHander
 
         private void FormMain_Activated(object sender, EventArgs e)
         {
-            if (SiGlobalVars.Instance.mepStyleCurrentMonthWorkSheet != null)
+            if (SiGlobalVars.Instance.mepStyleCurrentWorkSheet != null)
                 buttonTestMepStyle.Enabled = true;
         }
     }

@@ -61,9 +61,12 @@ namespace AttendanceHander
             //are found, it means the opened excel file is Mep style 
             //plumbers time sheet
             understand_the_month_and_year_of_the_sheet();
+            Boolean error_found = false;
             if (find_overtime_dates_headings()
                  == false)
                 return false;
+
+           
             //now we got all the headings
             //connect heading and datas together
 
@@ -560,7 +563,28 @@ namespace AttendanceHander
 
         }
 
+        private Boolean overtime_dates_are_in_order_and_valid()
+        {
+            
+            int no_of_days = DateTime.DaysInMonth(SiGlobalVars.Instance.mepStyleTimesheetMonthYear.Year,
+                SiGlobalVars.Instance.mepStyleTimesheetMonthYear.Month);
+            int i = 1;
+            foreach(var item in SiGlobalVars.Instance.mepStyleHeadings.overtimeDays)
+            {
+                String expected = i.ToString();
+                if (item.Value.headingName != expected)
+                {
+                    MessageBox.Show("Expected Overtime Heading Date was = " +
+                        i.ToString() + " but the actual date heading = " + item.Value.headingName);
+                    return false;
+                }
+                  
 
+                i++;
+            }
+            return true;
+
+        }
 
         private Boolean find_overtime_dates_headings()
         {
@@ -584,6 +608,10 @@ namespace AttendanceHander
                     .Add(day, newDay);
             }
 
+            if (overtime_dates_are_in_order_and_valid()
+                   == false)
+                return false;
+            
             //to find the over time day cells
             //we need to find the cell range next or adjacent to total overtime
 
