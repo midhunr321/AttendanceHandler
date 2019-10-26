@@ -104,10 +104,10 @@ namespace AttendanceHander
             //the column of the current cell is after the day 31 or day 30  of this month
 
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
-            int lastColNo =
+            int thisCellLastColNo =
             eXCEL_HELPER.get_last_column_no_of_a_merge_cell(fullCell);
-
-            if (lastColNo > headings.overtimeDays.Last().Value.fullCell.Column)
+            int lastOvertimeDayColumn = headings.overtimeDays.Last().Value.fullCell.Column;
+            if (thisCellLastColNo > lastOvertimeDayColumn)
             {
                 //ie this full cell is after the overtime dates
                 //that means now on we need to check for site transfer no details
@@ -159,7 +159,7 @@ namespace AttendanceHander
             DateTime startDate = extractedDataWrap.transferStartDate;
             DateTime endDate = extractedDataWrap.transferEndDate;
 
-            for (var i = startDate; i <= endDate; i.AddDays(1))
+            for (var i = startDate; i <= endDate; i =  i.AddDays(1))
             {
 
                 //var filteredOvertime

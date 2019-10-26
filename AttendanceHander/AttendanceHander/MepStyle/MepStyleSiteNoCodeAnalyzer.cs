@@ -234,6 +234,7 @@ namespace AttendanceHander
 
             int sitenoStartIndex = underscore.EndIndex + 1;
             String siteno = transferCode.Substring(sitenoStartIndex);
+            siteno=  remove_if_any_extra_space_before_or_after(siteno);
             if (invalidate_siteNo(siteno)
                 == false)
                 return null;
@@ -250,7 +251,15 @@ namespace AttendanceHander
 
             return extractedDataWrap;
         }
+        private String remove_if_any_extra_space_before_or_after(String code)
+        {
+            //some times like example = "M273  "
+            // as you can see some extra space characters after the site number
+            // we need to trim this extra spaces 
+            String trimmedString = code.Trim();
 
+            return trimmedString;
+        }
         public Boolean invalidate_siteNo(String siteno)
         {
             StringHandler stringHandler = new StringHandler();
