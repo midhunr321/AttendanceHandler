@@ -103,5 +103,10 @@ namespace AttendanceHander
             if (SiGlobalVars.Instance.mepStyleCurrentWorkSheet != null)
                 buttonTestMepStyle.Enabled = true;
         }
+
+        private void GroupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }
