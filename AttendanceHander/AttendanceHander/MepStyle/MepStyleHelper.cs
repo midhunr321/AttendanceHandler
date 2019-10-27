@@ -66,7 +66,7 @@ namespace AttendanceHander
                  == false)
                 return false;
 
-           
+
             //now we got all the headings
             //connect heading and datas together
 
@@ -87,9 +87,9 @@ namespace AttendanceHander
             //becasue the plumber would have gone for vacation
             //and hence the overtime cells would be merged together
             //labelled as "Vacation"k
-            
 
-            if (fullCell.MergeCells ==true)
+
+            if (fullCell.MergeCells == true)
                 return true;
 
             return false;
@@ -159,7 +159,7 @@ namespace AttendanceHander
             DateTime startDate = extractedDataWrap.transferStartDate;
             DateTime endDate = extractedDataWrap.transferEndDate;
 
-            for (var i = startDate; i <= endDate; i =  i.AddDays(1))
+            for (var i = startDate; i <= endDate; i = i.AddDays(1))
             {
 
                 //var filteredOvertime
@@ -274,9 +274,10 @@ namespace AttendanceHander
         private Boolean feed_non_overtime_datas_of_single_row
             (ref MepStyleWrap mepStyleWrap,
            Excel.Range fullCell, MepStyleHelper.Headings headings,
-           out Boolean error_occured)
+           out Boolean error_occured, out Boolean reached_empty_space_or_invalid_data)
         {
             error_occured = false;
+            reached_empty_space_or_invalid_data = false;
             if (fullCell.Column > headings.totalOvertime.fullCell.Column)
                 return false;//because we limit this iteration before 
                              //overtime datas and we don't want the iteration to 
@@ -327,7 +328,19 @@ namespace AttendanceHander
                         //that is employee no
                         if (mepStyleWrap.code == null)
                             mepStyleWrap.code = new StrItemWrap();
-                        mepStyleWrap.code.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
+                        String extractedEmployeeNo = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
+                        if (employeeNo_is_valid(extractedEmployeeNo)
+                         == false)
+                        {
+                            MessageBox.Show("Employee No. is empty or invalid in the cell = "
+                                + fullCell.Address.ToString() +
+                                " Row No = " + fullCell.Row
+                                + " Thus Data Extraction is going to stop with this Row");
+
+                            reached_empty_space_or_invalid_data = true;
+                            return false;
+                        }
+                        mepStyleWrap.code.content = extractedEmployeeNo;
                         mepStyleWrap.code.fullCell = fullCell;
                         mepStyleWrap.code.heading = heading;
 
@@ -338,7 +351,20 @@ namespace AttendanceHander
                         //that is employee no
                         if (mepStyleWrap.name == null)
                             mepStyleWrap.name = new StrItemWrap();
-                        mepStyleWrap.name.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
+                        String extractedName = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
+
+                        if (name_is_valid(extractedName)
+                            == false)
+                        {
+                            MessageBox.Show("Name is empty or invalid in the cell = "
+                                + fullCell.Address.ToString() +
+                                " Row No = " + fullCell.Row
+                                + " Thus Data Extraction is going to stop with this Row");
+
+                            reached_empty_space_or_invalid_data = true;
+                            return false;
+                        }
+                        mepStyleWrap.name.content = extractedName;
                         mepStyleWrap.name.fullCell = fullCell;
                         mepStyleWrap.name.heading = heading;
 
@@ -388,6 +414,45 @@ namespace AttendanceHander
             }
             return false;
         }
+
+        private bool employeeNo_is_valid(string extractedEmployeeNo)
+        {
+            if (extractedEmployeeNo == null)
+                return false;
+            if (String.IsNullOrEmpty(extractedEmployeeNo))
+                return false;
+            if (String.IsNullOrWhiteSpace(extractedEmployeeNo))
+                return false;
+
+            String trimmedEmployeeno = extractedEmployeeNo.Trim();
+            if (trimmedEmployeeno.Length < 3)
+                return false;
+
+            return true;
+        }
+
+        private Boolean name_is_valid(String name)
+        {
+            if (name == null)
+                return false;
+            if (String.IsNullOrEmpty(name))
+                return false;
+            if (String.IsNullOrWhiteSpace(name))
+                return false;
+            String trimmedName = name.Trim();
+            //first remove the unwanted white space from the beginning and the ending
+            //using the trim 
+            //then check if the string is empty or not
+            StringHandler stringHandler = new StringHandler();
+            if (trimmedName.Length < 3)
+                return false;
+            if (stringHandler.is_this_string_alpha_numeric_or_numeric_or_alpha_only(trimmedName)
+                == All_const.str_type.Numeric)
+                return false;
+
+            return true;
+
+        }
         private void read_row(Excel.Range row,
             ref List<MepStyleWrap> mepStyleWraps,
            out Boolean error_occured,
@@ -411,13 +476,11 @@ namespace AttendanceHander
             int totalNoUsedColumns = worksheet.UsedRange.Columns.Count;
 
             int i = 1;
-            Boolean atleast_one_result_was_true_in_this_row = false;
             ///atleast_one_result_was_true_in_this_row is used
             //to check if we have reached the empty space or blank area after 
-            //the iterating through all plumbers data
-            //if 3 results was not true atleast once in a row means, the 
-            //row in which now the iteration is being carried out is empty or
-            //contains some other useless datas.
+            // if no name or employee no is found in this row
+            // then we can say we reached the empty space
+
             MepStyleWrap mepStyleWrap = new MepStyleWrap();
             do
             {
@@ -425,12 +488,15 @@ namespace AttendanceHander
                 //so 
                 var currentFullCell = nextFullCell;
 
-
                 Boolean result1;
                 result1 = feed_non_overtime_datas_of_single_row(ref mepStyleWrap,
                     currentFullCell,
                           SiGlobalVars.Instance.mepStyleHeadings,
-                         out error_occured);
+                         out error_occured, out reached_empty_space_area);
+
+                if (reached_empty_space_area == true)
+                    return;
+                
 
                 if (error_occured == true)
                     return;
@@ -455,8 +521,7 @@ namespace AttendanceHander
                 if (stop_this_row_iteration == true)
                     break;
 
-                if (result1 = true || result2 == true || result3 == true)
-                    atleast_one_result_was_true_in_this_row = true;
+
                 if (nextCell == null)
                     nextCell = firstFullCell.Next;
                 else
@@ -467,20 +532,12 @@ namespace AttendanceHander
             } while (i <= totalNoUsedColumns);
 
 
-            if (atleast_one_result_was_true_in_this_row == false)
-            {
-                // if atleast_one_result_was_true_in_this_row is false means
-                //we have reached the empty space or unnecessary data areas.
-                //in this case we need to completely stop both iterations (ie. 
-                //iteration along row and iteration along column)
+           
+                
 
-                reached_empty_space_area = true;
-                return;
-            }
-            else
-            {
+           
                 mepStyleWraps.Add(mepStyleWrap);
-            }
+            
 
             //foreach (Excel.Range cell in row.Columns)
             //{
@@ -493,6 +550,8 @@ namespace AttendanceHander
             //}
             //return true;
         }
+
+    
         private void read_each_rows_of_data(out Boolean error_occured)
         {
             error_occured = false;
@@ -565,11 +624,11 @@ namespace AttendanceHander
 
         private Boolean overtime_dates_are_in_order_and_valid()
         {
-            
+
             int no_of_days = DateTime.DaysInMonth(SiGlobalVars.Instance.mepStyleTimesheetMonthYear.Year,
                 SiGlobalVars.Instance.mepStyleTimesheetMonthYear.Month);
             int i = 1;
-            foreach(var item in SiGlobalVars.Instance.mepStyleHeadings.overtimeDays)
+            foreach (var item in SiGlobalVars.Instance.mepStyleHeadings.overtimeDays)
             {
                 String expected = i.ToString();
                 if (item.Value.headingName != expected)
@@ -578,7 +637,7 @@ namespace AttendanceHander
                         i.ToString() + " but the actual date heading = " + item.Value.headingName);
                     return false;
                 }
-                  
+
 
                 i++;
             }
@@ -611,7 +670,7 @@ namespace AttendanceHander
             if (overtime_dates_are_in_order_and_valid()
                    == false)
                 return false;
-            
+
             //to find the over time day cells
             //we need to find the cell range next or adjacent to total overtime
 
