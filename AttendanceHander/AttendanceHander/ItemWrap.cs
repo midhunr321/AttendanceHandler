@@ -13,7 +13,7 @@ namespace AttendanceHander
         public Excel.Range fullCell;
 
     }
-    public class DateItemWrap : ItemWrap
+    public class  DateItemWrap : ItemWrap
     {
         public Nullable<DateTime> content;
         public HeadingWrap heading;

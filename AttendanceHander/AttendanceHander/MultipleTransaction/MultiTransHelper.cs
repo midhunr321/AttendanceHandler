@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -214,7 +215,7 @@ namespace AttendanceHander.MultipleTransaction
                 var currentFullCell = nextFullCell;
 
                 Boolean result1;
-                result1 = feed_non_overtime_datas_of_single_row(ref multiTransWrap,
+                result1 = feed_datas_of_single_row(ref multiTransWrap,
                     currentFullCell,
                           SiGlobalVars.Instance.mepStyleHeadings,
                          out error_occured, out reached_empty_space_area);
@@ -226,34 +227,30 @@ namespace AttendanceHander.MultipleTransaction
                 if (error_occured == true)
                     return;
 
-                Boolean result2;
+                //Boolean result2;
 
-                result2 = feed_overtime_datas_of_a_cell(ref multiTransWrap, currentFullCell,
-                       SiGlobalVars.Instance.mepStyleHeadings,
-                       out error_occured);
-                if (error_occured == true)
-                    return;
+              
 
                 //now get the site transfer start and end dates
                 Boolean stop_this_row_iteration = false;
 
-                Boolean result3;
-                result3 = feed_site_transfer_data_of_a_cell
-                      (ref multiTransWrap.dateOvertimes, currentFullCell,
-                         SiGlobalVars.Instance.mepStyleHeadings,
-                        out stop_this_row_iteration);
+                //Boolean result3;
+                //result3 = feed_site_transfer_data_of_a_cell
+                //      (ref multiTransWrap.dateOvertimes, currentFullCell,
+                //         SiGlobalVars.Instance.mepStyleHeadings,
+                //        out stop_this_row_iteration);
 
-                if (stop_this_row_iteration == true)
-                    break;
+                //if (stop_this_row_iteration == true)
+                //    break;
 
 
-                if (nextCell == null)
-                    nextCell = firstFullCell.Next;
-                else
-                    nextCell = nextCell.Next;
-                nextFullCell = eXCEL_HELPER.return_full_merg_cell(nextCell);
+                //if (nextCell == null)
+                //    nextCell = firstFullCell.Next;
+                //else
+                //    nextCell = nextCell.Next;
+                //nextFullCell = eXCEL_HELPER.return_full_merg_cell(nextCell);
 
-                i++;
+                //i++;
             } while (i <= totalNoUsedColumns);
 
 
@@ -294,9 +291,7 @@ namespace AttendanceHander.MultipleTransaction
                     if (eXCEL_HELPER.is_this_a_merged_cell(fullCell)
                          == true)
                     {
-                        //if data under non overtime headings such as serial no
-                        //name etc are having merged cells then
-                        //some error is there
+                      
                         //we don't enterain merge cells here
                         error_occured = true;
                         MessageBox.Show("Merge cells were found under the heading " +
@@ -358,7 +353,6 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.lastName))
                     {
-                        //that is employee no
                         if (multiTransWrap.lastName == null)
                             multiTransWrap.lastName = new StrItemWrap();
 
@@ -371,7 +365,6 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.position))
                     {
-                        //that is employee no
                         if (multiTransWrap.position == null)
                             multiTransWrap.position = new StrItemWrap();
                         multiTransWrap.position.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
@@ -382,7 +375,6 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.department))
                     {
-                        //that is employee no
                         if (multiTransWrap.department == null)
                             multiTransWrap.department = new StrItemWrap();
                         multiTransWrap.department.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
@@ -393,7 +385,6 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.date))
                     {
-                        //that is employee no
                         if (multiTransWrap.date == null)
                             multiTransWrap.date = new DateItemWrap();
                         String extractedDate_in_string = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
@@ -403,7 +394,12 @@ namespace AttendanceHander.MultipleTransaction
                         == true)
                             multiTransWrap.date.content = extractedDAte;
                         else
-                            multiTransWrap.date.content = null;
+                        {
+                            MessageBox.Show("Found invalid date in cell = " +
+                               fullCell.Address);
+                            error_occured = true;
+                            return false;
+                        }
                         
                         multiTransWrap.date.fullCell = fullCell;
                         multiTransWrap.date.heading = heading;
@@ -417,27 +413,70 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.checkInTime1))
                     {
-                        //that is employee no
-                        if (multiTransWrap.date == null)
-                            multiTransWrap.date = new DateItemWrap();
-                        String extractedDate_in_string = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
-                        DateTime extractedDAte;
-                        if (DateTime.TryParse(extractedDate_in_string, out extractedDAte)
-                        == false)
-                        {
-                            error_occured = true;
-                            MessageBox.Show("Invalid Date. Cell Address = "
-                                + fullCell.Address);
-                            return false;
-                        }
 
-                        multiTransWrap.date.content = extractedDAte;
-                        multiTransWrap.date.fullCell = fullCell;
-                        multiTransWrap.date.heading = heading;
+                        feed_checkIn_or_checkOut_time_to_dataWrap(ref multiTransWrap.checkInTime1,
+                            eXCEL_HELPER, fullCell, heading);
 
-                        //reaching the total over time
-                        //as you know after total over time it is overtime datas
-                        //so we need to break from this iteration now
+
+                        return true;
+
+                    }
+                    else if (heading.Equals(headings.checkOutTime1))
+                    {
+                        feed_checkIn_or_checkOut_time_to_dataWrap(ref multiTransWrap.checkOutTime1,
+                            eXCEL_HELPER, fullCell, heading);
+
+
+
+                        return true;
+
+                    }
+                    else if (heading.Equals(headings.workingTime1))
+                    {
+                        feed_checkIn_or_checkOut_time_to_dataWrap(ref multiTransWrap.workingTime1,
+                            eXCEL_HELPER, fullCell, heading);
+
+
+
+                        return true;
+
+                    }
+                    else if (heading.Equals(headings.checkInTime2))
+                    {
+                        feed_checkIn_or_checkOut_time_to_dataWrap(ref multiTransWrap.checkInTime2,
+                            eXCEL_HELPER, fullCell, heading);
+
+
+
+                        return true;
+
+                    }
+                    else if (heading.Equals(headings.checkOutTime2))
+                    {
+                        feed_checkIn_or_checkOut_time_to_dataWrap(ref multiTransWrap.checkOutTime2,
+                            eXCEL_HELPER, fullCell, heading);
+
+
+
+                        return true;
+
+                    }
+                    else if (heading.Equals(headings.workingTime2))
+                    {
+                        feed_checkIn_or_checkOut_time_to_dataWrap(ref multiTransWrap.workingTime2,
+                            eXCEL_HELPER, fullCell, heading);
+
+
+
+                        return true;
+
+                    }
+                    else if (heading.Equals(headings.totalTimeWorked))
+                    {
+                        feed_checkIn_or_checkOut_time_to_dataWrap(ref multiTransWrap.totalTimeWorked,
+                            eXCEL_HELPER, fullCell, heading);
+
+
 
                         return true;
 
@@ -449,5 +488,32 @@ namespace AttendanceHander.MultipleTransaction
             return false;
         }
 
+        private void feed_checkIn_or_checkOut_time_to_dataWrap(ref DateItemWrap checkIn_or_checkOut,
+            EXCEL_HELPER eXCEL_HELPER, Excel.Range fullCell, 
+            HeadingWrap heading)
+        {
+            //that is employee no
+            if (checkIn_or_checkOut == null)
+                checkIn_or_checkOut = new DateItemWrap();
+            String extractedDate_in_string
+                = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
+            DateTime result;
+
+            if (DateTime.TryParseExact(extractedDate_in_string,
+                "HH:mm", CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.AdjustToUniversal,
+                out result)
+            == true)
+                checkIn_or_checkOut.content = result;
+            else
+                checkIn_or_checkOut.content = null;
+
+            checkIn_or_checkOut.fullCell = fullCell;
+            checkIn_or_checkOut.heading = heading;
+
+            //reaching the total over time
+            //as you know after total over time it is overtime datas
+            //so we need to break from this iteration now
+        }
     }
 }

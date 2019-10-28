@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace AttendanceHander.Tests
 {
@@ -12,9 +13,22 @@ namespace AttendanceHander.Tests
     public class MepStyleSiteNoCodeAnalyzerTests
     {
         [TestMethod()]
-        public void MepStyleSiteNoCodeAnalyzerTest()
+        public void DatetimeParse()
         {
 
+            String assumed_string
+                         = "12:12";
+            DateTime extractedDAte;
+            if (DateTime.TryParseExact(assumed_string,
+                "HH:mm", CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.AdjustToUniversal,
+                out extractedDAte)
+            == false)
+                Assert.Fail();
+        }
+        [TestMethod()]
+        public void MepStyleSiteNoCodeAnalyzerTest()
+        {
             Assert.Fail();
         }
 
