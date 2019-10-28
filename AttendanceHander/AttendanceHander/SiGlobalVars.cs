@@ -37,6 +37,15 @@ namespace AttendanceHander
         public MepStyleHelper.Headings mepStyleHeadings;
         public DateTime mepStyleTimesheetMonthYear;
 
+    
+        public Excel.Workbook multiTransWorkbook;
+        public Excel.Worksheet multiTransCurrentWorkSheet;
+        public List<MultiTransWrap> multiTransWraps;
+        public MultipleTransaction.MultiTransHelper.MultiHeadings multiTransHeadings;
+        public DateTime multiTransTimesheetMonthYear;
+    
+      
+
     }
 
 

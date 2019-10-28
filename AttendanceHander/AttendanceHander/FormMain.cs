@@ -52,6 +52,22 @@ namespace AttendanceHander
 
 
         }
+        private void initiate_understanding_MultipleTransaction_timesheet()
+        {
+
+            var workbook = SiGlobalVars.Instance.multiTransWorkbook;
+            var worksheet = SiGlobalVars.Instance.multiTransCurrentWorkSheet;
+            //TODO: later the headings should be loaded from the settings
+            //code for the same should be implemented
+            //now the name of the columns are hard coded
+            //but later a settings shall be introduced to change the
+            //heading names dynamically
+
+            MultipleTransaction.MultiTransHelper multiTransHelper
+                = new MultipleTransaction.MultiTransHelper(worksheet, workbook);
+
+            multiTransHelper.MAIN_understand_the_excel_sheet();
+        }
 
         private void initiate_understanding_MEP_style_timesheet()
         {
@@ -107,6 +123,24 @@ namespace AttendanceHander
         private void GroupBox1_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonOpenMultiTrans_Click(object sender, EventArgs e)
+        {
+            Excel.Workbook workbook = openFile(true);
+            if (workbook == null)
+                return;
+
+            SiGlobalVars.Instance.multiTransWorkbook = workbook;
+            FormSheetSelector form = new FormSheetSelector(workbook,
+               (FormMain)this);
+            form.ShowDialog();
+
+            if (form.DialogResult == DialogResult.OK)
+            {
+                initiate_understanding_MultipleTransaction_timesheet();
+                this.Activate();
+            }
         }
     }
 }

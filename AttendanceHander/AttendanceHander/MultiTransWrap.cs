@@ -8,7 +8,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace AttendanceHander
 {
-    class MultiTransWrap
+    public class MultiTransWrap
     {
         LongItemWrap personalNo;
         StrItemWrap firstName;

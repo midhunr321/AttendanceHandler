@@ -259,18 +259,7 @@ namespace AttendanceHander
             return true;
         }
 
-        private Boolean check_if_this_cell_a_merged_cell(Excel.Range fullCell,
-            HeadingWrap headingWrap)
-        {
-            if (fullCell.MergeArea.Count > 1)
-            {
-                //that is merged cells presence
-                MessageBox.Show(fullCell.Address.ToString() + " is a merged cell" +
-                    " which is not allowed");
-                return true;
-            }
-            return false;
-        }
+       
         private Boolean feed_non_overtime_datas_of_single_row
             (ref MepStyleWrap mepStyleWrap,
            Excel.Range fullCell, MepStyleHelper.Headings headings,
@@ -296,7 +285,7 @@ namespace AttendanceHander
 
                 if (fullCell.Column == heading.fullCell.Column)
                 {
-                    if (check_if_this_cell_a_merged_cell(fullCell, heading)
+                    if (eXCEL_HELPER.is_this_a_merged_cell(fullCell)
                          == true)
                     {
                         //if data under non overtime headings such as serial no
@@ -305,7 +294,8 @@ namespace AttendanceHander
                         //we don't enterain merge cells here
                         error_occured = true;
                         MessageBox.Show("Merge cells were found under the heading " +
-                            heading.headingName);
+                            heading.headingName +". Merged Cell Address = " 
+                            + fullCell.Address.ToString());
                         return false;
 
                     }
@@ -329,7 +319,7 @@ namespace AttendanceHander
                         if (mepStyleWrap.code == null)
                             mepStyleWrap.code = new StrItemWrap();
                         String extractedEmployeeNo = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
-                        if (employeeNo_is_valid(extractedEmployeeNo)
+                        if (TimeSheetOperations.employeeNo_is_valid(extractedEmployeeNo)
                          == false)
                         {
                             MessageBox.Show("Employee No. is empty or invalid in the cell = "
@@ -353,7 +343,7 @@ namespace AttendanceHander
                             mepStyleWrap.name = new StrItemWrap();
                         String extractedName = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
 
-                        if (name_is_valid(extractedName)
+                        if (TimeSheetOperations.name_is_valid(extractedName)
                             == false)
                         {
                             MessageBox.Show("Name is empty or invalid in the cell = "
@@ -431,28 +421,6 @@ namespace AttendanceHander
             return true;
         }
 
-        private Boolean name_is_valid(String name)
-        {
-            if (name == null)
-                return false;
-            if (String.IsNullOrEmpty(name))
-                return false;
-            if (String.IsNullOrWhiteSpace(name))
-                return false;
-            String trimmedName = name.Trim();
-            //first remove the unwanted white space from the beginning and the ending
-            //using the trim 
-            //then check if the string is empty or not
-            StringHandler stringHandler = new StringHandler();
-            if (trimmedName.Length < 3)
-                return false;
-            if (stringHandler.is_this_string_alpha_numeric_or_numeric_or_alpha_only(trimmedName)
-                == All_const.str_type.Numeric)
-                return false;
-
-            return true;
-
-        }
         private void read_row(Excel.Range row,
             ref List<MepStyleWrap> mepStyleWraps,
            out Boolean error_occured,

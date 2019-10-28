@@ -92,6 +92,14 @@ namespace AttendanceHander
                 return (fullCell.Column);
             }
         }
+
+        public Boolean is_this_a_merged_cell(Excel.Range fullCell)
+        {
+            if (fullCell.MergeArea.Count > 1)
+                return true;
+            
+            return false;
+        }
         private Dictionary<Excel.Range, String> get_cell_with_address(List<Excel.Range> list_of_cell)
         {
             string complete_address;

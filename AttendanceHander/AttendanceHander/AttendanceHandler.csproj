@@ -171,6 +171,8 @@
     <Compile Include="MepStyle\MepStyleSiteNoCodeAnalyzer.cs" />
     <Compile Include="MepStyle\MepStyleHelper.cs" />
     <Compile Include="MepStyle\MepStyleWrap.cs" />
+    <Compile Include="MultipleTransaction\MultiTransHelper.cs" />
+    <Compile Include="MultipleTransaction\MultiTransWrap.cs" />
     <Compile Include="SearchHelper.cs" />
     <Compile Include="SiGlobalVars.cs" />
     <Compile Include="TestMepStyleTime.cs">
@@ -188,11 +190,11 @@
     <Compile Include="InputOutHandler.cs" />
     <Compile Include="ItemWrap.cs" />
     <Compile Include="List_helper_for_excel.cs" />
-    <Compile Include="MultipleTransHelper.cs" />
     <Compile Include="MultiTransWrap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TimeSheetOperations.cs" />
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>

@@ -32,16 +32,16 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.label2 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBoxMepStyle = new System.Windows.Forms.GroupBox();
             this.buttonTestMepStyle = new System.Windows.Forms.Button();
             this.labelMepStyle = new System.Windows.Forms.Label();
             this.buttonOpenMepTimesheet = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.groupBoxMultiTrans = new System.Windows.Forms.GroupBox();
+            this.buttonTestMultiTrans = new System.Windows.Forms.Button();
+            this.labelMultiTrans = new System.Windows.Forms.Label();
+            this.buttonOpenMultiTrans = new System.Windows.Forms.Button();
+            this.groupBoxMepStyle.SuspendLayout();
+            this.groupBoxMultiTrans.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -77,18 +77,18 @@
             this.button3.Text = "Open";
             this.button3.UseVisualStyleBackColor = true;
             // 
-            // groupBox1
+            // groupBoxMepStyle
             // 
-            this.groupBox1.Controls.Add(this.buttonTestMepStyle);
-            this.groupBox1.Controls.Add(this.labelMepStyle);
-            this.groupBox1.Controls.Add(this.buttonOpenMepTimesheet);
-            this.groupBox1.Location = new System.Drawing.Point(12, 121);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(722, 124);
-            this.groupBox1.TabIndex = 7;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "MEP STYLE TIME SHEET";
-            this.groupBox1.Enter += new System.EventHandler(this.GroupBox1_Enter);
+            this.groupBoxMepStyle.Controls.Add(this.buttonTestMepStyle);
+            this.groupBoxMepStyle.Controls.Add(this.labelMepStyle);
+            this.groupBoxMepStyle.Controls.Add(this.buttonOpenMepTimesheet);
+            this.groupBoxMepStyle.Location = new System.Drawing.Point(12, 121);
+            this.groupBoxMepStyle.Name = "groupBoxMepStyle";
+            this.groupBoxMepStyle.Size = new System.Drawing.Size(722, 124);
+            this.groupBoxMepStyle.TabIndex = 7;
+            this.groupBoxMepStyle.TabStop = false;
+            this.groupBoxMepStyle.Text = "MEP STYLE TIME SHEET";
+            this.groupBoxMepStyle.Enter += new System.EventHandler(this.GroupBox1_Enter);
             // 
             // buttonTestMepStyle
             // 
@@ -120,47 +120,48 @@
             this.buttonOpenMepTimesheet.Text = "Open and Process";
             this.buttonOpenMepTimesheet.UseVisualStyleBackColor = true;
             // 
-            // groupBox2
+            // groupBoxMultiTrans
             // 
-            this.groupBox2.Controls.Add(this.button2);
-            this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Controls.Add(this.button4);
-            this.groupBox2.Location = new System.Drawing.Point(12, 251);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(722, 124);
-            this.groupBox2.TabIndex = 8;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "MULTIPLE TRANSACTION";
+            this.groupBoxMultiTrans.Controls.Add(this.buttonTestMultiTrans);
+            this.groupBoxMultiTrans.Controls.Add(this.labelMultiTrans);
+            this.groupBoxMultiTrans.Controls.Add(this.buttonOpenMultiTrans);
+            this.groupBoxMultiTrans.Location = new System.Drawing.Point(12, 251);
+            this.groupBoxMultiTrans.Name = "groupBoxMultiTrans";
+            this.groupBoxMultiTrans.Size = new System.Drawing.Size(722, 124);
+            this.groupBoxMultiTrans.TabIndex = 8;
+            this.groupBoxMultiTrans.TabStop = false;
+            this.groupBoxMultiTrans.Text = "MULTIPLE TRANSACTION";
             // 
-            // button2
+            // buttonTestMultiTrans
             // 
-            this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(615, 55);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(101, 41);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "Test MEP Style Timesheet";
-            this.button2.UseVisualStyleBackColor = true;
+            this.buttonTestMultiTrans.Enabled = false;
+            this.buttonTestMultiTrans.Location = new System.Drawing.Point(615, 55);
+            this.buttonTestMultiTrans.Name = "buttonTestMultiTrans";
+            this.buttonTestMultiTrans.Size = new System.Drawing.Size(101, 41);
+            this.buttonTestMultiTrans.TabIndex = 9;
+            this.buttonTestMultiTrans.Text = "Test MEP Style Timesheet";
+            this.buttonTestMultiTrans.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // labelMultiTrans
             // 
-            this.label1.AutoSize = true;
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(246, 65);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(325, 20);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Open Plumbers Time Sheet (Default MEP Style)";
+            this.labelMultiTrans.AutoSize = true;
+            this.labelMultiTrans.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.labelMultiTrans.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelMultiTrans.Location = new System.Drawing.Point(246, 65);
+            this.labelMultiTrans.Name = "labelMultiTrans";
+            this.labelMultiTrans.Size = new System.Drawing.Size(325, 20);
+            this.labelMultiTrans.TabIndex = 8;
+            this.labelMultiTrans.Text = "Open Plumbers Time Sheet (Default MEP Style)";
             // 
-            // button4
+            // buttonOpenMultiTrans
             // 
-            this.button4.Location = new System.Drawing.Point(27, 55);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(143, 41);
-            this.button4.TabIndex = 7;
-            this.button4.Text = "Open and Process";
-            this.button4.UseVisualStyleBackColor = true;
+            this.buttonOpenMultiTrans.Location = new System.Drawing.Point(27, 55);
+            this.buttonOpenMultiTrans.Name = "buttonOpenMultiTrans";
+            this.buttonOpenMultiTrans.Size = new System.Drawing.Size(143, 41);
+            this.buttonOpenMultiTrans.TabIndex = 7;
+            this.buttonOpenMultiTrans.Text = "Open and Process";
+            this.buttonOpenMultiTrans.UseVisualStyleBackColor = true;
+            this.buttonOpenMultiTrans.Click += new System.EventHandler(this.buttonOpenMultiTrans_Click);
             // 
             // FormMain
             // 
@@ -168,8 +169,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(800, 514);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBoxMultiTrans);
+            this.Controls.Add(this.groupBoxMepStyle);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button1);
@@ -178,10 +179,10 @@
             this.Text = "Attendance Handler";
             this.Activated += new System.EventHandler(this.FormMain_Activated);
             this.Load += new System.EventHandler(this.FormMain_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.groupBoxMepStyle.ResumeLayout(false);
+            this.groupBoxMepStyle.PerformLayout();
+            this.groupBoxMultiTrans.ResumeLayout(false);
+            this.groupBoxMultiTrans.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -193,13 +194,13 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBoxMepStyle;
         private System.Windows.Forms.Button buttonTestMepStyle;
         private System.Windows.Forms.Label labelMepStyle;
         private System.Windows.Forms.Button buttonOpenMepTimesheet;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.GroupBox groupBoxMultiTrans;
+        private System.Windows.Forms.Button buttonTestMultiTrans;
+        private System.Windows.Forms.Label labelMultiTrans;
+        private System.Windows.Forms.Button buttonOpenMultiTrans;
     }
 }

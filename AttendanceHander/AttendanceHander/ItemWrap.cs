@@ -15,7 +15,7 @@ namespace AttendanceHander
     }
     public class DateItemWrap : ItemWrap
     {
-        public DateTime content;
+        public Nullable<DateTime> content;
         public HeadingWrap heading;
         
         
