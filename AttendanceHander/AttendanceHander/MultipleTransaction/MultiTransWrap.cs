@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AttendanceHander.MultipleTransaction
 {
-    class MultiTransWrap
+   public class MultiTransWrap
     {
         public StrItemWrap personnelNo; //Personnel No.
         public StrItemWrap firstName; //First Name - both are same

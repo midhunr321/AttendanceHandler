@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
+using AttendanceHander.MultipleTransaction;
 
 
 namespace AttendanceHander.MultipleTransaction
@@ -66,7 +67,7 @@ namespace AttendanceHander.MultipleTransaction
             if (SiGlobalVars.Instance.multiTransHeadings == null)
             {
                 SiGlobalVars.Instance.multiTransHeadings
-                    = new MultipleTransaction.MultiTransHelper.MultiHeadings();
+                    = new MultiTransHelper.MultiHeadings();
             }
 
 
@@ -82,13 +83,13 @@ namespace AttendanceHander.MultipleTransaction
             //now that we got all headings
             //we need to start with the rows
 
-            read_each_rows_of_data(out error_ocurred);
-            if (error_ocurred == true)
+            read_each_rows_of_data(out error_found);
+            if (error_found == true)
                 return false;
 
             return true;
         }
-        private Boolean find_headings(ref MultipleTransaction.MultiTransHelper
+        private Boolean find_headings(ref MultiTransHelper
             .MultiHeadings headingWraps,
             out Boolean error_found)
         {
@@ -97,13 +98,13 @@ namespace AttendanceHander.MultipleTransaction
             foreach (HeadingWrap heading in headingWraps)
             {
 
-                List<Excel.Range> temp_heading = new List<Excel.Range>();
-                temp_heading =
+                List<Excel.Range> search_results = new List<Excel.Range>();
+                search_results =
                     eXCEL_HELPER.find_fix_column_heading(heading.headingName,
                     Excel.XlSearchDirection.xlNext,
                     Excel.XlSearchOrder.xlByRows, false);
 
-                if (temp_heading == null)
+                if (search_results == null)
                 {
                     MessageBox.Show("Couldn't find the heading = "
                         + heading.headingName);
@@ -113,10 +114,16 @@ namespace AttendanceHander.MultipleTransaction
                 //TODO: Should carryout the search from the top
 
                 // if the search count is not more than 1 then,
-                if (temp_heading != null && temp_heading.Count == 1)
+                if (search_results != null && search_results.Count == 1)
                 {
+
+                    check_if_special_case(search_results, heading,
+                        out error_found);
+                    if (error_found == true)
+                        return false;
+
                     Excel.Range fullcell = eXCEL_HELPER
-                        .return_full_merg_cell(temp_heading[0]);
+                        .return_full_merg_cell(search_results[0]);
                     heading.fullCell = fullcell;
                 }
                 else
@@ -125,7 +132,25 @@ namespace AttendanceHander.MultipleTransaction
                     //we need to filter it out
                     //like check if the full cell is within the same heading row
                     //that way we can filter out other results.
+                    if (check_if_special_case(search_results, heading,
+                        out error_found)
+                       == true)
+                    {
+                        //if more than 1 search results means it should be special case
+                        Excel.Range filteredSearchResult =
+                              filterout_multiple_search_results_for_special_case
+                              (search_results,heading);
 
+                    }
+                    else
+                    {
+                        //if it is not special case
+                        //and if two search results for heading means something is wrong
+                        MessageBox.Show("Multiple search results were found for: Cell = " +
+                            search_results[0].Address.ToString() + "Content = ");
+                        error_found = true;
+                        return false;
+                    }
                 }
 
             }
@@ -133,6 +158,98 @@ namespace AttendanceHander.MultipleTransaction
 
 
             return true;
+        }
+
+        private Excel.Range filterout_multiple_search_results_for_special_case
+            (List<Excel.Range> searchResults, HeadingWrap heading)
+        {
+            var multiTransHeading = SiGlobalVars.Instance.multiTransHeadings;
+            EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
+
+            Excel.Range filtered_result=null;
+            if (heading.Equals(multiTransHeading.checkInTime1))
+            {
+                filtered_result =
+                    eXCEL_HELPER.get_lowest_column_cell_from_search_result(searchResults);
+            }
+            else if (heading.Equals(multiTransHeading.checkInTime2))
+            {
+                filtered_result =
+                     eXCEL_HELPER.get_largest_column_cell_from_search_result(searchResults);
+            }
+            if (heading.Equals(multiTransHeading.checkOutTime1))
+            {
+                filtered_result =
+                    eXCEL_HELPER.get_lowest_column_cell_from_search_result(searchResults);
+            }
+            if (heading.Equals(multiTransHeading.checkOutTime2))
+            {
+                filtered_result =
+                    eXCEL_HELPER.get_largest_column_cell_from_search_result(searchResults);
+            }
+            if (heading.Equals(multiTransHeading.workingTime1))
+            {
+                filtered_result =
+                    eXCEL_HELPER.get_lowest_column_cell_from_search_result(searchResults);
+            }
+            if (heading.Equals(multiTransHeading.workingTime2))
+            {
+                filtered_result =
+                    eXCEL_HELPER.get_largest_column_cell_from_search_result(searchResults);
+            }
+            return filtered_result;
+        }
+
+        private Boolean check_if_special_case(List<Excel.Range> search_results,
+            HeadingWrap heading, out Boolean error_found)
+        {
+            //special case means
+            //there is two check in , check out & work time
+            //we need to check which is what
+            //for example checkin_time1 should be before checkin_time2 
+            //so does chectout_time1 ...and like that
+
+            //so what we need to check is that
+            // since checkin, checkout etc are there 2 times
+            //always when we search we need to get two search results
+            //if we don't get two search results
+            //it mean something is wrong
+            error_found = false;
+
+            var multiTransHeading = SiGlobalVars.Instance.multiTransHeadings;
+
+            if (heading.Equals(multiTransHeading.checkInTime1) ||
+               heading.Equals(multiTransHeading.checkOutTime1) ||
+               heading.Equals(multiTransHeading.workingTime1) ||
+               heading.Equals(multiTransHeading.checkInTime2) ||
+               heading.Equals(multiTransHeading.checkOutTime2) ||
+               heading.Equals(multiTransHeading.workingTime2)
+                )
+            {
+                //means special case;
+                //that means there should be two search results
+                if (search_results.Count < 2)
+                    error_found = true;
+
+                //if only one search result then it means error is there
+            }
+            else
+            {
+                //means it is not special case
+                //so return false to indicate that it is not special case
+                return false;
+            }
+
+
+            if (error_found == true)
+            {
+                MessageBox.Show("There should be more than 1 search result for this heading but" +
+                    " only 1 search result was found. Detail: Cell Adress = " +
+                    search_results[0].Address.ToString());
+                return true;
+            }
+
+            return false;
         }
 
         private void read_each_rows_of_data(out Boolean error_occured)
@@ -272,7 +389,7 @@ namespace AttendanceHander.MultipleTransaction
                     if (eXCEL_HELPER.is_this_a_merged_cell(fullCell)
                          == true)
                     {
-                      
+
                         //we don't enterain merge cells here
                         error_occured = true;
                         MessageBox.Show("Merge cells were found under the heading " +
@@ -381,7 +498,7 @@ namespace AttendanceHander.MultipleTransaction
                             error_occured = true;
                             return false;
                         }
-                        
+
                         multiTransWrap.date.fullCell = fullCell;
                         multiTransWrap.date.heading = heading;
 
@@ -470,7 +587,7 @@ namespace AttendanceHander.MultipleTransaction
         }
 
         private void feed_time_data_to_dataWrap(ref DateItemWrap time_data,
-            EXCEL_HELPER eXCEL_HELPER, Excel.Range fullCell, 
+            EXCEL_HELPER eXCEL_HELPER, Excel.Range fullCell,
             HeadingWrap heading)
         {
             //that is employee no
@@ -491,7 +608,7 @@ namespace AttendanceHander.MultipleTransaction
 
             time_data.fullCell = fullCell;
             time_data.heading = heading;
-            
+
         }
     }
 }

@@ -698,8 +698,10 @@ namespace AttendanceHander
 
         }
 
-        private Boolean find_headings_except_overtimeDates(ref MepStyleHelper.Headings headings)
+        private Boolean find_headings_except_overtimeDates(ref MepStyleHelper.Headings headings,
+            out Boolean error_found)
         {
+            error_found = false;
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
             foreach (HeadingWrap heading in headings)
             {
@@ -730,7 +732,14 @@ namespace AttendanceHander
                     //we need to filter it out
                     //like check if the full cell is within the same heading row
                     //that way we can filter out other results.
-
+                    if (temp_heading.Count > 1)
+                    {
+                        MessageBox.Show("Multiple search results for the heading were found." +
+                    " Cell address = " + temp_heading[0].Address.ToString());
+                        error_found = true;
+                        return false;
+                    }
+                
                 }
 
             }

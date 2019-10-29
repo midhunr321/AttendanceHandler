@@ -26,6 +26,37 @@ namespace AttendanceHander
             //CONSTRUCTOR
 
         }
+        public Excel.Range get_lowest_column_cell_from_search_result(List<Excel.Range> searchResults)
+        {
+            if (searchResults == null)
+                return null;
+            Excel.Range lowest_column_result = null;
+            foreach (Excel.Range result in searchResults)
+            {
+                if (lowest_column_result == null)
+                    lowest_column_result = result;
+
+                if (result.Column < lowest_column_result.Column)
+                    lowest_column_result = result;
+            }
+            return lowest_column_result;
+        }
+        public Excel.Range get_largest_column_cell_from_search_result(List<Excel.Range> searchResults)
+        {
+            if (searchResults == null)
+                return null;
+
+            Excel.Range largest_column_result = null;
+            foreach (Excel.Range result in searchResults)
+            {
+                if (largest_column_result == null)
+                    largest_column_result = result;
+
+                if (result.Column > largest_column_result.Column)
+                    largest_column_result = result;
+            }
+            return largest_column_result;
+        }
         public void turnOff_filters(Excel.Worksheet worksheet)
         {
             if (worksheet.AutoFilter != null && worksheet.AutoFilterMode == true)
