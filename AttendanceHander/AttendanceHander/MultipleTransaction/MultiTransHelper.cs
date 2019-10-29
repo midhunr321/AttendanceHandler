@@ -202,7 +202,6 @@ namespace AttendanceHander.MultipleTransaction
             int totalNoUsedColumns = worksheet.UsedRange.Columns.Count;
 
             int i = 1;
-            ///atleast_one_result_was_true_in_this_row is used
             //to check if we have reached the empty space or blank area after 
             // if no name or employee no is found in this row
             // then we can say we reached the empty space
@@ -217,7 +216,7 @@ namespace AttendanceHander.MultipleTransaction
                 Boolean result1;
                 result1 = feed_datas_of_single_row(ref multiTransWrap,
                     currentFullCell,
-                          SiGlobalVars.Instance.mepStyleHeadings,
+                          SiGlobalVars.Instance.multiTransHeadings,
                          out error_occured, out reached_empty_space_area);
 
                 if (reached_empty_space_area == true)
@@ -227,35 +226,17 @@ namespace AttendanceHander.MultipleTransaction
                 if (error_occured == true)
                     return;
 
-                //Boolean result2;
 
-              
+                //iteration codes===============
+                if (nextCell == null)
+                    nextCell = firstFullCell.Next;
+                else
+                    nextCell = nextCell.Next;
 
-                //now get the site transfer start and end dates
-                Boolean stop_this_row_iteration = false;
+                nextFullCell = eXCEL_HELPER.return_full_merg_cell(nextCell);
 
-                //Boolean result3;
-                //result3 = feed_site_transfer_data_of_a_cell
-                //      (ref multiTransWrap.dateOvertimes, currentFullCell,
-                //         SiGlobalVars.Instance.mepStyleHeadings,
-                //        out stop_this_row_iteration);
-
-                //if (stop_this_row_iteration == true)
-                //    break;
-
-
-                //if (nextCell == null)
-                //    nextCell = firstFullCell.Next;
-                //else
-                //    nextCell = nextCell.Next;
-                //nextFullCell = eXCEL_HELPER.return_full_merg_cell(nextCell);
-
-                //i++;
+                i++;
             } while (i <= totalNoUsedColumns);
-
-
-
-
 
 
             multiTransWraps.Add(multiTransWrap);
@@ -414,7 +395,7 @@ namespace AttendanceHander.MultipleTransaction
                     else if (heading.Equals(headings.checkInTime1))
                     {
 
-                        feed_checkIn_or_checkOut_time_to_dataWrap(ref multiTransWrap.checkInTime1,
+                        feed_time_data_to_dataWrap(ref multiTransWrap.checkInTime1,
                             eXCEL_HELPER, fullCell, heading);
 
 
@@ -423,7 +404,7 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.checkOutTime1))
                     {
-                        feed_checkIn_or_checkOut_time_to_dataWrap(ref multiTransWrap.checkOutTime1,
+                        feed_time_data_to_dataWrap(ref multiTransWrap.checkOutTime1,
                             eXCEL_HELPER, fullCell, heading);
 
 
@@ -433,7 +414,7 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.workingTime1))
                     {
-                        feed_checkIn_or_checkOut_time_to_dataWrap(ref multiTransWrap.workingTime1,
+                        feed_time_data_to_dataWrap(ref multiTransWrap.workingTime1,
                             eXCEL_HELPER, fullCell, heading);
 
 
@@ -443,7 +424,7 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.checkInTime2))
                     {
-                        feed_checkIn_or_checkOut_time_to_dataWrap(ref multiTransWrap.checkInTime2,
+                        feed_time_data_to_dataWrap(ref multiTransWrap.checkInTime2,
                             eXCEL_HELPER, fullCell, heading);
 
 
@@ -453,7 +434,7 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.checkOutTime2))
                     {
-                        feed_checkIn_or_checkOut_time_to_dataWrap(ref multiTransWrap.checkOutTime2,
+                        feed_time_data_to_dataWrap(ref multiTransWrap.checkOutTime2,
                             eXCEL_HELPER, fullCell, heading);
 
 
@@ -463,7 +444,7 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.workingTime2))
                     {
-                        feed_checkIn_or_checkOut_time_to_dataWrap(ref multiTransWrap.workingTime2,
+                        feed_time_data_to_dataWrap(ref multiTransWrap.workingTime2,
                             eXCEL_HELPER, fullCell, heading);
 
 
@@ -473,7 +454,7 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.totalTimeWorked))
                     {
-                        feed_checkIn_or_checkOut_time_to_dataWrap(ref multiTransWrap.totalTimeWorked,
+                        feed_time_data_to_dataWrap(ref multiTransWrap.totalTimeWorked,
                             eXCEL_HELPER, fullCell, heading);
 
 
@@ -488,13 +469,13 @@ namespace AttendanceHander.MultipleTransaction
             return false;
         }
 
-        private void feed_checkIn_or_checkOut_time_to_dataWrap(ref DateItemWrap checkIn_or_checkOut,
+        private void feed_time_data_to_dataWrap(ref DateItemWrap time_data,
             EXCEL_HELPER eXCEL_HELPER, Excel.Range fullCell, 
             HeadingWrap heading)
         {
             //that is employee no
-            if (checkIn_or_checkOut == null)
-                checkIn_or_checkOut = new DateItemWrap();
+            if (time_data == null)
+                time_data = new DateItemWrap();
             String extractedDate_in_string
                 = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
             DateTime result;
@@ -504,16 +485,13 @@ namespace AttendanceHander.MultipleTransaction
                 System.Globalization.DateTimeStyles.AdjustToUniversal,
                 out result)
             == true)
-                checkIn_or_checkOut.content = result;
+                time_data.content = result;
             else
-                checkIn_or_checkOut.content = null;
+                time_data.content = null;
 
-            checkIn_or_checkOut.fullCell = fullCell;
-            checkIn_or_checkOut.heading = heading;
-
-            //reaching the total over time
-            //as you know after total over time it is overtime datas
-            //so we need to break from this iteration now
+            time_data.fullCell = fullCell;
+            time_data.heading = heading;
+            
         }
     }
 }

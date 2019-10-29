@@ -190,7 +190,6 @@
     <Compile Include="InputOutHandler.cs" />
     <Compile Include="ItemWrap.cs" />
     <Compile Include="List_helper_for_excel.cs" />
-    <Compile Include="MultiTransWrap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
