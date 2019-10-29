@@ -51,17 +51,22 @@ namespace AttendanceHander
         }
         public Boolean MAIN_understand_the_excel_sheet()
         {
+            Boolean error_found = false;
+
             if (SiGlobalVars.Instance.mepStyleHeadings == null)
             {
                 SiGlobalVars.Instance.mepStyleHeadings = new Headings();
             }
 
             find_headings_except_overtimeDates(ref SiGlobalVars.
-                Instance.mepStyleHeadings);//if all the headings
+                Instance.mepStyleHeadings,out error_found);
+
+            if (error_found == true)
+                return false;
+            //if all the headings
             //are found, it means the opened excel file is Mep style 
             //plumbers time sheet
             understand_the_month_and_year_of_the_sheet();
-            Boolean error_found = false;
             if (find_overtime_dates_headings()
                  == false)
                 return false;
@@ -319,7 +324,7 @@ namespace AttendanceHander
                         if (mepStyleWrap.code == null)
                             mepStyleWrap.code = new StrItemWrap();
                         String extractedEmployeeNo = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
-                        if (TimeSheetOperations.employeeNo_is_valid(extractedEmployeeNo)
+                        if (CommonOperations.employeeNo_is_valid(extractedEmployeeNo)
                          == false)
                         {
                             MessageBox.Show("Employee No. is empty or invalid in the cell = "
@@ -343,7 +348,7 @@ namespace AttendanceHander
                             mepStyleWrap.name = new StrItemWrap();
                         String extractedName = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
 
-                        if (TimeSheetOperations.name_is_valid(extractedName)
+                        if (CommonOperations.name_is_valid(extractedName)
                             == false)
                         {
                             MessageBox.Show("Name is empty or invalid in the cell = "

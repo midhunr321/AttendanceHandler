@@ -159,7 +159,9 @@
     <Compile Include="All_const.cs" />
     <Compile Include="AttendHelper.cs" />
     <Compile Include="ColourHandler.cs" />
-    <Compile Include="DailyTransWrap.cs" />
+    <Compile Include="DailyTransactions\DailyTransHelper.cs" />
+    <Compile Include="DailyTransactions\DailyTransWrap.cs" />
+    <Compile Include="DateTimeHandler.cs" />
     <Compile Include="EXCEL_HELPER.cs" />
     <Compile Include="FormSheetSelector.cs">
       <SubType>Form</SubType>
@@ -193,7 +195,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TimeSheetOperations.cs" />
+    <Compile Include="CommonOperations.cs" />
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>

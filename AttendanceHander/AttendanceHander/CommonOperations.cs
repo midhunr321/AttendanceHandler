@@ -3,12 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using Excel = Microsoft.Office.Interop.Excel;
+
 
 namespace AttendanceHander
 {
-    class TimeSheetOperations
+   public class CommonOperations
     {
+        private Excel.Worksheet worksheet;
 
+        public CommonOperations(Excel.Worksheet worksheet)
+        {
+            this.worksheet = worksheet;
+        }
+
+        
         public static bool employeeNo_is_valid(string extractedEmployeeNo)
         {
             if (extractedEmployeeNo == null)

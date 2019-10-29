@@ -2,12 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
-using AttendanceHander.MultipleTransaction;
 
 
 namespace AttendanceHander.MultipleTransaction
@@ -407,7 +403,7 @@ namespace AttendanceHander.MultipleTransaction
                         //that is this particular cell is personal no data
                         String extractedEmployeeNo = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
 
-                        if (TimeSheetOperations.employeeNo_is_valid(extractedEmployeeNo)
+                        if (CommonOperations.employeeNo_is_valid(extractedEmployeeNo)
                          == false)
                         {
                             MessageBox.Show("Employee No. is empty or invalid in the cell = "
@@ -432,7 +428,7 @@ namespace AttendanceHander.MultipleTransaction
                             multiTransWrap.firstName = new StrItemWrap();
                         String extractedName = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
 
-                        if (TimeSheetOperations.name_is_valid(extractedName)
+                        if (CommonOperations.name_is_valid(extractedName)
                             == false)
                         {
                             MessageBox.Show("Name is empty or invalid in the cell = "
@@ -498,7 +494,8 @@ namespace AttendanceHander.MultipleTransaction
                             error_occured = true;
                             return false;
                         }
-
+                        multiTransWrap.date.contentInString =
+                            eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         multiTransWrap.date.fullCell = fullCell;
                         multiTransWrap.date.heading = heading;
 
@@ -513,7 +510,7 @@ namespace AttendanceHander.MultipleTransaction
                     {
 
                         feed_time_data_to_dataWrap(ref multiTransWrap.checkInTime1,
-                            eXCEL_HELPER, fullCell, heading);
+                            eXCEL_HELPER, fullCell, heading,(DateTime) multiTransWrap.date.content);
 
 
                         return true;
@@ -522,7 +519,7 @@ namespace AttendanceHander.MultipleTransaction
                     else if (heading.Equals(headings.checkOutTime1))
                     {
                         feed_time_data_to_dataWrap(ref multiTransWrap.checkOutTime1,
-                            eXCEL_HELPER, fullCell, heading);
+                            eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
 
 
 
@@ -532,7 +529,7 @@ namespace AttendanceHander.MultipleTransaction
                     else if (heading.Equals(headings.workingTime1))
                     {
                         feed_time_data_to_dataWrap(ref multiTransWrap.workingTime1,
-                            eXCEL_HELPER, fullCell, heading);
+                            eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
 
 
 
@@ -542,7 +539,7 @@ namespace AttendanceHander.MultipleTransaction
                     else if (heading.Equals(headings.checkInTime2))
                     {
                         feed_time_data_to_dataWrap(ref multiTransWrap.checkInTime2,
-                            eXCEL_HELPER, fullCell, heading);
+                            eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
 
 
 
@@ -552,7 +549,7 @@ namespace AttendanceHander.MultipleTransaction
                     else if (heading.Equals(headings.checkOutTime2))
                     {
                         feed_time_data_to_dataWrap(ref multiTransWrap.checkOutTime2,
-                            eXCEL_HELPER, fullCell, heading);
+                            eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
 
 
 
@@ -562,7 +559,7 @@ namespace AttendanceHander.MultipleTransaction
                     else if (heading.Equals(headings.workingTime2))
                     {
                         feed_time_data_to_dataWrap(ref multiTransWrap.workingTime2,
-                            eXCEL_HELPER, fullCell, heading);
+                            eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
 
 
 
@@ -572,7 +569,7 @@ namespace AttendanceHander.MultipleTransaction
                     else if (heading.Equals(headings.totalTimeWorked))
                     {
                         feed_time_data_to_dataWrap(ref multiTransWrap.totalTimeWorked,
-                            eXCEL_HELPER, fullCell, heading);
+                            eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
 
 
 
@@ -586,29 +583,32 @@ namespace AttendanceHander.MultipleTransaction
             return false;
         }
 
+        
         private void feed_time_data_to_dataWrap(ref DateItemWrap time_data,
             EXCEL_HELPER eXCEL_HELPER, Excel.Range fullCell,
-            HeadingWrap heading)
+            HeadingWrap heading, DateTime date_of_time)
         {
             //that is employee no
             if (time_data == null)
                 time_data = new DateItemWrap();
             String extractedDate_in_string
                 = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
-            DateTime result;
+            DateTime result_time;
 
             if (DateTime.TryParseExact(extractedDate_in_string,
                 "HH:mm", CultureInfo.InvariantCulture,
                 System.Globalization.DateTimeStyles.AdjustToUniversal,
-                out result)
+                out result_time)
             == true)
-                time_data.content = result;
+                time_data.content = DateTimeHandler
+                    .mix_different_date_and_time(date_of_time, result_time);
             else
                 time_data.content = null;
 
             time_data.fullCell = fullCell;
             time_data.heading = heading;
-
+            time_data.contentInString =
+                           eXCEL_HELPER.get_value_of_merge_cell(fullCell);
         }
     }
 }

@@ -15,15 +15,23 @@ namespace AttendanceHander.Tests
         [TestMethod()]
         public void DatetimeParse()
         {
+            
+            String assumeDateString = "15/12/2019";
+           Nullable<DateTime> assumedDate = DateTime.Parse(assumeDateString);
 
             String assumed_string
-                         = "12:12";
-            DateTime extractedDAte;
-            if (DateTime.TryParseExact(assumed_string,
-                "HH:mm", CultureInfo.InvariantCulture,
-                System.Globalization.DateTimeStyles.AdjustToUniversal,
-                out extractedDAte)
-            == false)
+                         = "17:05";
+            DateTime extractedTime;
+            DateTime.TryParse(assumed_string, out extractedTime);
+
+            //if (DateTime.TryParseExact(assumed_string,
+            //"HH:mm", CultureInfo.InvariantCulture,
+            //System.Globalization.DateTimeStyles.AdjustToUniversal,
+            //out extractedDAte)
+
+            DateTime result =
+                DateTimeHandler.mix_different_date_and_time((DateTime) assumedDate, extractedTime);
+
                 Assert.Fail();
         }
         [TestMethod()]

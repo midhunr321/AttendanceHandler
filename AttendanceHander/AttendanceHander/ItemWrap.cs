@@ -16,6 +16,7 @@ namespace AttendanceHander
     public class  DateItemWrap : ItemWrap
     {
         public Nullable<DateTime> content;
+        public String contentInString;
         public HeadingWrap heading;
         
         
