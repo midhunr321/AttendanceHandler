@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
 using AttendanceHander.MultipleTransaction;
+using AttendanceHander.DailyTransactions;
 
 namespace AttendanceHander
 {
@@ -43,9 +44,12 @@ namespace AttendanceHander
         public Excel.Worksheet multiTransCurrentWorkSheet;
         public List<MultiTransWrap> multiTransWraps;
         public MultipleTransaction.MultiTransHelper.MultiHeadings multiTransHeadings;
-        public DateTime multiTransTimesheetMonthYear;
-    
-      
+
+
+        public Excel.Workbook dailyTransWorkbook;
+        public Excel.Worksheet dailyTransCurrentWorkSheet;
+        public List<DailyTransWrap> dailyTransWrap;
+        public DailyTransHelper.Headings dailyTransHeadings;
 
     }
 
