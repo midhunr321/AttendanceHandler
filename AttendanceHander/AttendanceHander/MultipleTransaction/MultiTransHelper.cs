@@ -281,7 +281,7 @@ namespace AttendanceHander.MultipleTransaction
 
                 Boolean reached_empty_space_area = false;
                 read_row(row,
-                    ref SiGlobalVars.Instance.multiTransWraps,
+                    ref SiGlobalVars.Instance.dailyTransHeadings,
                     out error_occured, out reached_empty_space_area);
                 if (error_occured == true)
                     return;

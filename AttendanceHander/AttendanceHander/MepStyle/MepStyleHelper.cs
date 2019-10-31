@@ -740,7 +740,8 @@ namespace AttendanceHander
                     if (temp_heading.Count > 1)
                     {
                         MessageBox.Show("Multiple search results for the heading were found." +
-                    " Cell address = " + temp_heading[0].Address.ToString());
+                    " Cell address = " + temp_heading[0].Address.ToString() +
+                    "Search String = " +heading.headingName);
                         error_found = true;
                         return false;
                     }
