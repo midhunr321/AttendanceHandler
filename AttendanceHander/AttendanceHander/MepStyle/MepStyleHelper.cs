@@ -24,7 +24,7 @@ namespace AttendanceHander
 
         public class Headings : IEnumerable<HeadingWrap>
         {
-            public HeadingWrap mepStyleHeading =
+            public HeadingWrap sheetHeading =
                 new HeadingWrap("Plumbers - Time Sheet");
             public HeadingWrap serialNo = new HeadingWrap("S. No");
             public HeadingWrap code = new HeadingWrap("Code");
@@ -39,7 +39,7 @@ namespace AttendanceHander
             {
 
                 return (new List<HeadingWrap>()
-                {mepStyleHeading,serialNo,
+                {sheetHeading,serialNo,
                     code,name,designation,siteNO,
                     totalOvertime,date }.GetEnumerator());
             }
@@ -283,7 +283,7 @@ namespace AttendanceHander
 
             foreach (HeadingWrap heading in headings)
             {
-                if (heading.Equals(headings.mepStyleHeading))
+                if (heading.Equals(headings.sheetHeading))
                     continue;//because the title of the time sheet that is
                 //" Plumbers timesheet september 2019"
                 //is not required for data extraction

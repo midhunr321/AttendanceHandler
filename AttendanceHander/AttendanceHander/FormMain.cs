@@ -48,7 +48,7 @@ namespace AttendanceHander
                 return null;
 
             Excel.Application application = Globals.ThisAddIn.getApplication();
-            return (application.Workbooks.Open(filename,ReadOnly:readOnly));
+            return (application.Workbooks.Open(filename, ReadOnly: readOnly));
 
 
         }
@@ -69,9 +69,26 @@ namespace AttendanceHander
             multiTransHelper.MAIN_understand_the_excel_sheet();
         }
 
+        private void initiate_understanding_dailyTrans_timesheet()
+        {
+
+            var workbook = SiGlobalVars.Instance.dailyTransWorkbook;
+            var worksheet = SiGlobalVars.Instance.dailyTransCurrentWorkSheet;
+            //TODO: later the headings should be loaded from the settings
+            //code for the same should be implemented
+            //now the name of the columns are hard coded
+            //but later a settings shall be introduced to change the
+            //heading names dynamically
+            DailyTransactions.DailyTransHelper dailyTransHelper
+                = new DailyTransactions.DailyTransHelper(worksheet, workbook);
+
+
+            dailyTransHelper.MAIN_understand_the_excel_sheet();
+        }
+
         private void initiate_understanding_MEP_style_timesheet()
         {
-           
+
             var workbook = SiGlobalVars.Instance.mepStyleWorkbook;
             var worksheet = SiGlobalVars.Instance.mepStyleCurrentWorkSheet;
             //TODO: later the headings should be loaded from the settings
@@ -84,26 +101,6 @@ namespace AttendanceHander
                 new MepStyleHelper(workbook,
                 worksheet);
             mepStyleHelper.MAIN_understand_the_excel_sheet();
-        }
-
-        private void ButtonOpenMepStyle_Click(object sender, EventArgs e)
-        {
-            Excel.Workbook workbook = openFile(true);
-            if (workbook == null)
-                return;
-
-            SiGlobalVars.Instance.mepStyleWorkbook = workbook;
-            FormSheetSelector form = new FormSheetSelector(workbook,
-               (FormMain) this);
-            form.ShowDialog();
-
-            if (form.DialogResult == DialogResult.OK)
-            {
-                initiate_understanding_MEP_style_timesheet();
-                this.Activate();
-            }
-
-
         }
 
         private void ButtonTestMepStyle_Click(object sender, EventArgs e)
@@ -125,6 +122,7 @@ namespace AttendanceHander
 
         }
 
+        
         private void buttonOpenMultiTrans_Click(object sender, EventArgs e)
         {
             Excel.Workbook workbook = openFile(true);
@@ -135,10 +133,82 @@ namespace AttendanceHander
             FormSheetSelector form = new FormSheetSelector(workbook,
                (FormMain)this);
             form.ShowDialog();
+            Excel.Worksheet selected_Sheet = form.Selected_sheet;
+            if (selected_Sheet == null)
+            {
+                MessageBox.Show("Selected Sheet is null");
+                return;
+            }
+            else
+            {
+                SiGlobalVars.Instance.multiTransCurrentWorkSheet = selected_Sheet;
+            }
 
             if (form.DialogResult == DialogResult.OK)
             {
                 initiate_understanding_MultipleTransaction_timesheet();
+                buttonTestMultiTrans.Enabled = true;
+                this.Activate();
+            }
+        }
+
+        private void ButtonOpenMepTimesheet_Click(object sender, EventArgs e)
+        {
+            Excel.Workbook workbook = openFile(true);
+            if (workbook == null)
+                return;
+
+            SiGlobalVars.Instance.mepStyleWorkbook = workbook;
+            FormSheetSelector form = new FormSheetSelector(workbook,
+               (FormMain)this);
+            form.ShowDialog();
+            Excel.Worksheet selected_Sheet = form.Selected_sheet;
+            if (selected_Sheet == null)
+            {
+                MessageBox.Show("Selected Sheet is null");
+                return;
+            }
+            else
+            {
+                SiGlobalVars.Instance.mepStyleCurrentWorkSheet = selected_Sheet;
+            }
+
+            if (form.DialogResult == DialogResult.OK)
+            {
+                initiate_understanding_MEP_style_timesheet();
+                buttonTestMepStyle.Enabled = true;
+
+                this.Activate();
+            }
+
+        }
+
+        private void Button_OpenDailyTrans_Click(object sender, EventArgs e)
+        {
+            Excel.Workbook workbook = openFile(true);
+            if (workbook == null)
+                return;
+
+            SiGlobalVars.Instance.dailyTransWorkbook = workbook;
+            FormSheetSelector form = new FormSheetSelector(workbook,
+               (FormMain)this);
+            form.ShowDialog();
+            Excel.Worksheet selected_Sheet = form.Selected_sheet;
+            if (selected_Sheet == null)
+            {
+                MessageBox.Show("Selected Sheet is null");
+                return;
+            }
+            else
+            {
+                SiGlobalVars.Instance.dailyTransCurrentWorkSheet = selected_Sheet;
+            }
+
+            if (form.DialogResult == DialogResult.OK)
+            {
+                initiate_understanding_dailyTrans_timesheet();
+                button_OpenDailyTrans.Enabled = true;
+
                 this.Activate();
             }
         }

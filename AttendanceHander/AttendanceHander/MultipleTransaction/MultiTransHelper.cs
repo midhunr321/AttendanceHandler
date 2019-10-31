@@ -21,7 +21,7 @@ namespace AttendanceHander.MultipleTransaction
 
         public class MultiHeadings : IEnumerable<HeadingWrap>
         {
-            public HeadingWrap multiTransHeading =
+            public HeadingWrap sheetHeading =
                 new HeadingWrap("Multiple Transaction");
             public HeadingWrap personnelNo = new HeadingWrap("Personnel No.");
             public HeadingWrap firstName = new HeadingWrap("First Name");
@@ -43,7 +43,7 @@ namespace AttendanceHander.MultipleTransaction
             {
 
                 return (new List<HeadingWrap>()
-                {multiTransHeading,personnelNo,firstName,lastName
+                {sheetHeading,personnelNo,firstName,lastName
                 ,position,department,date,checkInTime1,checkOutTime1,workingTime1,
                 checkInTime2,checkOutTime2,workingTime2,
                 totalTimeWorked}.GetEnumerator());
@@ -65,7 +65,8 @@ namespace AttendanceHander.MultipleTransaction
                 SiGlobalVars.Instance.multiTransHeadings
                     = new MultiTransHelper.MultiHeadings();
             }
-
+            if (SiGlobalVars.Instance.multiTransWraps == null)
+                SiGlobalVars.Instance.multiTransWraps = new List<MultiTransWrap>();
 
             find_headings(ref SiGlobalVars.
                 Instance.multiTransHeadings, out error_found);
@@ -93,6 +94,13 @@ namespace AttendanceHander.MultipleTransaction
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
             foreach (HeadingWrap heading in headingWraps)
             {
+                //sometimes for special cases like check-in time 1 and check in time 2
+                //when we search for keyword "check-in" both results are obtained at the same time
+                //so at the same iteration instance we set full cell for these both.
+                //so in such cases just continue the iteration without enterring for check in time 2
+                if (heading.fullCell != null)
+                    continue;
+
 
                 List<Excel.Range> search_results = new List<Excel.Range>();
                 search_results =
@@ -133,19 +141,41 @@ namespace AttendanceHander.MultipleTransaction
                        == true)
                     {
                         //if more than 1 search results means it should be special case
-                        Excel.Range filteredSearchResult =
-                              filterout_multiple_search_results_for_special_case
-                              (search_results,heading);
+                      if(  filterout_multiple_search_results_for_special_case_and_assign_values
+                        (search_results, heading)
+                            ==false)
+                        {
+                            error_found = true;
+                            return false;
+                        }
+
 
                     }
+
                     else
                     {
-                        //if it is not special case
-                        //and if two search results for heading means something is wrong
-                        MessageBox.Show("Multiple search results were found for: Cell = " +
-                            search_results[0].Address.ToString() + "Content = ");
-                        error_found = true;
-                        return false;
+                        Excel.Range assumed_adjacent_cell1 = headingWraps.firstName.fullCell;
+                        Excel.Range assumed_adjacent_cell2 = headingWraps.personnelNo.fullCell;
+
+
+                        Excel.Range filtered_search_result
+                            = CommonOperations
+                            .filter_searchResult_by_comparing_row_no_of_adjacent_headings
+                            (search_results, assumed_adjacent_cell1,
+                            assumed_adjacent_cell1);
+
+                        if (filtered_search_result != null)
+                        {
+                            Excel.Range fullcell = eXCEL_HELPER
+                       .return_full_merg_cell(filtered_search_result);
+                            heading.fullCell = fullcell;
+                        }
+                        else
+                        {
+                            error_found = true;
+                            return false;
+                        }
+
                     }
                 }
 
@@ -156,44 +186,84 @@ namespace AttendanceHander.MultipleTransaction
             return true;
         }
 
-        private Excel.Range filterout_multiple_search_results_for_special_case
+
+
+        private Boolean filterout_multiple_search_results_for_special_case_and_assign_values
             (List<Excel.Range> searchResults, HeadingWrap heading)
         {
-            var multiTransHeading = SiGlobalVars.Instance.multiTransHeadings;
-            EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
 
-            Excel.Range filtered_result=null;
+            if (searchResults.Count != 2)
+            {
+                MessageBox.Show("search results for" +
+                    " heading name = " + heading.headingName + " must be 2 no.s");
+                return false;
+            }
+
+            EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
+            if (eXCEL_HELPER.cells_are_in_the_same_row(searchResults)
+                            == false)
+                return false;
+
+
+            var multiTransHeading = SiGlobalVars.Instance.multiTransHeadings;
+
             if (heading.Equals(multiTransHeading.checkInTime1))
             {
-                filtered_result =
+
+                //lowest column no is obviously check in time 1
+                Excel.Range checkInTime1 =
                     eXCEL_HELPER.get_lowest_column_cell_from_search_result(searchResults);
+
+                //and the highest column no is check in time 2 ; so..
+                Excel.Range checkIn_time2 =
+                 eXCEL_HELPER.get_largest_column_cell_from_search_result(searchResults);
+
+                SiGlobalVars.Instance.multiTransHeadings.checkInTime1.fullCell = checkInTime1;
+                SiGlobalVars.Instance.multiTransHeadings.checkInTime1.headingName
+                    = eXCEL_HELPER.get_value_of_merge_cell(checkInTime1);
+
+                SiGlobalVars.Instance.multiTransHeadings.checkInTime2.fullCell = checkIn_time2;
+                SiGlobalVars.Instance.multiTransHeadings.checkInTime2.headingName
+                    = eXCEL_HELPER.get_value_of_merge_cell(checkIn_time2);
+
             }
-            else if (heading.Equals(multiTransHeading.checkInTime2))
+           else if (heading.Equals(multiTransHeading.checkOutTime1))
             {
-                filtered_result =
-                     eXCEL_HELPER.get_largest_column_cell_from_search_result(searchResults);
-            }
-            if (heading.Equals(multiTransHeading.checkOutTime1))
-            {
-                filtered_result =
+
+                Excel.Range checkout_time1 =
                     eXCEL_HELPER.get_lowest_column_cell_from_search_result(searchResults);
+
+                Excel.Range checkout_time2 =
+                 eXCEL_HELPER.get_largest_column_cell_from_search_result(searchResults);
+
+                SiGlobalVars.Instance.multiTransHeadings.checkOutTime1.fullCell = checkout_time1;
+                SiGlobalVars.Instance.multiTransHeadings.checkOutTime1.headingName
+                    = eXCEL_HELPER.get_value_of_merge_cell(checkout_time1);
+
+                SiGlobalVars.Instance.multiTransHeadings.checkOutTime2.fullCell = checkout_time2;
+                SiGlobalVars.Instance.multiTransHeadings.checkOutTime2.headingName
+                    = eXCEL_HELPER.get_value_of_merge_cell(checkout_time2);
+
             }
-            if (heading.Equals(multiTransHeading.checkOutTime2))
+         else if (heading.Equals(multiTransHeading.workingTime1))
             {
-                filtered_result =
-                    eXCEL_HELPER.get_largest_column_cell_from_search_result(searchResults);
-            }
-            if (heading.Equals(multiTransHeading.workingTime1))
-            {
-                filtered_result =
+
+                Excel.Range workTime1 =
                     eXCEL_HELPER.get_lowest_column_cell_from_search_result(searchResults);
+
+                Excel.Range workTime2 =
+                 eXCEL_HELPER.get_largest_column_cell_from_search_result(searchResults);
+
+                SiGlobalVars.Instance.multiTransHeadings.workingTime1.fullCell = workTime1;
+                SiGlobalVars.Instance.multiTransHeadings.workingTime1.headingName
+                    = eXCEL_HELPER.get_value_of_merge_cell(workTime1);
+
+                SiGlobalVars.Instance.multiTransHeadings.workingTime2.fullCell = workTime2;
+                SiGlobalVars.Instance.multiTransHeadings.workingTime2.headingName
+                    = eXCEL_HELPER.get_value_of_merge_cell(workTime2);
+
             }
-            if (heading.Equals(multiTransHeading.workingTime2))
-            {
-                filtered_result =
-                    eXCEL_HELPER.get_largest_column_cell_from_search_result(searchResults);
-            }
-            return filtered_result;
+            return true;
         }
 
         private Boolean check_if_special_case(List<Excel.Range> search_results,
@@ -225,9 +295,17 @@ namespace AttendanceHander.MultipleTransaction
                 //means special case;
                 //that means there should be two search results
                 if (search_results.Count < 2)
+                {
                     error_found = true;
+                    //if only one search result then it means error is there
 
-                //if only one search result then it means error is there
+                }
+                else
+                {
+                    return true;
+                }
+
+
             }
             else
             {
@@ -266,11 +344,14 @@ namespace AttendanceHander.MultipleTransaction
                 eXCEL_HELPER
                 .return_immediate_below_cell(personnelNo);
 
+
+
             foreach (Excel.Range row in worksheet.UsedRange.Rows)
             {
+                int currentRow = row.Row;
                 //our first data row starts from firstDataRowCell
                 //so skip the rows above (which are headings)
-                if (row.Row < firstDataRowCell.Row)
+                if (currentRow < firstDataRowCell.Row)
                     continue;
 
                 //read row will fail at the end of time sheet
@@ -281,7 +362,7 @@ namespace AttendanceHander.MultipleTransaction
 
                 Boolean reached_empty_space_area = false;
                 read_row(row,
-                    ref SiGlobalVars.Instance.dailyTransHeadings,
+                    ref SiGlobalVars.Instance.multiTransWraps,
                     out error_occured, out reached_empty_space_area);
                 if (error_occured == true)
                     return;
@@ -372,7 +453,7 @@ namespace AttendanceHander.MultipleTransaction
 
             foreach (HeadingWrap heading in headings)
             {
-                if (heading.Equals(headings.multiTransHeading))
+                if (heading.Equals(headings.sheetHeading))
                     continue;//because the title of the time sheet that is
                 //" Multiple Transaction" which we don't want to iterate
                 //for all other headings we need get the corresponding datas
@@ -509,8 +590,8 @@ namespace AttendanceHander.MultipleTransaction
                     else if (heading.Equals(headings.checkInTime1))
                     {
 
-                        feed_time_data_to_dataWrap(ref multiTransWrap.checkInTime1,
-                            eXCEL_HELPER, fullCell, heading,(DateTime) multiTransWrap.date.content);
+                        CommonOperations.feed_time_data_to_dataWrap(ref multiTransWrap.checkInTime1,
+                            eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
 
 
                         return true;
@@ -518,7 +599,7 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.checkOutTime1))
                     {
-                        feed_time_data_to_dataWrap(ref multiTransWrap.checkOutTime1,
+                        CommonOperations.feed_time_data_to_dataWrap(ref multiTransWrap.checkOutTime1,
                             eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
 
 
@@ -528,7 +609,7 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.workingTime1))
                     {
-                        feed_time_data_to_dataWrap(ref multiTransWrap.workingTime1,
+                        CommonOperations.feed_time_data_to_dataWrap(ref multiTransWrap.workingTime1,
                             eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
 
 
@@ -538,7 +619,7 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.checkInTime2))
                     {
-                        feed_time_data_to_dataWrap(ref multiTransWrap.checkInTime2,
+                        CommonOperations.feed_time_data_to_dataWrap(ref multiTransWrap.checkInTime2,
                             eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
 
 
@@ -548,7 +629,7 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.checkOutTime2))
                     {
-                        feed_time_data_to_dataWrap(ref multiTransWrap.checkOutTime2,
+                        CommonOperations.feed_time_data_to_dataWrap(ref multiTransWrap.checkOutTime2,
                             eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
 
 
@@ -558,7 +639,7 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.workingTime2))
                     {
-                        feed_time_data_to_dataWrap(ref multiTransWrap.workingTime2,
+                        CommonOperations.feed_time_data_to_dataWrap(ref multiTransWrap.workingTime2,
                             eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
 
 
@@ -568,7 +649,7 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.totalTimeWorked))
                     {
-                        feed_time_data_to_dataWrap(ref multiTransWrap.totalTimeWorked,
+                        CommonOperations.feed_time_data_to_dataWrap(ref multiTransWrap.totalTimeWorked,
                             eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
 
 
@@ -583,32 +664,7 @@ namespace AttendanceHander.MultipleTransaction
             return false;
         }
 
-        
-        private void feed_time_data_to_dataWrap(ref DateItemWrap time_data,
-            EXCEL_HELPER eXCEL_HELPER, Excel.Range fullCell,
-            HeadingWrap heading, DateTime date_of_time)
-        {
-            //that is employee no
-            if (time_data == null)
-                time_data = new DateItemWrap();
-            String extractedDate_in_string
-                = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
-            DateTime result_time;
 
-            if (DateTime.TryParseExact(extractedDate_in_string,
-                "HH:mm", CultureInfo.InvariantCulture,
-                System.Globalization.DateTimeStyles.AdjustToUniversal,
-                out result_time)
-            == true)
-                time_data.content = DateTimeHandler
-                    .mix_different_date_and_time(date_of_time, result_time);
-            else
-                time_data.content = null;
 
-            time_data.fullCell = fullCell;
-            time_data.heading = heading;
-            time_data.contentInString =
-                           eXCEL_HELPER.get_value_of_merge_cell(fullCell);
-        }
     }
 }

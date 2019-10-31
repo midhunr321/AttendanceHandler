@@ -15,24 +15,30 @@ namespace AttendanceHander
     public partial class FormSheetSelector : Form
     {
         Excel.Workbook workbook;
+        private Excel.Worksheet selected_sheet;
+
         Form previousForm;
+
+        public Excel.Worksheet Selected_sheet { get => selected_sheet; }
+
         public FormSheetSelector(Excel.Workbook workbook, 
             Form previousForm)
         {
+            
             this.workbook = workbook;
             this.previousForm = previousForm;
             InitializeComponent();
         }
-
+        
         private void ButtonOk_Click(object sender, EventArgs e)
         {
             Excel.Worksheet currentMonthSheet
                 = ((KeyValuePair<string, Excel.Worksheet>)comboBoxSheets
                 .SelectedItem).Value;
 
-            SiGlobalVars.Instance.mepStyleCurrentWorkSheet = currentMonthSheet;
             this.Hide();
             this.DialogResult = DialogResult.OK;
+            selected_sheet = currentMonthSheet;
             previousForm.Activate();
 
         }

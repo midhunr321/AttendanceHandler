@@ -461,6 +461,19 @@ namespace AttendanceHander
                 cell_.Interior.Color = color;
 
         }
+
+        public Boolean cells_are_in_the_same_row (List<Excel.Range> Cells)
+        {
+            int expected_row = Cells[0].Row;
+
+            foreach(Excel.Range cell in Cells)
+            {
+                if (cell.Row != expected_row)
+                    return false;
+            }
+
+            return true;
+        }
         private List<Excel.Range> search_for_cell(String find_text,
             Excel.XlSearchOrder xlSearchOrder,
             Excel.XlSearchDirection xlSearchDirection,
