@@ -173,6 +173,7 @@
     <Compile Include="MepStyle\MepStyleSiteNoCodeAnalyzer.cs" />
     <Compile Include="MepStyle\MepStyleHelper.cs" />
     <Compile Include="MepStyle\MepStyleWrap.cs" />
+    <Compile Include="MixTimeSheetHandler.cs" />
     <Compile Include="MultipleTransaction\MultiTransHelper.cs" />
     <Compile Include="MultipleTransaction\MultiTransWrap.cs" />
     <Compile Include="SearchHelper.cs" />

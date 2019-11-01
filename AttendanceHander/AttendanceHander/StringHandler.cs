@@ -7,9 +7,21 @@ using System.Threading.Tasks;
 
 namespace AttendanceHander
 {
-    class StringHandler
+   public class StringHandler
     {
-       
+       public static Boolean trim_and_compare_strings(String string1, String string2)
+        {
+            if (string1 == null || string2 == null)
+                return false;
+
+            String trimmed1 = string1.Trim();
+            String trimmed2 = string2.Trim();
+            if (trimmed1 == trimmed2)
+                return true;
+
+            return false;
+        
+        }
         public All_const.str_type is_this_string_alpha_numeric_or_numeric_or_alpha_only(String string_to_check)
         {
             Boolean contains_digits = false;

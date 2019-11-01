@@ -6,18 +6,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
+using AttendanceHander.DailyTransactions;
+using AttendanceHander.MultipleTransaction;
+
 
 namespace AttendanceHander.Tests
 {
     [TestClass()]
     public class MepStyleSiteNoCodeAnalyzerTests
     {
+
+        [TestMethod()]
+        public void Test_ref_objects()
+        {
+            List<MultiTransHelper> assumed_multiTrans = new List<MultiTransHelper>();
+
+        }
+
         [TestMethod()]
         public void DatetimeParse()
         {
-            
+
             String assumeDateString = "15/12/2019";
-           Nullable<DateTime> assumedDate = DateTime.Parse(assumeDateString);
+            Nullable<DateTime> assumedDate = DateTime.Parse(assumeDateString);
 
             String assumed_string
                          = "17:05";
@@ -30,9 +41,9 @@ namespace AttendanceHander.Tests
             //out extractedDAte)
 
             DateTime result =
-                DateTimeHandler.mix_different_date_and_time((DateTime) assumedDate, extractedTime);
+                DateTimeHandler.mix_different_date_and_time((DateTime)assumedDate, extractedTime);
 
-                Assert.Fail();
+            Assert.Fail();
         }
         [TestMethod()]
         public void MepStyleSiteNoCodeAnalyzerTest()
@@ -57,7 +68,7 @@ namespace AttendanceHander.Tests
             expectedREsult.siteNo = "M274";
             expectedREsult.transferStartDate = new DateTime(2019, 10, 28);
             expectedREsult.transferEndDate = new DateTime(2019, 10, 31);
-           
+
 
             var actualResult = mepStyleSiteNoCodeAnalyzer.analyze_string(code);
 
