@@ -212,5 +212,10 @@ namespace AttendanceHander
                 this.Activate();
             }
         }
+
+        private void Button_step1_AddSiteNO_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
