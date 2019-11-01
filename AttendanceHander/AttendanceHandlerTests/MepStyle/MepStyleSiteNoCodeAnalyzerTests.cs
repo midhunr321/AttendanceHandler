@@ -19,7 +19,13 @@ namespace AttendanceHander.Tests
         [TestMethod()]
         public void Test_ref_objects()
         {
-            List<MultiTransHelper> assumed_multiTrans = new List<MultiTransHelper>();
+            List<MultiTransWrap> assumed_multiTrans = new List<MultiTransWrap>();
+
+            MultiTransWrap multiTransWrap1 = new MultiTransWrap();
+            multiTransWrap1.firstName.content = "first name";
+            MultiTransWrap multiTransWrap2 = new MultiTransWrap();
+            multiTransWrap2.firstName.content = "second name";
+
 
         }
 

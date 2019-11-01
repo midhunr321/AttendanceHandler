@@ -217,5 +217,10 @@ namespace AttendanceHander
         {
 
         }
+
+        private void Button_TestDailyTrans_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

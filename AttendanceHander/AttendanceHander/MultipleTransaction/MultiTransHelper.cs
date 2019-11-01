@@ -36,7 +36,8 @@ namespace AttendanceHander.MultipleTransaction
             public HeadingWrap checkOutTime2 = new HeadingWrap("Check-Out");
             public HeadingWrap workingTime2 = new HeadingWrap("Working Time");
             public HeadingWrap totalTimeWorked = new HeadingWrap("Total Time Worked");
-
+            public HeadingWrap siteNo; //this shouldn't be iteration. because siteno doesn't exist initially
+            //we need to create it in future.
             public Dictionary<int, HeadingWrap> overtimeDays;
 
             public IEnumerator<HeadingWrap> GetEnumerator()
@@ -58,6 +59,31 @@ namespace AttendanceHander.MultipleTransaction
         }
   
 
+       public static Boolean Add_a_heading_column_for_site_no(Excel.Range previousHeading,
+           Excel.Worksheet sheet,ref MultiHeadings headingWraps)
+        {
+
+            Excel.Range siteNoHeading
+                = previousHeading.Next;
+
+           if( headingWraps.siteNo != null)
+            {
+                MessageBox.Show("New heading Site No was already assigned");
+                return true;
+            }
+           else
+            {
+                headingWraps.siteNo = new HeadingWrap("Site No.");
+                headingWraps.siteNo.fullCell = siteNoHeading;
+
+                //now create the new heading in the excel worksheet
+                headingWraps.siteNo.fullCell.Value = "Site No.";
+
+
+                return true;
+            }
+
+        }
         public Boolean MAIN_understand_the_excel_sheet()
         {
             Boolean error_found = false;

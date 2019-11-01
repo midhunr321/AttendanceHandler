@@ -167,6 +167,7 @@
             this.button_TestDailyTrans.TabIndex = 9;
             this.button_TestDailyTrans.Text = "Test Daily Transactions";
             this.button_TestDailyTrans.UseVisualStyleBackColor = true;
+            this.button_TestDailyTrans.Click += new System.EventHandler(this.Button_TestDailyTrans_Click);
             // 
             // label_StatusDailyTrans
             // 
