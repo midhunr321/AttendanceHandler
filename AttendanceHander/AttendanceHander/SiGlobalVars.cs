@@ -48,7 +48,7 @@ namespace AttendanceHander
 
         public Excel.Workbook dailyTransWorkbook;
         public Excel.Worksheet dailyTransCurrentWorkSheet;
-        public List<DailyTransWrap> dailyTransWrap;
+        public List<DailyTransWrap> dailyTransWraps;
         public DailyTransHelper.Headings dailyTransHeadings;
 
     }

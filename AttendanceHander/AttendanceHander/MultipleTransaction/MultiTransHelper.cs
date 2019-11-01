@@ -68,7 +68,6 @@ namespace AttendanceHander.MultipleTransaction
 
            if( headingWraps.siteNo != null)
             {
-                MessageBox.Show("New heading Site No was already assigned");
                 return true;
             }
            else

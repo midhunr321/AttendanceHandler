@@ -215,6 +215,17 @@ namespace AttendanceHander
 
         private void Button_step1_AddSiteNO_Click(object sender, EventArgs e)
         {
+            if(SiGlobalVars.Instance.multiTransWraps==null ||
+                SiGlobalVars.Instance.dailyTransWraps==null)
+            {
+                MessageBox.Show("Multiple Transaction or Daily Transaction is null");
+                return;
+            }
+
+            MixTimeSheetHandler
+                .Add_siteNo_from_DailyTrans_to_MultiTrans
+                (SiGlobalVars.Instance.dailyTransWraps,
+                ref SiGlobalVars.Instance.multiTransWraps);
 
         }
 

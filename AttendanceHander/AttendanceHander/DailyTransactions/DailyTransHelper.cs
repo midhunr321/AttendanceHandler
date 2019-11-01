@@ -69,8 +69,8 @@ namespace AttendanceHander.DailyTransactions
                     = new DailyTransHelper.Headings();
             }
 
-            if (SiGlobalVars.Instance.dailyTransWrap == null)
-                SiGlobalVars.Instance.dailyTransWrap = new List<DailyTransWrap>();
+            if (SiGlobalVars.Instance.dailyTransWraps == null)
+                SiGlobalVars.Instance.dailyTransWraps = new List<DailyTransWrap>();
 
             find_headings(ref SiGlobalVars.
                 Instance.dailyTransHeadings, out error_found);
@@ -127,7 +127,7 @@ namespace AttendanceHander.DailyTransactions
 
                 Boolean reached_empty_space_area = false;
                 read_row(row,
-                    ref SiGlobalVars.Instance.dailyTransWrap,
+                    ref SiGlobalVars.Instance.dailyTransWraps,
                     out error_occured, out reached_empty_space_area);
                 if (error_occured == true)
                     return;
