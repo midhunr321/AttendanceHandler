@@ -15,6 +15,31 @@ namespace AttendanceHander
     {
         private Excel.Worksheet worksheet;
 
+
+        public static Boolean compare_multiTrans_employeeNo_to_MepStyle_employeeNo
+            (String mepStyle_employeeNo, String multiTrans_employeeNo )
+        {
+            //String mep_Trimmed = mepStyle_employeeNo.Trim('/');
+            String mep_Trimmed = mepStyle_employeeNo
+                .Substring(mepStyle_employeeNo.IndexOf('/') + 1);
+
+            mep_Trimmed = mep_Trimmed.Trim('0');
+            //eg
+            //before = 02/04532
+            //after trim = 4532
+
+            mep_Trimmed = mep_Trimmed.Trim(); //trim unwanted white space
+
+            String multiTrans_trimmed = multiTrans_employeeNo.Trim();  //remove white spaces
+
+            multiTrans_trimmed = multiTrans_trimmed.TrimStart(new char[] { '0' });
+
+            if (mep_Trimmed == multiTrans_trimmed)
+                return true;
+            else
+                return false;
+
+        }
         public CommonOperations(Excel.Worksheet worksheet)
         {
             this.worksheet = worksheet;
@@ -54,6 +79,30 @@ namespace AttendanceHander
                 return null;
             }
             return filtered_search_result[0];
+        }
+
+        public static void feed_time_data_to_dataWrap(ref TimeSpanItemWrap time_data,
+      EXCEL_HELPER eXCEL_HELPER, Excel.Range fullCell,
+      HeadingWrap heading, DateTime date_of_time)
+        {
+            //that is employee no
+            if (time_data == null)
+                time_data = new TimeSpanItemWrap();
+            String extractedDate_in_string
+                = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
+            TimeSpan result_time;
+
+            if (TimeSpan.TryParse(extractedDate_in_string,
+                out result_time)
+            == true)
+                time_data.content = result_time;
+            else
+                time_data.content = null;
+
+            time_data.fullCell = fullCell;
+            time_data.heading = heading;
+            time_data.contentInString =
+                           eXCEL_HELPER.get_value_of_merge_cell(fullCell);
         }
         public static void feed_time_data_to_dataWrap(ref DateItemWrap time_data,
         EXCEL_HELPER eXCEL_HELPER, Excel.Range fullCell,

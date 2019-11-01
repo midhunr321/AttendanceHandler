@@ -13,6 +13,14 @@ namespace AttendanceHander
         public Excel.Range fullCell;
 
     }
+    public class TimeSpanItemWrap : ItemWrap
+    {
+        public Nullable<TimeSpan> content;
+        public String contentInString;
+        public HeadingWrap heading;
+
+
+    }
     public class  DateItemWrap : ItemWrap
     {
         public Nullable<DateTime> content;
@@ -33,6 +41,7 @@ namespace AttendanceHander
         public HeadingWrap heading;
 
     }
+    
     public class DateOvertime : ItemWrap
     {
         public String date_day;

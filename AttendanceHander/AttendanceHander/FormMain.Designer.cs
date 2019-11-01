@@ -46,9 +46,10 @@
             this.label_statusPayLoad = new System.Windows.Forms.Label();
             this.button_openPayLoad = new System.Windows.Forms.Button();
             this.groupBox_steps = new System.Windows.Forms.GroupBox();
-            this.button_step1_AddSiteNO = new System.Windows.Forms.Button();
-            this.button_step2_missingData = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.button_step3 = new System.Windows.Forms.Button();
+            this.button_step2_missingData = new System.Windows.Forms.Button();
+            this.button_step1_AddSiteNO = new System.Windows.Forms.Button();
             this.groupBoxMepStyle.SuspendLayout();
             this.groupBoxMultiTrans.SuspendLayout();
             this.groupBox_DailyTrans.SuspendLayout();
@@ -232,6 +233,7 @@
             // 
             // groupBox_steps
             // 
+            this.groupBox_steps.Controls.Add(this.label1);
             this.groupBox_steps.Controls.Add(this.button_step3);
             this.groupBox_steps.Controls.Add(this.button_step2_missingData);
             this.groupBox_steps.Controls.Add(this.button_step1_AddSiteNO);
@@ -241,6 +243,36 @@
             this.groupBox_steps.TabIndex = 11;
             this.groupBox_steps.TabStop = false;
             this.groupBox_steps.Text = "STEPS";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(24, 148);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(405, 17);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Note: Labours Normal Working Time is Assumed as 8:00 hours";
+            // 
+            // button_step3
+            // 
+            this.button_step3.Enabled = false;
+            this.button_step3.Location = new System.Drawing.Point(319, 59);
+            this.button_step3.Name = "button_step3";
+            this.button_step3.Size = new System.Drawing.Size(123, 69);
+            this.button_step3.TabIndex = 2;
+            this.button_step3.Text = "STEP 3:";
+            this.button_step3.UseVisualStyleBackColor = true;
+            // 
+            // button_step2_missingData
+            // 
+            this.button_step2_missingData.Location = new System.Drawing.Point(175, 59);
+            this.button_step2_missingData.Name = "button_step2_missingData";
+            this.button_step2_missingData.Size = new System.Drawing.Size(123, 69);
+            this.button_step2_missingData.TabIndex = 1;
+            this.button_step2_missingData.Text = "STEP 2: Add missing data from Mep Style TimeSheet to Multiple Transaction";
+            this.button_step2_missingData.UseVisualStyleBackColor = true;
+            this.button_step2_missingData.Click += new System.EventHandler(this.Button_step2_missingData_Click);
             // 
             // button_step1_AddSiteNO
             // 
@@ -252,26 +284,6 @@
             this.button_step1_AddSiteNO.Text = "STEP1: Add Site No. in Multiple Transaction from Daily Transaction";
             this.button_step1_AddSiteNO.UseVisualStyleBackColor = true;
             this.button_step1_AddSiteNO.Click += new System.EventHandler(this.Button_step1_AddSiteNO_Click);
-            // 
-            // button_step2_missingData
-            // 
-            this.button_step2_missingData.Enabled = false;
-            this.button_step2_missingData.Location = new System.Drawing.Point(175, 59);
-            this.button_step2_missingData.Name = "button_step2_missingData";
-            this.button_step2_missingData.Size = new System.Drawing.Size(123, 69);
-            this.button_step2_missingData.TabIndex = 1;
-            this.button_step2_missingData.Text = "STEP 2: Add missing data from Mep Style TimeSheet to Multiple Transaction";
-            this.button_step2_missingData.UseVisualStyleBackColor = true;
-            // 
-            // button_step3
-            // 
-            this.button_step3.Enabled = false;
-            this.button_step3.Location = new System.Drawing.Point(319, 59);
-            this.button_step3.Name = "button_step3";
-            this.button_step3.Size = new System.Drawing.Size(123, 69);
-            this.button_step3.TabIndex = 2;
-            this.button_step3.Text = "STEP 3:";
-            this.button_step3.UseVisualStyleBackColor = true;
             // 
             // FormMain
             // 
@@ -295,6 +307,7 @@
             this.groupBox_DailyTrans.ResumeLayout(false);
             this.groupBox_payLoad.ResumeLayout(false);
             this.groupBox_steps.ResumeLayout(false);
+            this.groupBox_steps.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -321,5 +334,6 @@
         private System.Windows.Forms.Button button_step3;
         private System.Windows.Forms.Button button_step2_missingData;
         private System.Windows.Forms.Button button_step1_AddSiteNO;
+        private System.Windows.Forms.Label label1;
     }
 }

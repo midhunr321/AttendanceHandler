@@ -239,5 +239,19 @@ namespace AttendanceHander
         {
 
         }
+
+        private void Button_step2_missingData_Click(object sender, EventArgs e)
+        {
+            if(SiGlobalVars.Instance.multiTransWraps==null ||
+                SiGlobalVars.Instance.mepStyleWraps==null)
+            {
+                MessageBox.Show("Either MEP STYLE or MULTI Trans is null");
+                return;
+            }
+            MixTimeSheetHandler mixTimeSheetHandler = new MixTimeSheetHandler();
+            mixTimeSheetHandler
+                .Add_Missing_data_from_mepStyle_to_MultiTrans(SiGlobalVars.Instance.mepStyleWraps,
+               ref SiGlobalVars.Instance.multiTransWraps);
+        }
     }
 }

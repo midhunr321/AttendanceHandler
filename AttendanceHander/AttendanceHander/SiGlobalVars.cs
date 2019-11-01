@@ -51,6 +51,9 @@ namespace AttendanceHander
         public List<DailyTransWrap> dailyTransWraps;
         public DailyTransHelper.Headings dailyTransHeadings;
 
+
+        public int assumed_normal_workingHours = 8;
+        public String assumed_SickLeave_key = "SL";
     }
 
 

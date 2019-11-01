@@ -126,7 +126,7 @@ namespace AttendanceHander
 
         public Boolean is_this_a_merged_cell(Excel.Range fullCell)
         {
-            if (fullCell.MergeArea.Count > 1)
+            if (fullCell.MergeCells==true)
                 return true;
             
             return false;

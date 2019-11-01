@@ -16,11 +16,11 @@ namespace AttendanceHander.MultipleTransaction
         public DateItemWrap date;
         public DateItemWrap checkInTime1;
         public DateItemWrap checkOutTime1;
-        public DateItemWrap workingTime1;
+        public TimeSpanItemWrap workingTime1;
         public DateItemWrap checkInTime2;
         public DateItemWrap checkOutTime2;
-        public DateItemWrap workingTime2;
-        public DateItemWrap totalTimeWorked;
+        public TimeSpanItemWrap workingTime2;
+        public TimeSpanItemWrap totalTimeWorked;
         public StrItemWrap siteNo;
     }
 }

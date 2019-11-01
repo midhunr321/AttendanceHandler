@@ -14,5 +14,16 @@ namespace AttendanceHander
             return (new_date.Date + time.TimeOfDay);
         }
 
+        public static Boolean Compare_dates_only(DateTime dateTime1, DateTime dateTime2)
+        {
+            
+            if (dateTime1.Year == dateTime2.Year &&
+                dateTime1.Month == dateTime2.Month &&
+                dateTime1.Day == dateTime2.Day)
+                return true;
+            else
+                return false;
+        }
+
     }
 }
