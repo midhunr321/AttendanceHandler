@@ -54,6 +54,7 @@ namespace AttendanceHander
         }
         private void initiate_understanding_MultipleTransaction_timesheet()
         {
+            button_step1_AddSiteNO.Enabled = false;
 
             var workbook = SiGlobalVars.Instance.multiTransWorkbook;
             var worksheet = SiGlobalVars.Instance.multiTransCurrentWorkSheet;
@@ -66,11 +67,14 @@ namespace AttendanceHander
             MultipleTransaction.MultiTransHelper multiTransHelper
                 = new MultipleTransaction.MultiTransHelper(worksheet, workbook);
 
-            multiTransHelper.MAIN_understand_the_excel_sheet();
+            if (multiTransHelper.MAIN_understand_the_excel_sheet()
+                == true)
+                button_step1_AddSiteNO.Enabled = true;
         }
 
         private void initiate_understanding_dailyTrans_timesheet()
         {
+            button_step1_AddSiteNO.Enabled = false;
 
             var workbook = SiGlobalVars.Instance.dailyTransWorkbook;
             var worksheet = SiGlobalVars.Instance.dailyTransCurrentWorkSheet;
@@ -83,7 +87,9 @@ namespace AttendanceHander
                 = new DailyTransactions.DailyTransHelper(worksheet, workbook);
 
 
-            dailyTransHelper.MAIN_understand_the_excel_sheet();
+            if (dailyTransHelper.MAIN_understand_the_excel_sheet() == true)
+                button_step1_AddSiteNO.Enabled = true;
+
         }
 
         private void initiate_understanding_MEP_style_timesheet()

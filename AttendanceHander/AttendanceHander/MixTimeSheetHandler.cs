@@ -55,6 +55,8 @@ namespace AttendanceHander
                     multiWrap.personnelNo.content)
                     )
                 {
+                    if (multiWrap.siteNo == null)
+                        multiWrap.siteNo = new StrItemWrap();
 
                     multiWrap.siteNo.content = dailyWrap.deviceName.content;
                     if (add_site_no_to_multiTrans_sheet(multiWrap)
