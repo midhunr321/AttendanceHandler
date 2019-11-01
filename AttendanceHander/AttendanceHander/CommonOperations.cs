@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -11,11 +12,19 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace AttendanceHander
 {
+
+    
    public class CommonOperations
     {
         private Excel.Worksheet worksheet;
 
-
+      
+        public static void modify_value_in_cell(Excel.Range fullCell, String Value,
+            Color color)
+        {
+            fullCell.Value = Value;
+            fullCell.Font.Color = color;
+        }
         public static Boolean compare_multiTrans_employeeNo_to_MepStyle_employeeNo
             (String mepStyle_employeeNo, String multiTrans_employeeNo )
         {

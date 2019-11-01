@@ -14,11 +14,32 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace AttendanceHander
 {
+
+
     public partial class FormMain : Form
     {
         public FormMain()
         {
             InitializeComponent();
+        }
+
+
+        private void signal_multiTrans_loaded_successfuly()
+        {
+            button_step1_AddSiteNO.Enabled = true;
+            buttonTestMultiTrans.Enabled = true;
+            label_StatusMultiTrans.BackColor = Color.GreenYellow;
+        }
+        private void signal_dailyTrans_loaded_successfuly()
+        {
+            button_step1_AddSiteNO.Enabled = true;
+            button_TestDailyTrans.Enabled = true;
+            label_StatusDailyTrans.BackColor = Color.GreenYellow;
+        }
+        private void signal_mepStyle_loaded_successfuly()
+        {
+            buttonTestMepStyle.Enabled = true;
+            label_StatusMepSty.BackColor = Color.GreenYellow;
         }
 
         public void enableDisableMepStyleTestButton(Boolean enable)
@@ -52,6 +73,54 @@ namespace AttendanceHander
 
 
         }
+
+        private void clear_multiTrans_instance()
+        {
+            if (SiGlobalVars.Instance.multiTransWorkbook != null)
+            {
+                //if excel is open, close it
+                SiGlobalVars.Instance.multiTransWorkbook.Close();
+                SiGlobalVars.Instance.multiTransWraps = null;
+                SiGlobalVars.Instance.multiTransHeadings = null;
+                SiGlobalVars.Instance.multiTransCurrentWorkSheet = null;
+                SiGlobalVars.Instance.multiTransWorkbook = null;
+                button_step1_AddSiteNO.Enabled = false;
+                label_StatusMultiTrans.BackColor = Color.Gray;
+
+            }
+        }
+
+        private void clear_mepStyle_instance()
+        {
+            if (SiGlobalVars.Instance.mepStyleWorkbook != null)
+            {
+                //if excel is open, close it
+                SiGlobalVars.Instance.mepStyleWorkbook.Close();
+                SiGlobalVars.Instance.mepStyleWraps = null;
+                SiGlobalVars.Instance.mepStyleHeadings = null;
+                SiGlobalVars.Instance.mepStyleCurrentWorkSheet = null;
+                SiGlobalVars.Instance.mepStyleWorkbook = null;
+                label_StatusMepSty.BackColor = Color.Gray;
+
+            }
+        }
+        private void clear_dailyTrans_instance()
+        {
+            if (SiGlobalVars.Instance.dailyTransWorkbook != null)
+            {
+                //if excel is open, close it
+                SiGlobalVars.Instance.dailyTransWorkbook.Close();
+                SiGlobalVars.Instance.dailyTransWraps = null;
+                SiGlobalVars.Instance.dailyTransHeadings = null;
+                SiGlobalVars.Instance.dailyTransCurrentWorkSheet = null;
+                SiGlobalVars.Instance.dailyTransWorkbook = null;
+                label_StatusDailyTrans.BackColor = Color.Gray;
+
+            }
+        }
+
+
+
         private void initiate_understanding_MultipleTransaction_timesheet()
         {
             button_step1_AddSiteNO.Enabled = false;
@@ -66,10 +135,16 @@ namespace AttendanceHander
 
             MultipleTransaction.MultiTransHelper multiTransHelper
                 = new MultipleTransaction.MultiTransHelper(worksheet, workbook);
-
-            if (multiTransHelper.MAIN_understand_the_excel_sheet()
-                == true)
-                button_step1_AddSiteNO.Enabled = true;
+            Boolean error_found = false;
+            multiTransHelper.MAIN_understand_the_excel_sheet(out error_found);
+            if (error_found == false)
+            {
+                signal_multiTrans_loaded_successfuly();
+            }
+            else
+            {
+                clear_multiTrans_instance();
+            }
         }
 
         private void initiate_understanding_dailyTrans_timesheet()
@@ -86,9 +161,19 @@ namespace AttendanceHander
             DailyTransactions.DailyTransHelper dailyTransHelper
                 = new DailyTransactions.DailyTransHelper(worksheet, workbook);
 
+            Boolean error_found = false;
+            dailyTransHelper.MAIN_understand_the_excel_sheet(out error_found);
 
-            if (dailyTransHelper.MAIN_understand_the_excel_sheet() == true)
+            if (error_found == true)
+            {
+                clear_dailyTrans_instance();
+            }
+            else
+            {
                 button_step1_AddSiteNO.Enabled = true;
+                signal_dailyTrans_loaded_successfuly();
+            }
+
 
         }
 
@@ -106,7 +191,13 @@ namespace AttendanceHander
             MepStyleHelper mepStyleHelper =
                 new MepStyleHelper(workbook,
                 worksheet);
-            mepStyleHelper.MAIN_understand_the_excel_sheet();
+
+            Boolean error_found = false;
+            mepStyleHelper.MAIN_understand_the_excel_sheet(out error_found);
+            if (error_found == true)
+                clear_mepStyle_instance();
+            else
+                signal_mepStyle_loaded_successfuly();
         }
 
         private void ButtonTestMepStyle_Click(object sender, EventArgs e)
@@ -128,7 +219,7 @@ namespace AttendanceHander
 
         }
 
-        
+
         private void buttonOpenMultiTrans_Click(object sender, EventArgs e)
         {
             Excel.Workbook workbook = openFile(true);
@@ -153,7 +244,6 @@ namespace AttendanceHander
             if (form.DialogResult == DialogResult.OK)
             {
                 initiate_understanding_MultipleTransaction_timesheet();
-                buttonTestMultiTrans.Enabled = true;
                 this.Activate();
             }
         }
@@ -182,7 +272,6 @@ namespace AttendanceHander
             if (form.DialogResult == DialogResult.OK)
             {
                 initiate_understanding_MEP_style_timesheet();
-                buttonTestMepStyle.Enabled = true;
 
                 this.Activate();
             }
@@ -221,8 +310,8 @@ namespace AttendanceHander
 
         private void Button_step1_AddSiteNO_Click(object sender, EventArgs e)
         {
-            if(SiGlobalVars.Instance.multiTransWraps==null ||
-                SiGlobalVars.Instance.dailyTransWraps==null)
+            if (SiGlobalVars.Instance.multiTransWraps == null ||
+                SiGlobalVars.Instance.dailyTransWraps == null)
             {
                 MessageBox.Show("Multiple Transaction or Daily Transaction is null");
                 return;
@@ -242,8 +331,8 @@ namespace AttendanceHander
 
         private void Button_step2_missingData_Click(object sender, EventArgs e)
         {
-            if(SiGlobalVars.Instance.multiTransWraps==null ||
-                SiGlobalVars.Instance.mepStyleWraps==null)
+            if (SiGlobalVars.Instance.multiTransWraps == null ||
+                SiGlobalVars.Instance.mepStyleWraps == null)
             {
                 MessageBox.Show("Either MEP STYLE or MULTI Trans is null");
                 return;
@@ -252,6 +341,21 @@ namespace AttendanceHander
             mixTimeSheetHandler
                 .Add_Missing_data_from_mepStyle_to_MultiTrans(SiGlobalVars.Instance.mepStyleWraps,
                ref SiGlobalVars.Instance.multiTransWraps);
+        }
+
+        private void Button_clearMultiTrans_Click(object sender, EventArgs e)
+        {
+            clear_multiTrans_instance();
+        }
+
+        private void Button_clearMepStyle_Click(object sender, EventArgs e)
+        {
+            clear_mepStyle_instance();
+        }
+
+        private void Button_clearDailyTrans_Click(object sender, EventArgs e)
+        {
+            clear_dailyTrans_instance();
         }
     }
 }

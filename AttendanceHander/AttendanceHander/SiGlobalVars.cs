@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
 using AttendanceHander.MultipleTransaction;
 using AttendanceHander.DailyTransactions;
+using System.Drawing;
 
 namespace AttendanceHander
 {
@@ -54,6 +55,7 @@ namespace AttendanceHander
 
         public int assumed_normal_workingHours = 8;
         public String assumed_SickLeave_key = "SL";
+        public Color assumed_editFont_colour = Color.Red;
     }
 
 

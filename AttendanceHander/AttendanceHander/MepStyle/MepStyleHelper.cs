@@ -49,9 +49,9 @@ namespace AttendanceHander
                 return GetEnumerator();
             }
         }
-        public Boolean MAIN_understand_the_excel_sheet()
+        public void MAIN_understand_the_excel_sheet(out Boolean error_found)
         {
-            Boolean error_found = false;
+             error_found = false;
 
             if (SiGlobalVars.Instance.mepStyleHeadings == null)
             {
@@ -62,14 +62,14 @@ namespace AttendanceHander
                 Instance.mepStyleHeadings,out error_found);
 
             if (error_found == true)
-                return false;
+                return;
             //if all the headings
             //are found, it means the opened excel file is Mep style 
             //plumbers time sheet
             understand_the_month_and_year_of_the_sheet();
             if (find_overtime_dates_headings()
                  == false)
-                return false;
+                return;
 
 
             //now we got all the headings
@@ -80,9 +80,9 @@ namespace AttendanceHander
             Boolean error_ocurred = false;
             read_each_rows_of_data(out error_ocurred);
             if (error_ocurred == true)
-                return false;
+                return;
 
-            return true;
+            
         }
 
         private Boolean plumber_is_on_vacation_or_has_merged_cells

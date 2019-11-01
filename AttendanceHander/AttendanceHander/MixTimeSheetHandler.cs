@@ -37,8 +37,10 @@ namespace AttendanceHander
                     //that is employee no and ame is similar 
                     IntStringHolder mostRepeatedCheckInTime = new IntStringHolder();
                     mostRepeatedCheckInTime
-               = get_mostRepeated_checkIn_time(multiWrap.personnelNo.content, multiTransWraps);
-
+               = get_mostRepeated_checkIn_time(multiWrap.personnelNo.content, multiTransWraps,
+               multiWrap);
+                    if (mostRepeatedCheckInTime == null)
+                        continue;
 
                     foreach (var dateOvertime in mepStyleWrap.dateOvertimes)
                     {
@@ -63,11 +65,19 @@ namespace AttendanceHander
         }
 
         private IntStringHolder get_mostRepeated_checkIn_time(String employeeNo,
-            List<MultiTransWrap> multiTransWraps)
+            List<MultiTransWrap> multiTransWraps, MultiTransWrap multiTransWrap)
         {
             List<MultiTransWrap> fullDataOfEmployee
                 = multiTransWraps.Where(x => x.personnelNo.content == employeeNo
-                ).ToList();
+                && x.checkInTime1.content!=null).ToList();
+            //we don't want those datas where checkIntime is null.
+            if (fullDataOfEmployee.Count == 0)
+            {
+                MessageBox.Show("No default or routing CheckIn time was found for employee = " +
+                    employeeNo + " for the date = " + multiTransWrap.date.contentInString
+                    +"Thus it is skipped");
+                return null;
+            }
 
 
             int mostRepeatedCheckInHour = (from item in fullDataOfEmployee
@@ -151,14 +161,22 @@ namespace AttendanceHander
 
                 multiTransWrap.checkInTime1.content = checkIn_time;
                 multiTransWrap.checkInTime1.contentInString = checkIn_time.TimeOfDay.ToString();
+                CommonOperations.modify_value_in_cell(multiTransWrap.checkInTime1
+                    .fullCell, multiTransWrap.checkInTime1.contentInString,
+                    SiGlobalVars.Instance.assumed_editFont_colour);
 
-                multiTransWrap.checkOutTime2.content = checkOut_time.Value;
-                multiTransWrap.checkOutTime2.contentInString = checkOut_time.Value.TimeOfDay.ToString();
+                multiTransWrap.checkOutTime1.content = checkOut_time.Value;
+                multiTransWrap.checkOutTime1.contentInString = checkOut_time.Value.TimeOfDay.ToString();
+                CommonOperations.modify_value_in_cell(multiTransWrap.checkOutTime2
+                   .fullCell, multiTransWrap.checkOutTime1.contentInString,
+                   SiGlobalVars.Instance.assumed_editFont_colour);
 
                 TimeSpan timeSpan = checkOut_time.Value.Subtract(checkIn_time);
                 multiTransWrap.workingTime1.content = timeSpan;
                 multiTransWrap.workingTime1.contentInString = timeSpan.ToString();
-
+                CommonOperations.modify_value_in_cell(multiTransWrap.workingTime1
+                   .fullCell, multiTransWrap.workingTime1.contentInString,
+                   SiGlobalVars.Instance.assumed_editFont_colour);
                 return true;
 
             }

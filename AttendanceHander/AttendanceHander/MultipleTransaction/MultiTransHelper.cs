@@ -83,9 +83,8 @@ namespace AttendanceHander.MultipleTransaction
             }
 
         }
-        public Boolean MAIN_understand_the_excel_sheet()
+        public void MAIN_understand_the_excel_sheet(out Boolean error_found)
         {
-            Boolean error_found = false;
             if (SiGlobalVars.Instance.multiTransHeadings == null)
             {
                 SiGlobalVars.Instance.multiTransHeadings
@@ -97,7 +96,7 @@ namespace AttendanceHander.MultipleTransaction
             find_headings(ref SiGlobalVars.
                 Instance.multiTransHeadings, out error_found);
             if (error_found == true)
-                return false;
+                return ;
 
 
             //now we got all the headings
@@ -108,9 +107,8 @@ namespace AttendanceHander.MultipleTransaction
 
             read_each_rows_of_data(out error_found);
             if (error_found == true)
-                return false;
+                return ;
 
-            return true;
         }
         private Boolean find_headings(ref MultiTransHelper
             .MultiHeadings headingWraps,
