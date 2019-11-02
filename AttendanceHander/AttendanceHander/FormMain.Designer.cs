@@ -30,14 +30,17 @@
         {
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.groupBoxMepStyle = new System.Windows.Forms.GroupBox();
+            this.button_clearMepStyle = new System.Windows.Forms.Button();
             this.buttonTestMepStyle = new System.Windows.Forms.Button();
             this.label_StatusMepSty = new System.Windows.Forms.Label();
             this.buttonOpenMepTimesheet = new System.Windows.Forms.Button();
             this.groupBoxMultiTrans = new System.Windows.Forms.GroupBox();
+            this.button_clearMultiTrans = new System.Windows.Forms.Button();
             this.buttonTestMultiTrans = new System.Windows.Forms.Button();
             this.label_StatusMultiTrans = new System.Windows.Forms.Label();
             this.buttonOpenMultiTrans = new System.Windows.Forms.Button();
             this.groupBox_DailyTrans = new System.Windows.Forms.GroupBox();
+            this.button_clearDailyTrans = new System.Windows.Forms.Button();
             this.button_TestDailyTrans = new System.Windows.Forms.Button();
             this.label_StatusDailyTrans = new System.Windows.Forms.Label();
             this.button_OpenDailyTrans = new System.Windows.Forms.Button();
@@ -50,9 +53,7 @@
             this.button_step3 = new System.Windows.Forms.Button();
             this.button_step2_missingData = new System.Windows.Forms.Button();
             this.button_step1_AddSiteNO = new System.Windows.Forms.Button();
-            this.button_clearMultiTrans = new System.Windows.Forms.Button();
-            this.button_clearMepStyle = new System.Windows.Forms.Button();
-            this.button_clearDailyTrans = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBoxMepStyle.SuspendLayout();
             this.groupBoxMultiTrans.SuspendLayout();
             this.groupBox_DailyTrans.SuspendLayout();
@@ -77,6 +78,16 @@
             this.groupBoxMepStyle.TabStop = false;
             this.groupBoxMepStyle.Text = "MEP STYLE TIME SHEET";
             this.groupBoxMepStyle.Enter += new System.EventHandler(this.GroupBox1_Enter);
+            // 
+            // button_clearMepStyle
+            // 
+            this.button_clearMepStyle.Location = new System.Drawing.Point(733, 55);
+            this.button_clearMepStyle.Name = "button_clearMepStyle";
+            this.button_clearMepStyle.Size = new System.Drawing.Size(101, 41);
+            this.button_clearMepStyle.TabIndex = 10;
+            this.button_clearMepStyle.Text = "Clear";
+            this.button_clearMepStyle.UseVisualStyleBackColor = true;
+            this.button_clearMepStyle.Click += new System.EventHandler(this.Button_clearMepStyle_Click);
             // 
             // buttonTestMepStyle
             // 
@@ -122,6 +133,16 @@
             this.groupBoxMultiTrans.TabStop = false;
             this.groupBoxMultiTrans.Text = "MULTIPLE TRANSACTION";
             // 
+            // button_clearMultiTrans
+            // 
+            this.button_clearMultiTrans.Location = new System.Drawing.Point(733, 55);
+            this.button_clearMultiTrans.Name = "button_clearMultiTrans";
+            this.button_clearMultiTrans.Size = new System.Drawing.Size(101, 41);
+            this.button_clearMultiTrans.TabIndex = 10;
+            this.button_clearMultiTrans.Text = "Clear";
+            this.button_clearMultiTrans.UseVisualStyleBackColor = true;
+            this.button_clearMultiTrans.Click += new System.EventHandler(this.Button_clearMultiTrans_Click);
+            // 
             // buttonTestMultiTrans
             // 
             this.buttonTestMultiTrans.Enabled = false;
@@ -164,6 +185,16 @@
             this.groupBox_DailyTrans.TabIndex = 9;
             this.groupBox_DailyTrans.TabStop = false;
             this.groupBox_DailyTrans.Text = "DAILY TRANSACTIONS";
+            // 
+            // button_clearDailyTrans
+            // 
+            this.button_clearDailyTrans.Location = new System.Drawing.Point(733, 55);
+            this.button_clearDailyTrans.Name = "button_clearDailyTrans";
+            this.button_clearDailyTrans.Size = new System.Drawing.Size(101, 41);
+            this.button_clearDailyTrans.TabIndex = 10;
+            this.button_clearDailyTrans.Text = "Clear";
+            this.button_clearDailyTrans.UseVisualStyleBackColor = true;
+            this.button_clearDailyTrans.Click += new System.EventHandler(this.Button_clearDailyTrans_Click);
             // 
             // button_TestDailyTrans
             // 
@@ -239,6 +270,7 @@
             // 
             // groupBox_steps
             // 
+            this.groupBox_steps.Controls.Add(this.button1);
             this.groupBox_steps.Controls.Add(this.label1);
             this.groupBox_steps.Controls.Add(this.button_step3);
             this.groupBox_steps.Controls.Add(this.button_step2_missingData);
@@ -291,35 +323,15 @@
             this.button_step1_AddSiteNO.UseVisualStyleBackColor = true;
             this.button_step1_AddSiteNO.Click += new System.EventHandler(this.Button_step1_AddSiteNO_Click);
             // 
-            // button_clearMultiTrans
+            // button1
             // 
-            this.button_clearMultiTrans.Location = new System.Drawing.Point(733, 55);
-            this.button_clearMultiTrans.Name = "button_clearMultiTrans";
-            this.button_clearMultiTrans.Size = new System.Drawing.Size(101, 41);
-            this.button_clearMultiTrans.TabIndex = 10;
-            this.button_clearMultiTrans.Text = "Clear";
-            this.button_clearMultiTrans.UseVisualStyleBackColor = true;
-            this.button_clearMultiTrans.Click += new System.EventHandler(this.Button_clearMultiTrans_Click);
-            // 
-            // button_clearMepStyle
-            // 
-            this.button_clearMepStyle.Location = new System.Drawing.Point(733, 55);
-            this.button_clearMepStyle.Name = "button_clearMepStyle";
-            this.button_clearMepStyle.Size = new System.Drawing.Size(101, 41);
-            this.button_clearMepStyle.TabIndex = 10;
-            this.button_clearMepStyle.Text = "Clear";
-            this.button_clearMepStyle.UseVisualStyleBackColor = true;
-            this.button_clearMepStyle.Click += new System.EventHandler(this.Button_clearMepStyle_Click);
-            // 
-            // button_clearDailyTrans
-            // 
-            this.button_clearDailyTrans.Location = new System.Drawing.Point(733, 55);
-            this.button_clearDailyTrans.Name = "button_clearDailyTrans";
-            this.button_clearDailyTrans.Size = new System.Drawing.Size(101, 41);
-            this.button_clearDailyTrans.TabIndex = 10;
-            this.button_clearDailyTrans.Text = "Clear";
-            this.button_clearDailyTrans.UseVisualStyleBackColor = true;
-            this.button_clearDailyTrans.Click += new System.EventHandler(this.Button_clearDailyTrans_Click);
+            this.button1.Location = new System.Drawing.Point(472, 63);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(131, 64);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "break";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // FormMain
             // 
@@ -374,5 +386,6 @@
         private System.Windows.Forms.Button button_clearMultiTrans;
         private System.Windows.Forms.Button button_clearMepStyle;
         private System.Windows.Forms.Button button_clearDailyTrans;
+        private System.Windows.Forms.Button button1;
     }
 }

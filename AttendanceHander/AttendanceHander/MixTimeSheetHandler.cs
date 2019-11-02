@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace AttendanceHander
 {
-   public class MixTimeSheetHandler
+    public class MixTimeSheetHandler
     {
         class IntStringHolder
         {
@@ -45,6 +45,9 @@ namespace AttendanceHander
                     foreach (var dateOvertime in mepStyleWrap.dateOvertimes)
                     {
                         //now we need to compare the overtime dates
+                        if (is_overTime_in_mep_style_valid_or_nonEmpty(dateOvertime)
+                              == false)
+                            continue; //if overtime is empty in mep style then continue the iteration
 
                         if (DateTimeHandler
                              .Compare_dates_only(dateOvertime.date, multiWrap.date.content.Value))
@@ -54,7 +57,7 @@ namespace AttendanceHander
                                   mostRepeatedCheckInTime.time_inString, multiWrap)
                                   == false)
                                 return false;
-                            
+
                         }
                     }
 
@@ -64,18 +67,38 @@ namespace AttendanceHander
             return true;
         }
 
+        private bool is_overTime_in_mep_style_valid_or_nonEmpty(DateOvertime dateOvertime)
+        {
+
+            if (String.IsNullOrEmpty(dateOvertime.overtime))
+                return false;
+            else if (String.IsNullOrWhiteSpace(dateOvertime.overtime))
+                return false;
+
+            StringHandler stringHandler = new StringHandler();
+            if (stringHandler
+                .is_this_string_alpha_numeric_or_numeric_or_alpha_only
+                (dateOvertime.overtime) == All_const.str_type.Numeric)
+                return true;
+            else if (dateOvertime.overtime == SiGlobalVars.Instance.assumed_SickLeave_key.Key)
+                return true;
+
+
+            return false;
+        }
+
         private IntStringHolder get_mostRepeated_checkIn_time(String employeeNo,
             List<MultiTransWrap> multiTransWraps, MultiTransWrap multiTransWrap)
         {
             List<MultiTransWrap> fullDataOfEmployee
                 = multiTransWraps.Where(x => x.personnelNo.content == employeeNo
-                && x.checkInTime1.content!=null).ToList();
+                && x.checkInTime1.content != null).ToList();
             //we don't want those datas where checkIntime is null.
             if (fullDataOfEmployee.Count == 0)
             {
                 MessageBox.Show("No default or routing CheckIn time was found for employee = " +
                     employeeNo + " for the date = " + multiTransWrap.date.contentInString
-                    +"Thus it is skipped");
+                    + "Thus it is skipped");
                 return null;
             }
 
@@ -97,29 +120,26 @@ namespace AttendanceHander
 
         private Nullable<DateTime> calculate_checkOut_time(DateTime checkIn_time, String overtime)
         {
-            Nullable<DateTime> checkOut_time=null;
+            Nullable<DateTime> checkOut_time = null;
 
             int normalWorking_hours = SiGlobalVars.Instance.assumed_normal_workingHours;
 
             StringHandler stringHandler = new StringHandler();
-           
-            if(stringHandler
+
+            if (stringHandler
                 .is_this_string_alpha_numeric_or_numeric_or_alpha_only(overtime)
                 == All_const.str_type.Numeric)
             {
                 int overtime_Int
                   = int.Parse(overtime);
-
-                checkOut_time = checkIn_time.AddHours(overtime_Int);
-                //sometimes overtime will be like 8 or 10 or 5 etc
-               
-            }
-            else if(overtime == SiGlobalVars.Instance.assumed_SickLeave_key)
-            {
-                //for sick leave...like "SL"
+                //first add normal working time
                 checkOut_time = checkIn_time.AddHours(normalWorking_hours);
-                // for sickleave, no overtime is provided;
+                //then add overtime
+                checkOut_time = checkOut_time.Value.AddHours(overtime_Int);
+                //sometimes overtime will be like 8 or 10 or 5 etc
+
             }
+            
 
             return checkOut_time;
         }
@@ -127,9 +147,23 @@ namespace AttendanceHander
             (DateOvertime mepOvertime, DateItemWrap multiTransOvertime,
             String mostRepeated_checkIn_time, MultiTransWrap multiTransWrap)
         {
+            //check for sick leave
+            if(mepOvertime.overtime== SiGlobalVars.Instance.assumed_SickLeave_key.Key)
+            {
+                //means sick leave
+                //in this case we can skip the check in check out part
+                //we can write sick leave in the total work time
+                CommonOperations.modify_value_in_cell(multiTransWrap.totalTimeWorked
+                  .fullCell,SiGlobalVars.Instance.assumed_SickLeave_key.Value,
+                  SiGlobalVars.Instance.assumed_editFont_colour);
+                return true;
+
+            }
+
             DateTime checkIn_time;
+
             
-            if(DateTime.TryParse(mostRepeated_checkIn_time,out checkIn_time)
+            if (DateTime.TryParse(mostRepeated_checkIn_time, out checkIn_time)
                 == false)
             {
                 MessageBox.Show("Couldn't convert Most Repeated CheckIn-time = " +
@@ -141,8 +175,8 @@ namespace AttendanceHander
             else
             {
 
-             var checkOut_time=
-                    calculate_checkOut_time(checkIn_time,mepOvertime.overtime);
+                var checkOut_time =
+                       calculate_checkOut_time(checkIn_time, mepOvertime.overtime);
 
                 if (checkOut_time == null)
                 {
@@ -167,16 +201,26 @@ namespace AttendanceHander
 
                 multiTransWrap.checkOutTime1.content = checkOut_time.Value;
                 multiTransWrap.checkOutTime1.contentInString = checkOut_time.Value.TimeOfDay.ToString();
-                CommonOperations.modify_value_in_cell(multiTransWrap.checkOutTime2
+                CommonOperations.modify_value_in_cell(multiTransWrap.checkOutTime1
                    .fullCell, multiTransWrap.checkOutTime1.contentInString,
                    SiGlobalVars.Instance.assumed_editFont_colour);
 
                 TimeSpan timeSpan = checkOut_time.Value.Subtract(checkIn_time);
+                timeSpan = DateTimeHandler.get_absolute_timeSpan(timeSpan);
+
                 multiTransWrap.workingTime1.content = timeSpan;
                 multiTransWrap.workingTime1.contentInString = timeSpan.ToString();
                 CommonOperations.modify_value_in_cell(multiTransWrap.workingTime1
                    .fullCell, multiTransWrap.workingTime1.contentInString,
                    SiGlobalVars.Instance.assumed_editFont_colour);
+
+                
+                multiTransWrap.totalTimeWorked.content = timeSpan;
+                multiTransWrap.totalTimeWorked.contentInString = timeSpan.ToString();
+                CommonOperations.modify_value_in_cell(multiTransWrap.totalTimeWorked
+                   .fullCell, multiTransWrap.totalTimeWorked.contentInString,
+                   SiGlobalVars.Instance.assumed_editFont_colour);
+
                 return true;
 
             }

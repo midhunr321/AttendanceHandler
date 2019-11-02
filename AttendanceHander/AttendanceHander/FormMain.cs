@@ -357,5 +357,10 @@ namespace AttendanceHander
         {
             clear_dailyTrans_instance();
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            String simply = "just to break the program";
+        }
     }
 }

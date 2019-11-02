@@ -8,6 +8,14 @@ namespace AttendanceHander
 {
   public  class DateTimeHandler
     {
+
+        public static TimeSpan get_absolute_timeSpan(TimeSpan timeSpan)
+        {
+            if (timeSpan < TimeSpan.Zero)
+                return timeSpan.Negate();
+            else
+                return timeSpan;
+        }
         public static DateTime mix_different_date_and_time(DateTime new_date,
           DateTime time)
         {

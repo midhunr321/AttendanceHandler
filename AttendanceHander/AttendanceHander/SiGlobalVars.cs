@@ -54,7 +54,8 @@ namespace AttendanceHander
 
 
         public int assumed_normal_workingHours = 8;
-        public String assumed_SickLeave_key = "SL";
+        public KeyValuePair<String,String> assumed_SickLeave_key
+            = new KeyValuePair<string, string>("SL","Sick Leave");
         public Color assumed_editFont_colour = Color.Red;
     }
 
