@@ -24,6 +24,8 @@ namespace AttendanceHander
         {
             fullCell.Value = Value;
             fullCell.Font.Color = color;
+            fullCell.Font.Italic = true;
+            fullCell.Font.Bold = true;
         }
         public static Boolean compare_multiTrans_employeeNo_to_MepStyle_employeeNo
             (String mepStyle_employeeNo, String multiTrans_employeeNo )
