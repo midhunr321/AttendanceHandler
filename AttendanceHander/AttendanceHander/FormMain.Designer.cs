@@ -49,12 +49,12 @@
             this.label_statusPayLoad = new System.Windows.Forms.Label();
             this.button_openPayLoad = new System.Windows.Forms.Button();
             this.groupBox_steps = new System.Windows.Forms.GroupBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button_step3 = new System.Windows.Forms.Button();
             this.button_step2_missingData = new System.Windows.Forms.Button();
             this.button_step1_AddSiteNO = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.folderBrowserDialog_PDFexport = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBoxMepStyle.SuspendLayout();
             this.groupBoxMultiTrans.SuspendLayout();
@@ -286,6 +286,16 @@
             this.groupBox_steps.TabStop = false;
             this.groupBox_steps.Text = "STEPS";
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(615, 61);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(131, 64);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "hide";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.Button2_Click);
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(472, 63);
@@ -308,7 +318,6 @@
             // 
             // button_step3
             // 
-            this.button_step3.Enabled = false;
             this.button_step3.Location = new System.Drawing.Point(319, 59);
             this.button_step3.Name = "button_step3";
             this.button_step3.Size = new System.Drawing.Size(123, 69);
@@ -337,16 +346,6 @@
             this.button_step1_AddSiteNO.Text = "STEP1: Add Site No. in Multiple Transaction from Daily Transaction";
             this.button_step1_AddSiteNO.UseVisualStyleBackColor = true;
             this.button_step1_AddSiteNO.Click += new System.EventHandler(this.Button_step1_AddSiteNO_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(615, 61);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(131, 64);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "hide";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 
             // FormMain
             // 

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -58,20 +59,20 @@ namespace AttendanceHander.MultipleTransaction
 
 
         }
-  
 
-       public static Boolean Add_a_heading_column_for_site_no(Excel.Range previousHeading,
-           Excel.Worksheet sheet,ref MultiHeadings headingWraps)
+
+        public static Boolean Add_a_heading_column_for_site_no(Excel.Range previousHeading,
+            Excel.Worksheet sheet, ref MultiHeadings headingWraps)
         {
 
             Excel.Range siteNoHeading
                 = previousHeading.Next;
 
-           if( headingWraps.siteNo != null)
+            if (headingWraps.siteNo != null)
             {
                 return true;
             }
-           else
+            else
             {
                 headingWraps.siteNo = new HeadingWrap("Site No.");
                 headingWraps.siteNo.fullCell = siteNoHeading;
@@ -87,40 +88,123 @@ namespace AttendanceHander.MultipleTransaction
 
         private void hide_unhide_all_multi_trans_data_rows(Boolean hide)
         {
-            foreach(var datawrap in SiGlobalVars.Instance.mepStyleWraps)
+            foreach (var datawrap in SiGlobalVars.Instance.multiTransWraps)
             {
-                datawrap.code.fullCell.EntireRow.Hidden = hide;
+                datawrap.personnelNo.fullCell.EntireRow.Hidden = hide;
             }
         }
 
-        private void hide_unhide_data_of(IGrouping<String,MultiTransWrap> igroup, Boolean hide)
+        private void hide_unhide_data_of(IGrouping<String, MultiTransWrap> igroup, Boolean hide,
+            out String employeeName)
         {
+            employeeName = null;
             foreach (var item in igroup)
             {
                 item.personnelNo.fullCell.EntireRow.Hidden = hide;
+                employeeName = item.firstName.content;
             }
         }
-        public void print_each_employee()
+
+        private FileInfo get_output_file(DirectoryInfo outputDirectory, String filename_without_extension)
+        {
+
+
+            if (outputDirectory == null)
+                return null;
+
+            String outputPath = outputDirectory.FullName + "\\" + filename_without_extension
+                   + ".pdf";
+
+            FileInfo outputFile = new FileInfo(outputPath);
+
+            return outputFile;
+        }
+        private DirectoryInfo open_directory_dialog_for_exporting_PDF(FolderBrowserDialog folderBrowserDialog)
+        {
+            DialogResult dialogResult = folderBrowserDialog.ShowDialog();
+            DirectoryInfo directoryInfo;
+            if (dialogResult == DialogResult.OK)
+            {
+                directoryInfo = new DirectoryInfo(folderBrowserDialog.SelectedPath);
+                return directoryInfo;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        private String select_employeePosition(Form rootForm)
+        {
+            //Todo: Employee positions are explicity defined instead of finding from the worksheet
+
+
+            Selector selector = new Selector("Employee Position",
+                SiGlobalVars.Instance.assumed_MultiTrans_EmployeePositions,
+               rootForm);
+            selector.ShowDialog();
+            String selected_employee_position;
+            DialogResult dialogResult = selector.DialogResult;
+            if(dialogResult == DialogResult.OK)
+            {
+                selected_employee_position = selector.selected_employeePosition;
+       
+                return selected_employee_position;
+
+            }
+            
+            return null;
+
+        }
+        public Boolean PRINT_each_employee(FolderBrowserDialog folderBrowserDialog,
+            Form main_form)
         {
             //first hide all cells
             hide_unhide_all_multi_trans_data_rows(true);
 
             //now show rows one by one for each employee
             List<MultiTransWrap> multiTransWraps = SiGlobalVars.Instance.multiTransWraps;
-            var group_by_employeeNo = multiTransWraps.GroupBy(x => x.personnelNo.content).ToList();
+            String selected_employeePosition = select_employeePosition(main_form);
+            if (selected_employeePosition == null)
+                return false;
 
-            foreach(var igroup in group_by_employeeNo)
+            var filter_by_position = multiTransWraps
+                .Where(x => x.position.content == selected_employeePosition).ToList();
+
+            var group_by_employeeNo = filter_by_position.GroupBy(x => x.personnelNo.content).ToList();
+
+            DirectoryInfo outputDirectory =
+                open_directory_dialog_for_exporting_PDF(folderBrowserDialog);
+
+            if (outputDirectory == null)
             {
+                MessageBox.Show("Output Directory wasn't selected");
+                return false;
+            }
+
+            foreach (var igroup in group_by_employeeNo)
+            {
+                String employeeName;
                 //first  show the selected rows
-                hide_unhide_data_of(igroup,true);
+                hide_unhide_data_of(igroup, false, out employeeName);
                 //now print the single employee rows
 
+                String fileName_without_extension = igroup.Key + " " + employeeName;
+                FileInfo outputFile = get_output_file(outputDirectory,
+                    fileName_without_extension);
+                EXCEL_HELPER.print_to_pdf(SiGlobalVars.Instance.multiTransCurrentWorkSheet,
+                    outputFile);
+
+                //after exporting the pdf, again we have to hide the rows of the ones we have
+                //already exported as pdf. So..
+                hide_unhide_data_of(igroup, true, out employeeName);
 
             }
 
 
 
-
+            return true;
         }
 
 
@@ -137,7 +221,7 @@ namespace AttendanceHander.MultipleTransaction
             find_headings(ref SiGlobalVars.
                 Instance.multiTransHeadings, out error_found);
             if (error_found == true)
-                return ;
+                return;
 
 
             //now we got all the headings
@@ -148,7 +232,7 @@ namespace AttendanceHander.MultipleTransaction
 
             read_each_rows_of_data(out error_found);
             if (error_found == true)
-                return ;
+                return;
 
         }
         private Boolean find_headings(ref MultiTransHelper
@@ -206,9 +290,9 @@ namespace AttendanceHander.MultipleTransaction
                        == true)
                     {
                         //if more than 1 search results means it should be special case
-                      if(  filterout_multiple_search_results_for_special_case_and_assign_values
-                        (search_results, heading)
-                            ==false)
+                        if (filterout_multiple_search_results_for_special_case_and_assign_values
+                          (search_results, heading)
+                              == false)
                         {
                             error_found = true;
                             return false;
@@ -292,7 +376,7 @@ namespace AttendanceHander.MultipleTransaction
                     = eXCEL_HELPER.get_value_of_merge_cell(checkIn_time2);
 
             }
-           else if (heading.Equals(multiTransHeading.checkOutTime1))
+            else if (heading.Equals(multiTransHeading.checkOutTime1))
             {
 
                 Excel.Range checkout_time1 =
@@ -310,7 +394,7 @@ namespace AttendanceHander.MultipleTransaction
                     = eXCEL_HELPER.get_value_of_merge_cell(checkout_time2);
 
             }
-         else if (heading.Equals(multiTransHeading.workingTime1))
+            else if (heading.Equals(multiTransHeading.workingTime1))
             {
 
                 Excel.Range workTime1 =

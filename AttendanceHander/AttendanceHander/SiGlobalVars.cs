@@ -57,6 +57,8 @@ namespace AttendanceHander
         public KeyValuePair<String,String> assumed_SickLeave_key
             = new KeyValuePair<string, string>("SL","Sick Leave");
         public Color assumed_editFont_colour = Color.Red;
+        public List<String> assumed_MultiTrans_EmployeePositions
+            = new List<string>(new String[] { "Plumber", "Electrician" });
     }
 
 

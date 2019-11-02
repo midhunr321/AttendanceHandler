@@ -183,6 +183,12 @@
       <DependentUpon>TestMultipleTransactions.cs</DependentUpon>
     </Compile>
     <Compile Include="SearchHelper.cs" />
+    <Compile Include="Selector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Selector.Designer.cs">
+      <DependentUpon>Selector.cs</DependentUpon>
+    </Compile>
     <Compile Include="SiGlobalVars.cs" />
     <Compile Include="TestMepStyleTime.cs">
       <SubType>Form</SubType>
@@ -224,6 +230,9 @@
     </Compile>
     <EmbeddedResource Include="Ribbon1.resx">
       <DependentUpon>Ribbon1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Selector.resx">
+      <DependentUpon>Selector.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestMepStyleTime.resx">
       <DependentUpon>TestMepStyleTime.cs</DependentUpon>

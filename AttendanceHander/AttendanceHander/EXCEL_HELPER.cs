@@ -7,10 +7,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Tools.Excel;
 using System.Diagnostics;
-
-
-
-
+using System.IO;
 
 namespace AttendanceHander
 {
@@ -26,19 +23,15 @@ namespace AttendanceHander
             //CONSTRUCTOR
 
         }
-        public static void print_to_pdf(Excel.Range worksheet, DirectoryInfo)
+        public static void print_to_pdf(Excel.Worksheet worksheet,
+         FileInfo outputFile)
         {
             try
             {
+               
 
-                worksheet.ExportAsFixedFormat(Excel.XlFixedFormatType.xlTypePDF,)
-                wkb.ExportAsFixedFormat(Microsoft.Office.Interop.Excel.XlFixedFormatType.xlTypePDF, outputLocation);
-
-                wkb.Close();
-                app.Quit();
-
-                return outputLocation;
-
+                worksheet.ExportAsFixedFormat(Excel.XlFixedFormatType.xlTypePDF, outputFile.FullName);
+                
             }
             catch (Exception ex)
             {

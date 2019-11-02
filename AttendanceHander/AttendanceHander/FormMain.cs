@@ -365,11 +365,23 @@ namespace AttendanceHander
 
         private void Button2_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         private void Button_step3_Click(object sender, EventArgs e)
         {
+            if(SiGlobalVars.Instance.multiTransWorkbook==null||
+                SiGlobalVars.Instance.multiTransCurrentWorkSheet==null||
+                SiGlobalVars.Instance.multiTransWraps==null)
+            {
+                MessageBox.Show("Multiple Trans Workbook & Worksheet are null");
+                return;
+            }
+            MultipleTransaction.MultiTransHelper multiTransHelper
+                = new MultipleTransaction.MultiTransHelper(SiGlobalVars.Instance.multiTransCurrentWorkSheet,
+                SiGlobalVars.Instance.multiTransWorkbook);
+            multiTransHelper.PRINT_each_employee(folderBrowserDialog_PDFexport,this);
+
 
         }
 
