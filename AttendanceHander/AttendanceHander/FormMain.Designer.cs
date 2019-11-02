@@ -49,11 +49,13 @@
             this.label_statusPayLoad = new System.Windows.Forms.Label();
             this.button_openPayLoad = new System.Windows.Forms.Button();
             this.groupBox_steps = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button_step3 = new System.Windows.Forms.Button();
             this.button_step2_missingData = new System.Windows.Forms.Button();
             this.button_step1_AddSiteNO = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.folderBrowserDialog_PDFexport = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBoxMepStyle.SuspendLayout();
             this.groupBoxMultiTrans.SuspendLayout();
             this.groupBox_DailyTrans.SuspendLayout();
@@ -270,6 +272,7 @@
             // 
             // groupBox_steps
             // 
+            this.groupBox_steps.Controls.Add(this.button2);
             this.groupBox_steps.Controls.Add(this.button1);
             this.groupBox_steps.Controls.Add(this.label1);
             this.groupBox_steps.Controls.Add(this.button_step3);
@@ -281,6 +284,16 @@
             this.groupBox_steps.TabIndex = 11;
             this.groupBox_steps.TabStop = false;
             this.groupBox_steps.Text = "STEPS";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(472, 63);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(131, 64);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "break";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // label1
             // 
@@ -299,8 +312,9 @@
             this.button_step3.Name = "button_step3";
             this.button_step3.Size = new System.Drawing.Size(123, 69);
             this.button_step3.TabIndex = 2;
-            this.button_step3.Text = "STEP 3:";
+            this.button_step3.Text = "STEP 3: Print Each Employee in Multiple Transcations";
             this.button_step3.UseVisualStyleBackColor = true;
+            this.button_step3.Click += new System.EventHandler(this.Button_step3_Click);
             // 
             // button_step2_missingData
             // 
@@ -323,15 +337,15 @@
             this.button_step1_AddSiteNO.UseVisualStyleBackColor = true;
             this.button_step1_AddSiteNO.Click += new System.EventHandler(this.Button_step1_AddSiteNO_Click);
             // 
-            // button1
+            // button2
             // 
-            this.button1.Location = new System.Drawing.Point(472, 63);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(131, 64);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "break";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.button2.Location = new System.Drawing.Point(615, 61);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(131, 64);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "hide";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 
             // FormMain
             // 
@@ -387,5 +401,7 @@
         private System.Windows.Forms.Button button_clearMepStyle;
         private System.Windows.Forms.Button button_clearDailyTrans;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog_PDFexport;
     }
 }

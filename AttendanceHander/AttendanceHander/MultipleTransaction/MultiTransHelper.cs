@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -83,6 +84,44 @@ namespace AttendanceHander.MultipleTransaction
             }
 
         }
+
+        private void hide_unhide_all_multi_trans_data_rows(Boolean hide)
+        {
+            foreach(var datawrap in SiGlobalVars.Instance.mepStyleWraps)
+            {
+                datawrap.code.fullCell.EntireRow.Hidden = hide;
+            }
+        }
+
+        private void hide_unhide_data_of(IGrouping<String,MultiTransWrap> igroup, Boolean hide)
+        {
+            foreach (var item in igroup)
+            {
+                item.personnelNo.fullCell.EntireRow.Hidden = hide;
+            }
+        }
+        public void print_each_employee()
+        {
+            //first hide all cells
+            hide_unhide_all_multi_trans_data_rows(true);
+
+            //now show rows one by one for each employee
+            List<MultiTransWrap> multiTransWraps = SiGlobalVars.Instance.multiTransWraps;
+            var group_by_employeeNo = multiTransWraps.GroupBy(x => x.personnelNo.content).ToList();
+
+            foreach(var igroup in group_by_employeeNo)
+            {
+                //first  show the selected rows
+                hide_unhide_data_of(igroup,true);
+                
+            }
+
+           //now print the single employee rows
+
+
+        }
+
+
         public void MAIN_understand_the_excel_sheet(out Boolean error_found)
         {
             if (SiGlobalVars.Instance.multiTransHeadings == null)

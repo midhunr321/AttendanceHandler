@@ -23,9 +23,13 @@ namespace AttendanceHander
         private Boolean add_data_from_mep_to_multiTrans(MepStyleWrap mepStyleWrap,
             List<MultiTransWrap> multiTransWraps)
         {
+            List<String> skipList_Emp_no = new List<String>();
 
             foreach (var multiWrap in multiTransWraps)
             {
+                if (skipList_Emp_no.Contains(multiWrap.personnelNo.content))
+                    continue; //if skip list contains this employee no, then skip
+
                 if (StringHandler.trim_and_compare_strings(mepStyleWrap.name.content,
                    multiWrap.firstName.content) &&
                    CommonOperations
@@ -40,7 +44,14 @@ namespace AttendanceHander
                = get_mostRepeated_checkIn_time(multiWrap.personnelNo.content, multiTransWraps,
                multiWrap);
                     if (mostRepeatedCheckInTime == null)
+                    {
+                        skipList_Emp_no.Add(multiWrap.personnelNo.content);
+                        //if get_mostRepeated_checkIn_time() returns null
+                        //it means not even single check-in time is available with this guy
+                        //in this case we need to skip this employee completely.
                         continue;
+
+                    }
 
                     foreach (var dateOvertime in mepStyleWrap.dateOvertimes)
                     {
@@ -139,7 +150,7 @@ namespace AttendanceHander
                 //sometimes overtime will be like 8 or 10 or 5 etc
 
             }
-            
+
 
             return checkOut_time;
         }
@@ -148,13 +159,13 @@ namespace AttendanceHander
             String mostRepeated_checkIn_time, MultiTransWrap multiTransWrap)
         {
             //check for sick leave
-            if(mepOvertime.overtime== SiGlobalVars.Instance.assumed_SickLeave_key.Key)
+            if (mepOvertime.overtime == SiGlobalVars.Instance.assumed_SickLeave_key.Key)
             {
                 //means sick leave
                 //in this case we can skip the check in check out part
                 //we can write sick leave in the total work time
                 CommonOperations.modify_value_in_cell(multiTransWrap.totalTimeWorked
-                  .fullCell,SiGlobalVars.Instance.assumed_SickLeave_key.Value,
+                  .fullCell, SiGlobalVars.Instance.assumed_SickLeave_key.Value,
                   SiGlobalVars.Instance.assumed_editFont_colour);
                 return true;
 
@@ -162,7 +173,7 @@ namespace AttendanceHander
 
             DateTime checkIn_time;
 
-            
+
             if (DateTime.TryParse(mostRepeated_checkIn_time, out checkIn_time)
                 == false)
             {
@@ -214,7 +225,7 @@ namespace AttendanceHander
                    .fullCell, multiTransWrap.workingTime1.contentInString,
                    SiGlobalVars.Instance.assumed_editFont_colour);
 
-                
+
                 multiTransWrap.totalTimeWorked.content = timeSpan;
                 multiTransWrap.totalTimeWorked.contentInString = timeSpan.ToString();
                 CommonOperations.modify_value_in_cell(multiTransWrap.totalTimeWorked

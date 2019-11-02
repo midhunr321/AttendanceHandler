@@ -26,6 +26,11 @@ namespace AttendanceHander
             //CONSTRUCTOR
 
         }
+
+        public static void hide_unhide_excel_row(ref Excel.Range fullCell, Boolean hidden)
+        {
+            fullCell.EntireRow.Hidden = hidden;
+        }
         public Excel.Range get_lowest_column_cell_from_search_result(List<Excel.Range> searchResults)
         {
             if (searchResults == null)

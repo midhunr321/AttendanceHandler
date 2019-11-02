@@ -362,5 +362,15 @@ namespace AttendanceHander
         {
             String simply = "just to break the program";
         }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Button_step3_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

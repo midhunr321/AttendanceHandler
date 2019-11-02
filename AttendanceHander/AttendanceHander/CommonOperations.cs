@@ -19,6 +19,7 @@ namespace AttendanceHander
         private Excel.Worksheet worksheet;
 
       
+     
         public static void modify_value_in_cell(Excel.Range fullCell, String Value,
             Color color)
         {
@@ -26,6 +27,7 @@ namespace AttendanceHander
             fullCell.Font.Color = color;
             fullCell.Font.Italic = true;
             fullCell.Font.Bold = true;
+            
         }
         public static Boolean compare_multiTrans_employeeNo_to_MepStyle_employeeNo
             (String mepStyle_employeeNo, String multiTrans_employeeNo )
