@@ -380,7 +380,10 @@ namespace AttendanceHander
             MultipleTransaction.MultiTransHelper multiTransHelper
                 = new MultipleTransaction.MultiTransHelper(SiGlobalVars.Instance.multiTransCurrentWorkSheet,
                 SiGlobalVars.Instance.multiTransWorkbook);
-            multiTransHelper.PRINT_each_employee(folderBrowserDialog_PDFexport,this);
+            if (multiTransHelper.PRINT_each_employee(folderBrowserDialog_PDFexport, this)
+                  == true)
+                MessageBox.Show("Printing Successfuly Completed. Output Folder = "
+                    + folderBrowserDialog_PDFexport.SelectedPath);
 
 
         }
