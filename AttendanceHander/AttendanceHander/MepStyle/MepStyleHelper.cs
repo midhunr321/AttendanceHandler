@@ -101,8 +101,9 @@ namespace AttendanceHander
         }
         private Boolean feed_site_transfer_data_of_a_cell(ref List<DateOvertime> dateOvertime,
            Excel.Range fullCell, MepStyleHelper.Headings headings,
-          out Boolean stopThisRowIteration)
+          out Boolean stopThisRowIteration, ref int no_of_tries_for_siteTransfCode)
         {
+            //we need to look for transfer datas three tries.
             stopThisRowIteration = false;
             //inorder to feed site transfer data
             //first we have to make sure that 
@@ -130,10 +131,15 @@ namespace AttendanceHander
                 extractedDataWrap = codeAnalyzer.analyze_string(transferCode);
                 if (extractedDataWrap == null)
                 {
+                    no_of_tries_for_siteTransfCode = no_of_tries_for_siteTransfCode + 1;
                     //if no valid site tranfer code is found, we can break from
                     //iteration of the row.
-                    stopThisRowIteration = true;
-                    return false;
+                    if (no_of_tries_for_siteTransfCode > 3)
+                    {
+                        stopThisRowIteration = true;
+                        return false;
+                    }
+                    
                 }
                 else
                 {
@@ -455,12 +461,15 @@ namespace AttendanceHander
             // then we can say we reached the empty space
 
             MepStyleWrap mepStyleWrap = new MepStyleWrap();
+            int no_of_tries_for_SiteTransCode = 0;
+
             do
             {
                 //first nextFullCell is firstFullCell
                 //so 
                 var currentFullCell = nextFullCell;
-
+                int currentCellRow = currentFullCell.Row;//for testing
+                int currentCellColumn = currentFullCell.Column;
                 Boolean result1;
                 result1 = feed_non_overtime_datas_of_single_row(ref mepStyleWrap,
                     currentFullCell,
@@ -489,7 +498,8 @@ namespace AttendanceHander
                 result3 = feed_site_transfer_data_of_a_cell
                       (ref mepStyleWrap.dateOvertimes, currentFullCell,
                          SiGlobalVars.Instance.mepStyleHeadings,
-                        out stop_this_row_iteration);
+                        out stop_this_row_iteration,
+                        ref no_of_tries_for_SiteTransCode);
 
                 if (stop_this_row_iteration == true)
                     break;
