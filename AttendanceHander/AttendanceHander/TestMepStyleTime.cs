@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace AttendanceHander
 {
-    public partial class TestMepStyleTime : Form
+    public partial class Form_TestMepStyle : Form
     {
-        public TestMepStyleTime()
+        public Form_TestMepStyle()
         {
             InitializeComponent();
         }

@@ -113,10 +113,12 @@ namespace AttendanceHander.MultipleTransaction
             {
                 //first  show the selected rows
                 hide_unhide_data_of(igroup,true);
-                
+                //now print the single employee rows
+
+
             }
 
-           //now print the single employee rows
+
 
 
         }

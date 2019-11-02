@@ -26,7 +26,26 @@ namespace AttendanceHander
             //CONSTRUCTOR
 
         }
+        public static void print_to_pdf(Excel.Range worksheet, DirectoryInfo)
+        {
+            try
+            {
 
+                worksheet.ExportAsFixedFormat(Excel.XlFixedFormatType.xlTypePDF,)
+                wkb.ExportAsFixedFormat(Microsoft.Office.Interop.Excel.XlFixedFormatType.xlTypePDF, outputLocation);
+
+                wkb.Close();
+                app.Quit();
+
+                return outputLocation;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+                throw ex;
+            }
+        }
         public static void hide_unhide_excel_row(ref Excel.Range fullCell, Boolean hidden)
         {
             fullCell.EntireRow.Hidden = hidden;

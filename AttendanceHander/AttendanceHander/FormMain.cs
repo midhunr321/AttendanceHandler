@@ -202,8 +202,8 @@ namespace AttendanceHander
 
         private void ButtonTestMepStyle_Click(object sender, EventArgs e)
         {
-            TestMepStyleTime testMepStyleTime
-                = new TestMepStyleTime();
+            Form_TestMepStyle testMepStyleTime
+                = new Form_TestMepStyle();
             this.Hide();
             testMepStyleTime.Show();
         }
@@ -370,6 +370,13 @@ namespace AttendanceHander
 
         private void Button_step3_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void ButtonTestMultiTrans_Click(object sender, EventArgs e)
+        {
+            Form_TestMepStyle form_TestMepStyle = new Form_TestMepStyle();
+            form_TestMepStyle.Show();
 
         }
     }

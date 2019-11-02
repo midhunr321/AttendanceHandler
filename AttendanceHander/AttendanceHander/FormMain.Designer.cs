@@ -154,6 +154,7 @@
             this.buttonTestMultiTrans.TabIndex = 9;
             this.buttonTestMultiTrans.Text = "Test Multiple Transactions";
             this.buttonTestMultiTrans.UseVisualStyleBackColor = true;
+            this.buttonTestMultiTrans.Click += new System.EventHandler(this.ButtonTestMultiTrans_Click);
             // 
             // label_StatusMultiTrans
             // 
