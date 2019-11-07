@@ -328,6 +328,7 @@
             // 
             // button_step2_missingData
             // 
+            this.button_step2_missingData.Enabled = false;
             this.button_step2_missingData.Location = new System.Drawing.Point(175, 59);
             this.button_step2_missingData.Name = "button_step2_missingData";
             this.button_step2_missingData.Size = new System.Drawing.Size(123, 69);
