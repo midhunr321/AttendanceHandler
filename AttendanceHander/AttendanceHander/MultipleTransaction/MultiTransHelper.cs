@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -119,19 +120,29 @@ namespace AttendanceHander.MultipleTransaction
 
             return outputFile;
         }
-        private DirectoryInfo open_directory_dialog_for_exporting_PDF(FolderBrowserDialog folderBrowserDialog)
+        private DirectoryInfo open_directory_dialog_for_exporting_PDF()
         {
-            DialogResult dialogResult = folderBrowserDialog.ShowDialog();
-            DirectoryInfo directoryInfo;
-            if (dialogResult == DialogResult.OK)
+            DirectoryInfo folder=null;
+            CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
+            commonOpenFileDialog.IsFolderPicker = true;
+            if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                directoryInfo = new DirectoryInfo(folderBrowserDialog.SelectedPath);
-                return directoryInfo;
+
+                folder = new DirectoryInfo(commonOpenFileDialog.FileName);
             }
-            else
-            {
-                return null;
-            }
+
+            return folder;
+            //DialogResult dialogResult = folderBrowserDialog.ShowDialog();
+            //DirectoryInfo directoryInfo;
+            //if (dialogResult == DialogResult.OK)
+            //{
+            //    directoryInfo = new DirectoryInfo(folderBrowserDialog.SelectedPath);
+            //    return directoryInfo;
+            //}
+            //else
+            //{
+            //    return null;
+            //}
 
         }
 
@@ -146,20 +157,20 @@ namespace AttendanceHander.MultipleTransaction
             selector.ShowDialog();
             String selected_employee_position;
             DialogResult dialogResult = selector.DialogResult;
-            if(dialogResult == DialogResult.OK)
+            if (dialogResult == DialogResult.OK)
             {
                 selected_employee_position = selector.selected_employeePosition;
-       
+
                 return selected_employee_position;
 
             }
-            
+
             return null;
 
         }
-        public Boolean PRINT_each_employee(FolderBrowserDialog folderBrowserDialog,
-            Form main_form)
+        public Boolean PRINT_each_employee(Form main_form, out String outputPath)
         {
+            outputPath = null;
             //first hide all cells
             hide_unhide_all_multi_trans_data_rows(true);
 
@@ -175,7 +186,7 @@ namespace AttendanceHander.MultipleTransaction
             var group_by_employeeNo = filter_by_position.GroupBy(x => x.personnelNo.content).ToList();
 
             DirectoryInfo outputDirectory =
-                open_directory_dialog_for_exporting_PDF(folderBrowserDialog);
+                open_directory_dialog_for_exporting_PDF();
 
             if (outputDirectory == null)
             {
@@ -202,7 +213,7 @@ namespace AttendanceHander.MultipleTransaction
 
             }
 
-
+            outputPath = outputDirectory.FullName;
 
             return true;
         }

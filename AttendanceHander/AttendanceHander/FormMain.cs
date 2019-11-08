@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -368,6 +369,7 @@ namespace AttendanceHander
             
         }
 
+       
         private void Button_step3_Click(object sender, EventArgs e)
         {
             if(SiGlobalVars.Instance.multiTransWorkbook==null||
@@ -377,13 +379,17 @@ namespace AttendanceHander
                 MessageBox.Show("Multiple Trans Workbook & Worksheet are null");
                 return;
             }
+            
+            String pdf_export_output_path;
+
             MultipleTransaction.MultiTransHelper multiTransHelper
-                = new MultipleTransaction.MultiTransHelper(SiGlobalVars.Instance.multiTransCurrentWorkSheet,
-                SiGlobalVars.Instance.multiTransWorkbook);
-            if (multiTransHelper.PRINT_each_employee(folderBrowserDialog_PDFexport, this)
-                  == true)
+              = new MultipleTransaction.MultiTransHelper(SiGlobalVars.Instance.multiTransCurrentWorkSheet,
+              SiGlobalVars.Instance.multiTransWorkbook);
+            if (multiTransHelper.PRINT_each_employee(this,
+               out pdf_export_output_path)
+                 == true)
                 MessageBox.Show("Printing Successfuly Completed. Output Folder = "
-                    + folderBrowserDialog_PDFexport.SelectedPath);
+                    + pdf_export_output_path);
 
 
         }
