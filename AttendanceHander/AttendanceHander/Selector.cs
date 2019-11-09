@@ -32,6 +32,7 @@ namespace AttendanceHander
             this.Hide();
 
             this.DialogResult = DialogResult.OK;
+            if(rootForm!=null)
             rootForm.Activate();
         }
 

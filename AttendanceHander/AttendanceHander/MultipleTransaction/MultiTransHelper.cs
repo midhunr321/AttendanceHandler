@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Threading;
 using Excel = Microsoft.Office.Interop.Excel;
 
 
@@ -123,12 +125,14 @@ namespace AttendanceHander.MultipleTransaction
         private DirectoryInfo open_directory_dialog_for_exporting_PDF()
         {
             DirectoryInfo folder=null;
-            CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
-            commonOpenFileDialog.IsFolderPicker = true;
-            if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
+            FolderBrowserDialogEx folderBrowserDialogEx = new FolderBrowserDialogEx();
+            folderBrowserDialogEx.ShowEditBox = true;
+            var result = folderBrowserDialogEx.ShowDialog();
+
+            if (result == DialogResult.OK)
             {
 
-                folder = new DirectoryInfo(commonOpenFileDialog.FileName);
+                folder = new DirectoryInfo(folderBrowserDialogEx.SelectedPath);
             }
 
             return folder;

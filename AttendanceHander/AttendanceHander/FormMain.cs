@@ -379,18 +379,56 @@ namespace AttendanceHander
                 MessageBox.Show("Multiple Trans Workbook & Worksheet are null");
                 return;
             }
-            
-            String pdf_export_output_path;
 
-            MultipleTransaction.MultiTransHelper multiTransHelper
-              = new MultipleTransaction.MultiTransHelper(SiGlobalVars.Instance.multiTransCurrentWorkSheet,
-              SiGlobalVars.Instance.multiTransWorkbook);
-            if (multiTransHelper.PRINT_each_employee(this,
-               out pdf_export_output_path)
-                 == true)
-                MessageBox.Show("Printing Successfuly Completed. Output Folder = "
-                    + pdf_export_output_path);
 
+         
+            var exportThreadComplete = new TaskCompletionSource<Boolean>();
+            Thread exportingThread = new Thread(() =>
+            {
+                String pdf_export_output_path;
+                
+                MultipleTransaction.MultiTransHelper multiTransHelper
+                  = new MultipleTransaction.MultiTransHelper(SiGlobalVars.Instance.multiTransCurrentWorkSheet,
+                  SiGlobalVars.Instance.multiTransWorkbook);
+                if (multiTransHelper.PRINT_each_employee(null,
+                   out pdf_export_output_path)
+                     == true)
+                    MessageBox.Show("Printing Successfuly Completed. Output Folder = "
+                        + pdf_export_output_path);
+
+                //after executing the thread go back to the root form.
+                exportThreadComplete.TrySetResult(true);
+            });
+            exportingThread.Name = "ExportingThread";
+            exportingThread.SetApartmentState(ApartmentState.STA);
+            exportingThread.Start();
+
+            Form_ExportStatus form_ExportStatus = new Form_ExportStatus(ref exportingThread);
+            form_ExportStatus.Show();
+
+            form_ExportStatus.button_cancelExport.Click += (s, f) => {
+                exportingThread.Abort();
+                MessageBox.Show("Aborted the Exporting");
+                form_ExportStatus.Hide();
+            };
+     
+            //Thread statusForm = new Thread(() =>
+            //{
+            //    Form_ExportStatus form_ExportStatus = new Form_ExportStatus(ref exportingThread);
+            //    form_ExportStatus.Show();
+
+            //});
+            //statusForm.SetApartmentState(ApartmentState.STA);
+            //statusForm.IsBackground = false;
+            //statusForm.Name = "statusform";
+            //statusForm.Start();
+
+
+
+            //if (exportThreadComplete.Task.Result == true)
+            //{
+            //    statusForm.Abort();
+            //}
 
         }
 
