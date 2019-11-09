@@ -32,7 +32,7 @@ namespace AttendanceHander
             this.Hide();
 
             this.DialogResult = DialogResult.OK;
-
+            rootForm.Activate();
         }
 
         private void Selector_Load(object sender, EventArgs e)

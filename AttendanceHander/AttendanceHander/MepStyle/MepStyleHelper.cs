@@ -252,13 +252,14 @@ namespace AttendanceHander
                         DateTime date = new DateTime(currMonthYear.Year,
                         currMonthYear.Month, overtimeDay);
                         newItem.date = date;
+                        newItem.fullCell = fullCell;
                         mepStyleWrap.dateOvertimes.Add(newItem);
 
                     }
                     else
                     {
                         MessageBox.Show("Couldn't convert heading name to index." +
-                            "Heading name might not be a number");
+                            "Heading name might not be a number; Cell Address= ");
                         error_occured = true;
                         return false;
                     }

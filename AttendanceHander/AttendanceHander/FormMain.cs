@@ -400,5 +400,22 @@ namespace AttendanceHander
             form_TestMepStyle.Show();
 
         }
+
+        private void Button_step4_transfDataToMep_Click(object sender, EventArgs e)
+        {
+            if(SiGlobalVars.Instance.multiTransWraps == null ||
+                SiGlobalVars.Instance.mepStyleWraps == null)
+            {
+                MessageBox.Show("Either Multiple Transaction or MEP Timesheet is null");
+            }
+          MixTimeSheetHandler
+                .Transfer_data_from_multiTrans_to_mepStyle
+                (SiGlobalVars.Instance.multiTransWraps,
+                SiGlobalVars.Instance.mepStyleWraps);
+
+
+
+            MessageBox.Show("Data transfer from Multiple Transaciton to Mep Successfuly Completed");
+        }
     }
 }

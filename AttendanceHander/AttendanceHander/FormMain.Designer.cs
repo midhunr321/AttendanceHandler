@@ -49,6 +49,7 @@
             this.label_statusPayLoad = new System.Windows.Forms.Label();
             this.button_openPayLoad = new System.Windows.Forms.Button();
             this.groupBox_steps = new System.Windows.Forms.GroupBox();
+            this.button_step4_TransfDataToMep = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -272,6 +273,7 @@
             // 
             // groupBox_steps
             // 
+            this.groupBox_steps.Controls.Add(this.button_step4_TransfDataToMep);
             this.groupBox_steps.Controls.Add(this.button2);
             this.groupBox_steps.Controls.Add(this.button1);
             this.groupBox_steps.Controls.Add(this.label1);
@@ -285,9 +287,19 @@
             this.groupBox_steps.TabStop = false;
             this.groupBox_steps.Text = "STEPS";
             // 
+            // button_step4_TransfDataToMep
+            // 
+            this.button_step4_TransfDataToMep.Location = new System.Drawing.Point(448, 59);
+            this.button_step4_TransfDataToMep.Name = "button_step4_TransfDataToMep";
+            this.button_step4_TransfDataToMep.Size = new System.Drawing.Size(123, 69);
+            this.button_step4_TransfDataToMep.TabIndex = 6;
+            this.button_step4_TransfDataToMep.Text = "STEP 4: Transfer MultiTrans Data to Mep Style";
+            this.button_step4_TransfDataToMep.UseVisualStyleBackColor = true;
+            this.button_step4_TransfDataToMep.Click += new System.EventHandler(this.Button_step4_transfDataToMep_Click);
+            // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(615, 61);
+            this.button2.Location = new System.Drawing.Point(718, 59);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(131, 64);
             this.button2.TabIndex = 5;
@@ -297,7 +309,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(472, 63);
+            this.button1.Location = new System.Drawing.Point(577, 59);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(131, 64);
             this.button1.TabIndex = 4;
@@ -311,9 +323,9 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(24, 148);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(405, 17);
+            this.label1.Size = new System.Drawing.Size(409, 17);
             this.label1.TabIndex = 3;
-            this.label1.Text = "Note: Labours Normal Working Time is Assumed as 8:00 hours";
+            this.label1.Text = "Note: Labours Normal Working Time is Assumed as 8:00 hours;";
             // 
             // button_step3
             // 
@@ -402,5 +414,6 @@
         private System.Windows.Forms.Button button_clearDailyTrans;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button_step4_TransfDataToMep;
     }
 }

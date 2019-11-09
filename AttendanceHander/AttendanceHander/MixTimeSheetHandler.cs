@@ -252,7 +252,8 @@ namespace AttendanceHander
 
         }
 
-        private Boolean add_site_no_to_multiTrans_sheet(MultiTransWrap multiTransWrap)
+        private Boolean add_site_no_to_multiTrans_sheet(
+            MultiTransWrap multiTransWrap)
         {
             if (MultiTransHelper
                    .Add_a_heading_column_for_site_no
@@ -269,6 +270,7 @@ namespace AttendanceHander
                 multiTransWrap.siteNo.fullCell = multiTransWrap.totalTimeWorked.fullCell.Next;
                 //now assign site no value
                 multiTransWrap.siteNo.fullCell.Value = multiTransWrap.siteNo.content;
+           
                 return true;
             }
             else
@@ -322,6 +324,38 @@ namespace AttendanceHander
 
             return true;
 
+        }
+
+        internal static Boolean Transfer_data_from_multiTrans_to_mepStyle(
+            List<MultiTransWrap>multiTransWraps, List<MepStyleWrap> mepStyleWraps)
+        {
+            foreach(var multiWrap in multiTransWraps)
+            {
+                foreach(var mepWrap in mepStyleWraps)
+                {
+                    if(CommonOperations
+                        .compare_multiTrans_employeeNo_to_MepStyle_employeeNo
+                        (mepWrap.code.content,multiWrap.personnelNo.content)
+                        ==true
+                        )
+                    {
+                        foreach(var dateOvertime in mepWrap.dateOvertimes)
+                        {
+                            if(DateTimeHandler
+                                .Compare_dates_only(dateOvertime.date, multiWrap.date.content.Value))
+                            {
+                                dateOvertime.overtime = multiWrap.totalTimeWorked.contentInString;
+                                dateOvertime.fullCell.Value = multiWrap.totalTimeWorked.contentInString;
+                                if(multiWrap.siteNo!=null)
+                                dateOvertime.siteNo = multiWrap.siteNo.content;
+                            }
+                        }
+                    }
+
+
+                }
+            }
+            return true;
         }
     }
 }
