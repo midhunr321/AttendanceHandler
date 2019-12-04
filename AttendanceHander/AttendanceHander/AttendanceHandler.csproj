@@ -188,6 +188,12 @@
     <Compile Include="MultipleTransaction\TestMultipleTransactions.Designer.cs">
       <DependentUpon>TestMultipleTransactions.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPassword.Designer.cs">
+      <DependentUpon>FormPassword.cs</DependentUpon>
+    </Compile>
     <Compile Include="SearchHelper.cs" />
     <Compile Include="Selector.cs">
       <SubType>Form</SubType>
@@ -223,6 +229,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MultipleTransaction\TestMultipleTransactions.resx">
       <DependentUpon>TestMultipleTransactions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPassword.resx">
+      <DependentUpon>FormPassword.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -283,7 +292,7 @@
     <ManifestKeyFile>AttendanceHandler_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>CE66C73DF71BD24C70ADEF51CDE873B0509062ED</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>0120E0C00E8758C4172FBAA8AE80B6207416C5F9</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
