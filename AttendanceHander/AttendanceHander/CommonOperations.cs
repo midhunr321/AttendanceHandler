@@ -29,8 +29,74 @@ namespace AttendanceHander
             fullCell.Font.Bold = true;
             
         }
+        private static String replace_S_in_string_with_M(String sourceString,
+            StrItemWrap deviceName_in_dailyTransFormat)
+        {
+           
+            int count = sourceString.Count(x => x == 'S');
+            if (count > 1)
+            {
+                //that means more than one S is there
+                //normally it shouldn't happen
+                //a healthy one should look like this S223
+                //so that means an error
 
-        
+                String error_message = "More than one 'S' character was found in the source string";
+                MessageBox.Show(error_message + " Cell Address = " +
+                        deviceName_in_dailyTransFormat.fullCell.Address
+                        + " Content = " + deviceName_in_dailyTransFormat.content);
+                return null;
+            }
+             return sourceString.Replace('S', 'M');
+        }
+        public static String convert_siteNo_to_SiteNoMechFormat(StrItemWrap deviceName_in_dailyTransFormat)
+        {
+            //note that deviceName is the site no in daily transactions
+            //first just trim the empty spaces
+            String siteNo = deviceName_in_dailyTransFormat.content.Trim();
+
+            //check how many '-' is there in the string
+            //eg S276-1101 
+            // in the above, only one '-' is there
+            //but if more than one '-', it should throw an error
+
+            int count = siteNo.Count(x => x == '-');
+            if (count > 1)
+            {
+                //means '-' repeats more than one time
+                //which means error
+
+                MessageBox.Show("SiteNo or Device name in Daily Transactions is invalid; it has more than one '-'" +
+                    " Content=" + deviceName_in_dailyTransFormat.content + " Cell address" + deviceName_in_dailyTransFormat.fullCell.Address);
+                return null;
+            }
+            else if (count == 0)
+            {
+                //means example if like this S223
+                //then no need to filter any thing
+                //only change 'S' to 'M'
+             
+                siteNo = replace_S_in_string_with_M(siteNo,
+                    deviceName_in_dailyTransFormat);
+                if (siteNo == null)
+                    return null;
+               
+            }
+            else if (count == 1)
+            {
+                //means example if like this S269-D2
+                //in this case get all char till '-'
+                //so split it by '-'
+                siteNo = siteNo.Split('-')[0];
+                //now trim unwanted spaces
+                siteNo = siteNo.Trim();
+                //now replace s with M
+                siteNo = replace_S_in_string_with_M(siteNo, 
+                    deviceName_in_dailyTransFormat);
+            }
+
+            return siteNo;
+        }
         public static Boolean compare_multiTrans_employeeNo_to_MepStyle_employeeNo
             (String mepStyle_employeeNo, String multiTrans_employeeNo )
         {

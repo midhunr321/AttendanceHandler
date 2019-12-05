@@ -22,5 +22,6 @@ namespace AttendanceHander.MultipleTransaction
         public TimeSpanItemWrap workingTime2;
         public TimeSpanItemWrap totalTimeWorked;
         public StrItemWrap siteNo;
+        public StrItemWrap siteNoMechFormat;
     }
 }
