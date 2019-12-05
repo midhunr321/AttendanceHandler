@@ -366,20 +366,20 @@ namespace AttendanceHander
 
         private void Button2_Click(object sender, EventArgs e)
         {
-            
+
         }
 
-       
+
         private void Button_step3_Click(object sender, EventArgs e)
         {
-            if(SiGlobalVars.Instance.multiTransWorkbook==null||
-                SiGlobalVars.Instance.multiTransCurrentWorkSheet==null||
-                SiGlobalVars.Instance.multiTransWraps==null)
+            if (SiGlobalVars.Instance.multiTransWorkbook == null ||
+                SiGlobalVars.Instance.multiTransCurrentWorkSheet == null ||
+                SiGlobalVars.Instance.multiTransWraps == null)
             {
                 MessageBox.Show("Multiple Trans Workbook & Worksheet are null");
                 return;
             }
-            
+
             String pdf_export_output_path;
 
             MultipleTransaction.MultiTransHelper multiTransHelper
@@ -403,19 +403,39 @@ namespace AttendanceHander
 
         private void Button_step4_transfDataToMep_Click(object sender, EventArgs e)
         {
-            if(SiGlobalVars.Instance.multiTransWraps == null ||
+            if (SiGlobalVars.Instance.multiTransWraps == null ||
                 SiGlobalVars.Instance.mepStyleWraps == null)
             {
                 MessageBox.Show("Either Multiple Transaction or MEP Timesheet is null");
             }
-          MixTimeSheetHandler
-                .Transfer_data_from_multiTrans_to_mepStyle
-                (SiGlobalVars.Instance.multiTransWraps,
-                SiGlobalVars.Instance.mepStyleWraps);
+            MixTimeSheetHandler
+                  .Transfer_data_from_multiTrans_to_mepStyle
+                  (SiGlobalVars.Instance.multiTransWraps,
+                  SiGlobalVars.Instance.mepStyleWraps);
 
 
 
             MessageBox.Show("Data transfer from Multiple Transaciton to Mep Successfuly Completed");
         }
+
+        private void Button_step2A_siteNo_Click(object sender, EventArgs e)
+        {
+            if (SiGlobalVars.Instance.multiTransWraps == null ||
+               SiGlobalVars.Instance.mepStyleWraps == null)
+            {
+                MessageBox.Show("Either MEP STYLE or MULTI Trans is null");
+                return;
+            }
+            MixTimeSheetHandler mixTimeSheetHandler = new MixTimeSheetHandler();
+            Form_CorrectSiteNo form_CorrectSiteNo = new Form_CorrectSiteNo(this);
+            form_CorrectSiteNo.ShowDialog();
+            if (form_CorrectSiteNo.DialogResult == DialogResult.OK)
+            {
+                Boolean shortSiteNo = form_CorrectSiteNo.ShortSiteNo;
+                
+            }
+
+        }
+
     }
 }

@@ -56,6 +56,7 @@
             this.button_step3 = new System.Windows.Forms.Button();
             this.button_step2_missingData = new System.Windows.Forms.Button();
             this.button_step1_AddSiteNO = new System.Windows.Forms.Button();
+            this.button_step2A_siteNo = new System.Windows.Forms.Button();
             this.groupBoxMepStyle.SuspendLayout();
             this.groupBoxMultiTrans.SuspendLayout();
             this.groupBox_DailyTrans.SuspendLayout();
@@ -273,6 +274,7 @@
             // 
             // groupBox_steps
             // 
+            this.groupBox_steps.Controls.Add(this.button_step2A_siteNo);
             this.groupBox_steps.Controls.Add(this.button_step4_TransfDataToMep);
             this.groupBox_steps.Controls.Add(this.button2);
             this.groupBox_steps.Controls.Add(this.button1);
@@ -289,7 +291,7 @@
             // 
             // button_step4_TransfDataToMep
             // 
-            this.button_step4_TransfDataToMep.Location = new System.Drawing.Point(448, 59);
+            this.button_step4_TransfDataToMep.Location = new System.Drawing.Point(533, 59);
             this.button_step4_TransfDataToMep.Name = "button_step4_TransfDataToMep";
             this.button_step4_TransfDataToMep.Size = new System.Drawing.Size(123, 69);
             this.button_step4_TransfDataToMep.TabIndex = 6;
@@ -299,9 +301,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(718, 59);
+            this.button2.Location = new System.Drawing.Point(763, 128);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(131, 64);
+            this.button2.Size = new System.Drawing.Size(86, 27);
             this.button2.TabIndex = 5;
             this.button2.Text = "hide";
             this.button2.UseVisualStyleBackColor = true;
@@ -309,9 +311,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(577, 59);
+            this.button1.Location = new System.Drawing.Point(700, 129);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(131, 64);
+            this.button1.Size = new System.Drawing.Size(64, 26);
             this.button1.TabIndex = 4;
             this.button1.Text = "break";
             this.button1.UseVisualStyleBackColor = true;
@@ -329,7 +331,7 @@
             // 
             // button_step3
             // 
-            this.button_step3.Location = new System.Drawing.Point(319, 59);
+            this.button_step3.Location = new System.Drawing.Point(404, 59);
             this.button_step3.Name = "button_step3";
             this.button_step3.Size = new System.Drawing.Size(123, 69);
             this.button_step3.TabIndex = 2;
@@ -340,7 +342,7 @@
             // button_step2_missingData
             // 
             this.button_step2_missingData.Enabled = false;
-            this.button_step2_missingData.Location = new System.Drawing.Point(175, 59);
+            this.button_step2_missingData.Location = new System.Drawing.Point(156, 59);
             this.button_step2_missingData.Name = "button_step2_missingData";
             this.button_step2_missingData.Size = new System.Drawing.Size(123, 69);
             this.button_step2_missingData.TabIndex = 1;
@@ -358,6 +360,16 @@
             this.button_step1_AddSiteNO.Text = "STEP1: Add Site No. in Multiple Transaction from Daily Transaction";
             this.button_step1_AddSiteNO.UseVisualStyleBackColor = true;
             this.button_step1_AddSiteNO.Click += new System.EventHandler(this.Button_step1_AddSiteNO_Click);
+            // 
+            // button_step2A_siteNo
+            // 
+            this.button_step2A_siteNo.Location = new System.Drawing.Point(285, 59);
+            this.button_step2A_siteNo.Name = "button_step2A_siteNo";
+            this.button_step2A_siteNo.Size = new System.Drawing.Size(113, 69);
+            this.button_step2A_siteNo.TabIndex = 7;
+            this.button_step2A_siteNo.Text = "STEP 2A: Replace \'S\' in SiteNo with \'M\'";
+            this.button_step2A_siteNo.UseVisualStyleBackColor = true;
+            this.button_step2A_siteNo.Click += new System.EventHandler(this.Button_step2A_siteNo_Click);
             // 
             // FormMain
             // 
@@ -415,5 +427,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button_step4_TransfDataToMep;
+        private System.Windows.Forms.Button button_step2A_siteNo;
     }
 }

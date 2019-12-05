@@ -175,6 +175,12 @@
     <Compile Include="FormSheetSelector.Designer.cs">
       <DependentUpon>FormSheetSelector.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_CorrectSiteNo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_CorrectSiteNo.Designer.cs">
+      <DependentUpon>Form_CorrectSiteNo.cs</DependentUpon>
+    </Compile>
     <Compile Include="HeadingWrap.cs" />
     <Compile Include="MepStyle\MepStyleSiteNoCodeAnalyzer.cs" />
     <Compile Include="MepStyle\MepStyleHelper.cs" />
@@ -228,6 +234,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormSheetSelector.resx">
       <DependentUpon>FormSheetSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_CorrectSiteNo.resx">
+      <DependentUpon>Form_CorrectSiteNo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MultipleTransaction\TestMultipleTransactions.resx">
       <DependentUpon>TestMultipleTransactions.cs</DependentUpon>
