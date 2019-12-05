@@ -270,7 +270,7 @@ namespace AttendanceHander
                 multiTransWrap.siteNo.fullCell = multiTransWrap.totalTimeWorked.fullCell.Next;
                 //now assign site no value
                 multiTransWrap.siteNo.fullCell.Value = multiTransWrap.siteNo.content;
-           
+
                 return true;
             }
             else
@@ -300,6 +300,23 @@ namespace AttendanceHander
                         multiWrap.siteNo = new StrItemWrap();
 
                     multiWrap.siteNo.content = dailyWrap.deviceName.content;
+                    if (multiWrap.siteNoMechFormat == null)
+                        multiWrap.siteNoMechFormat = new MultiTransWrap.SiteNoMechFormat();
+                    if (multiWrap.siteNoMechFormat.fullName == null)
+                        multiWrap.siteNoMechFormat.fullName = new StrItemWrap();
+                    if (multiWrap.siteNoMechFormat.shortName == null)
+                        multiWrap.siteNoMechFormat.shortName = new StrItemWrap();
+
+                    //now we need to feed the site no in mech format
+                    //that means we need to replace 'S' in site no with 'M'
+                    //eg S269 = M269
+                    //shortName means = M276
+                    //fullName means = M276-1101 
+                    multiWrap.siteNoMechFormat.shortName.content = CommonOperations
+                        .convert_siteNo_to_SiteNoMechFormat_ShortName(dailyWrap.deviceName);
+                    multiWrap.siteNoMechFormat.fullName.content = CommonOperations
+                        .replace_first_S_in_siteNo_with_M(dailyWrap.deviceName);
+
                     if (add_site_no_to_multiTrans_sheet(multiWrap)
                          == false)
                         return false;
@@ -327,27 +344,27 @@ namespace AttendanceHander
         }
 
         internal static Boolean Transfer_data_from_multiTrans_to_mepStyle(
-            List<MultiTransWrap>multiTransWraps, List<MepStyleWrap> mepStyleWraps)
+            List<MultiTransWrap> multiTransWraps, List<MepStyleWrap> mepStyleWraps)
         {
-            foreach(var multiWrap in multiTransWraps)
+            foreach (var multiWrap in multiTransWraps)
             {
-                foreach(var mepWrap in mepStyleWraps)
+                foreach (var mepWrap in mepStyleWraps)
                 {
-                    if(CommonOperations
+                    if (CommonOperations
                         .compare_multiTrans_employeeNo_to_MepStyle_employeeNo
-                        (mepWrap.code.content,multiWrap.personnelNo.content)
-                        ==true
+                        (mepWrap.code.content, multiWrap.personnelNo.content)
+                        == true
                         )
                     {
-                        foreach(var dateOvertime in mepWrap.dateOvertimes)
+                        foreach (var dateOvertime in mepWrap.dateOvertimes)
                         {
-                            if(DateTimeHandler
+                            if (DateTimeHandler
                                 .Compare_dates_only(dateOvertime.date, multiWrap.date.content.Value))
                             {
                                 dateOvertime.overtime = multiWrap.totalTimeWorked.contentInString;
                                 dateOvertime.fullCell.Value = multiWrap.totalTimeWorked.contentInString;
-                                if(multiWrap.siteNo!=null)
-                                dateOvertime.siteNo = multiWrap.siteNo.content;
+                                if (multiWrap.siteNo != null)
+                                    dateOvertime.siteNo = multiWrap.siteNo.content;
                             }
                         }
                     }

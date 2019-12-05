@@ -47,9 +47,45 @@ namespace AttendanceHander
                         + " Content = " + deviceName_in_dailyTransFormat.content);
                 return null;
             }
-             return sourceString.Replace('S', 'M');
+           else if (count ==0)
+            {
+                //that means there is no 'S'
+                // means invalid site no
+
+                String error_message = "No 'S' was detected in the site no";
+                MessageBox.Show(error_message + " Cell Address = " +
+                        deviceName_in_dailyTransFormat.fullCell.Address
+                        + " Content = " + deviceName_in_dailyTransFormat.content);
+                return null;
+            }
+            //first trim free spaces
+            sourceString = sourceString.Trim();
+            //now check if the site no begins with 'S'
+            //ie the 'S' should be at the very beginning.
+            if (sourceString.IndexOf('S', 0) > 0)
+            {
+                //i.e the char 'S' is not at the very beginning
+                //which means error
+                String error_message = "Char 'S' was not at the very beginning";
+                MessageBox.Show(error_message + " Cell Address = " +
+                        deviceName_in_dailyTransFormat.fullCell.Address
+                        + " Content = " + deviceName_in_dailyTransFormat.content);
+                return null;
+            }
+            return sourceString.Replace('S', 'M');
         }
-        public static String convert_siteNo_to_SiteNoMechFormat(StrItemWrap deviceName_in_dailyTransFormat)
+        public static String replace_first_S_in_siteNo_with_M(StrItemWrap deviceName_in_dailyTransFormat)
+        {
+            string siteno = deviceName_in_dailyTransFormat.content.Trim();
+            //after trim the first char should be 'S'
+            Char[] array = siteno.ToCharArray();
+            if (array[0] == 'S')
+                array[0] = 'M';
+            siteno = array.ToString();
+            siteno = siteno.Trim();
+            return siteno;
+        }
+        public static String convert_siteNo_to_SiteNoMechFormat_ShortName(StrItemWrap deviceName_in_dailyTransFormat)
         {
             //note that deviceName is the site no in daily transactions
             //first just trim the empty spaces

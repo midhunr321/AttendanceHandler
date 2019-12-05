@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttendanceHandlerTests", "A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttendanceHandlerTests_MIX", "AttendanceHandlerTests1\AttendanceHandlerTests_MIX.csproj", "{8AD7F707-31CA-45A8-A678-D7447064FBCC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttendanceHandlerCommonOperationsTests", "AttendanceHandlerCommonOperationsTests\AttendanceHandlerCommonOperationsTests.csproj", "{EDA3737A-ACE4-4CEB-990F-42A9E2F3151B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{8AD7F707-31CA-45A8-A678-D7447064FBCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AD7F707-31CA-45A8-A678-D7447064FBCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AD7F707-31CA-45A8-A678-D7447064FBCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDA3737A-ACE4-4CEB-990F-42A9E2F3151B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDA3737A-ACE4-4CEB-990F-42A9E2F3151B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDA3737A-ACE4-4CEB-990F-42A9E2F3151B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDA3737A-ACE4-4CEB-990F-42A9E2F3151B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
