@@ -302,8 +302,8 @@ namespace AttendanceHander
                     multiWrap.siteNo.content = dailyWrap.deviceName.content;
                     if (multiWrap.siteNoMechFormat == null)
                         multiWrap.siteNoMechFormat = new MultiTransWrap.SiteNoMechFormat();
-                    if (multiWrap.siteNoMechFormat.fullName == null)
-                        multiWrap.siteNoMechFormat.fullName = new StrItemWrap();
+                    if (multiWrap.siteNoMechFormat.longSiteNo == null)
+                        multiWrap.siteNoMechFormat.longSiteNo = new StrItemWrap();
                     if (multiWrap.siteNoMechFormat.shortName == null)
                         multiWrap.siteNoMechFormat.shortName = new StrItemWrap();
 
@@ -314,7 +314,7 @@ namespace AttendanceHander
                     //fullName means = M276-1101 
                     multiWrap.siteNoMechFormat.shortName.content = CommonOperations
                         .convert_siteNo_to_SiteNoMechFormat_ShortName(dailyWrap.deviceName);
-                    multiWrap.siteNoMechFormat.fullName.content = CommonOperations
+                    multiWrap.siteNoMechFormat.longSiteNo.content = CommonOperations
                         .replace_first_S_in_siteNo_with_M(dailyWrap.deviceName);
 
                     if (add_site_no_to_multiTrans_sheet(multiWrap)
@@ -372,6 +372,82 @@ namespace AttendanceHander
 
                 }
             }
+            return true;
+        }
+
+        internal Boolean correct_siteNo_in_multiTrans_with_fullMechSiteNo(List<MultiTransWrap> multiTransWraps)
+        {
+            foreach (var item in multiTransWraps)
+            {
+                //first read or get shortnames
+                //first get the shortname
+                if (item.siteNo == null)
+                    continue;   //sometimes siteno is not available then ignore the cell for correction
+
+
+                String fullName =
+                    CommonOperations.replace_first_S_in_siteNo_with_M(item.siteNo);
+
+                if (fullName == null)
+                {
+                    MessageBox.Show("Failed to correct Site No. Process is Aborted; No changes have " +
+                        "been made in the multiTrans Excel File");
+                    return false;
+                }
+                   
+                item.siteNoMechFormat.longSiteNo.content
+                    = fullName;
+
+            }
+            foreach (var item in multiTransWraps)
+            {
+                if (item.siteNo == null)
+                    continue;   //sometimes siteno is not available then ignore the cell for correction
+                //now write 
+                item.siteNo.fullCell.Value = item.siteNoMechFormat.longSiteNo.content;
+                item.siteNoMechFormat.longSiteNo.fullCell = item.siteNo.fullCell;
+
+            }
+
+
+            return true;
+        }
+
+        internal Boolean correct_siteNo_in_multiTrans_with_shortMechSiteNo
+            (List<MultiTransWrap> multiTransWraps)
+        {
+            foreach(var item in multiTransWraps)
+            {
+                //first read or get shortnames
+                //first get the shortname
+                if (item.siteNo == null)
+                    continue;   //sometimes siteno is not available then ignore the cell for correction
+
+                String shortname =
+                    CommonOperations.convert_siteNo_to_SiteNoMechFormat_ShortName(item.siteNo);
+
+                if (shortname == null)
+                {
+                    MessageBox.Show("Failed to correct Site No. Process is Aborted; No changes have " +
+                        "been made in the multiTrans Excel File");
+                    return false;
+
+                }
+                item.siteNoMechFormat.shortName.content
+                    = shortname;
+
+            }
+            foreach (var item in multiTransWraps)
+            {
+                if (item.siteNo == null)
+                    continue;   //sometimes siteno is not available then ignore the cell for correction
+                //now write 
+                item.siteNo.fullCell.Value = item.siteNoMechFormat.shortName.content;
+                item.siteNoMechFormat.shortName.fullCell = item.siteNo.fullCell;
+
+            }
+            
+
             return true;
         }
     }

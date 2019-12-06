@@ -28,7 +28,7 @@ namespace AttendanceHander.MultipleTransaction
         public class SiteNoMechFormat
         {
             public StrItemWrap shortName;
-            public StrItemWrap fullName;
+            public StrItemWrap longSiteNo;
         }
     }
 

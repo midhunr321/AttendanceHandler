@@ -432,7 +432,23 @@ namespace AttendanceHander
             if (form_CorrectSiteNo.DialogResult == DialogResult.OK)
             {
                 Boolean shortSiteNo = form_CorrectSiteNo.ShortSiteNo;
-                
+
+                if(shortSiteNo==true)
+                {
+                    if (mixTimeSheetHandler
+                          .correct_siteNo_in_multiTrans_with_shortMechSiteNo
+                          (SiGlobalVars.Instance.multiTransWraps) == true)
+                        MessageBox.Show("Site No. corrected to Short Mech Site No in MultiTrans Excel file");
+                }
+                else
+                {
+                   if( mixTimeSheetHandler
+                        .correct_siteNo_in_multiTrans_with_fullMechSiteNo
+                        (SiGlobalVars.Instance.multiTransWraps)==true)
+                        MessageBox.Show("Site No. corrected to Long Mech Site No in MultiTrans Excel file");
+
+                }
+
             }
 
         }
