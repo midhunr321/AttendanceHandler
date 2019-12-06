@@ -312,10 +312,14 @@ namespace AttendanceHander
                     //eg S269 = M269
                     //shortName means = M276
                     //fullName means = M276-1101 
-                    multiWrap.siteNoMechFormat.shortName.content = CommonOperations
-                        .convert_siteNo_to_SiteNoMechFormat_ShortName(dailyWrap.deviceName);
-                    multiWrap.siteNoMechFormat.longSiteNo.content = CommonOperations
-                        .replace_first_S_in_siteNo_with_M(dailyWrap.deviceName);
+                    if (dailyWrap.deviceName.content != String.Empty)
+                    {
+                        multiWrap.siteNoMechFormat.shortName.content = CommonOperations
+                    .convert_siteNo_to_SiteNoMechFormat_ShortName(dailyWrap.deviceName);
+                        multiWrap.siteNoMechFormat.longSiteNo.content = CommonOperations
+                            .replace_first_S_in_siteNo_with_M(dailyWrap.deviceName);
+                    }
+                
 
                     if (add_site_no_to_multiTrans_sheet(multiWrap)
                          == false)

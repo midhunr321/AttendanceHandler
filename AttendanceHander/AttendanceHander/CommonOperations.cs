@@ -79,6 +79,9 @@ namespace AttendanceHander
             string siteno = deviceName_in_dailyTransFormat.content.Trim();
             //after trim the first char should be 'S'
             Char[] array = siteno.ToCharArray();
+            if (array.Length == 0)//if null then return the same
+                return siteno;
+
             if (array[0] == 'S')
                 array[0] = 'M';
             siteno = array.ToString();
