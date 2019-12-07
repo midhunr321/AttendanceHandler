@@ -438,14 +438,18 @@ namespace AttendanceHander
                     if (mixTimeSheetHandler
                           .correct_siteNo_in_multiTrans_with_shortMechSiteNo
                           (SiGlobalVars.Instance.multiTransWraps) == true)
-                        MessageBox.Show("Site No. corrected to Short Mech Site No in MultiTrans Excel file");
+                        MessageBox.Show("Site No.s are corrected to Short Mech Site No in MultiTrans Excel file");
+                    else
+                        MessageBox.Show("Site No. correction failed");
                 }
                 else
                 {
                    if( mixTimeSheetHandler
                         .correct_siteNo_in_multiTrans_with_fullMechSiteNo
                         (SiGlobalVars.Instance.multiTransWraps)==true)
-                        MessageBox.Show("Site No. corrected to Long Mech Site No in MultiTrans Excel file");
+                        MessageBox.Show("Site No.s  are corrected to Long Mech Site No in MultiTrans Excel file");
+                   else
+                        MessageBox.Show("Site No. correction failed");
 
                 }
 

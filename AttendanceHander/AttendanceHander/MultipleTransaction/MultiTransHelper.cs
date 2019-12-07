@@ -65,6 +65,11 @@ namespace AttendanceHander.MultipleTransaction
         public static Boolean Add_a_heading_column_for_site_no(Excel.Range previousHeading,
             Excel.Worksheet sheet, ref MultiHeadings headingWraps)
         {
+            if(sheet==null)
+            {
+                MessageBox.Show("Multiple Transaction Excel file is either closed or invalid");
+                return false;
+            }
 
             Excel.Range siteNoHeading
                 = previousHeading.Next;

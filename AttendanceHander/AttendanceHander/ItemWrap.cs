@@ -35,6 +35,12 @@ namespace AttendanceHander
         public HeadingWrap heading;
 
     }
+    public class DecimalItemWrap : ItemWrap
+    {
+        public Decimal content;
+        public HeadingWrap heading;
+
+    }
     public class LongItemWrap : ItemWrap
     {
         public long content;

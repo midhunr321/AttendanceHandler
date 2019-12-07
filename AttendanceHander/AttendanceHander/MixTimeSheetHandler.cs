@@ -381,6 +381,7 @@ namespace AttendanceHander
 
         internal Boolean correct_siteNo_in_multiTrans_with_fullMechSiteNo(List<MultiTransWrap> multiTransWraps)
         {
+            Boolean not_even_one_SiteNo_is_corrected = true;
             foreach (var item in multiTransWraps)
             {
                 //first read or get shortnames
@@ -410,8 +411,12 @@ namespace AttendanceHander
                 //now write 
                 item.siteNo.fullCell.Value = item.siteNoMechFormat.longSiteNo.content;
                 item.siteNoMechFormat.longSiteNo.fullCell = item.siteNo.fullCell;
+                not_even_one_SiteNo_is_corrected = false;
 
             }
+
+            if (not_even_one_SiteNo_is_corrected == true)
+                return false;
 
 
             return true;
@@ -420,7 +425,8 @@ namespace AttendanceHander
         internal Boolean correct_siteNo_in_multiTrans_with_shortMechSiteNo
             (List<MultiTransWrap> multiTransWraps)
         {
-            foreach(var item in multiTransWraps)
+            Boolean not_even_one_SiteNo_is_corrected = true;
+            foreach (var item in multiTransWraps)
             {
                 //first read or get shortnames
                 //first get the shortname
@@ -448,9 +454,12 @@ namespace AttendanceHander
                 //now write 
                 item.siteNo.fullCell.Value = item.siteNoMechFormat.shortName.content;
                 item.siteNoMechFormat.shortName.fullCell = item.siteNo.fullCell;
+                not_even_one_SiteNo_is_corrected = false;
 
             }
-            
+
+            if (not_even_one_SiteNo_is_corrected == true)
+                return false;
 
             return true;
         }

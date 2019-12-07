@@ -84,7 +84,7 @@ namespace AttendanceHander
 
             if (array[0] == 'S')
                 array[0] = 'M';
-            siteno = array.ToString();
+            siteno = new string(array);
             siteno = siteno.Trim();
             return siteno;
         }
