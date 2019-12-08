@@ -8,7 +8,7 @@ namespace AttendanceHander.PayLoadFormat
 {
    public class PayLoadWrap
     {
-
+        public List<Day> days;
         public class Day
         {
             public StrItemWrap company;

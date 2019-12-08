@@ -54,17 +54,17 @@ namespace AttendanceHander.PayLoadFormat
             }
         }
 
-        private void loop_through_sheets(out Boolean error_found)
+        private void extract_data_from_sheets(out Boolean error_found)
         {
             error_found = false;
-            List<String> expected_sheetNames = get_sheetNames_based_on_month();
-            if(expected_sheetNames ==null)
+            int totalDaysInMonth = get_total_days_in_this_month();
+            if(totalDaysInMonth <0)
             {
                 error_found = true;
                 return;
             }
 
-            if (all_expectedSheets_are_available(expected_sheetNames)
+            if (loop_through_each_date_sheets_in_order(totalDaysInMonth)
                  == false)
             {
                 error_found = true;
@@ -75,44 +75,73 @@ namespace AttendanceHander.PayLoadFormat
 
             foreach (Excel.Worksheet sheet in workbook.Sheets)
             {
-                keyValuePairs.Add(sheet.Name, sheet);
             }
 
 
-            find_headings(ref SiGlobalVars.
-             Instance.payLoadHeadings, out error_found);
-            if (error_found == true)
-                return;
-
-            //now we got all the headings
-            //connect heading and datas together
-
-            //now that we got all headings
-            //we need to start with the rows
         }
 
-        private bool all_expectedSheets_are_available(List<string> expected_sheetNames)
+        private bool loop_through_each_date_sheets_in_order(int totalDaysinMonth,
+            out Boolean error_found)
         {
-            foreach(var expectedName in expected_sheetNames)
-            {
-                Boolean this_sheet_is_available =false;
+            error_found = false;
+            //first find the first sheet.
+
+            Excel.Worksheet firstSheet=null;
+  
                 foreach (Excel.Worksheet sheet in workbook.Sheets)
                 {
-                    if (sheet.Name.Trim() == expectedName.Trim())
-                        this_sheet_is_available = true;
+                    
+                    if (sheet.Name.Trim() == "1")
+                {
+                    firstSheet = sheet;
+                    break;
+                }
+                
+
                 }
 
-                if (this_sheet_is_available == false)
+                if (firstSheet == null)
                 {
-                    MessageBox.Show("Couldn't find sheet no = " + expectedName + " in PayloadFormat");
+                    MessageBox.Show("Couldn't find sheet no = 1 in PayloadFormat");
+                error_found = true;
                     return false;
                 }
+
+
+            for(int day = 2; day <= totalDaysinMonth; day++)
+            {
+                //now check if the sheets are in correct order
+                Excel.Worksheet nextSheet = firstSheet.Next();
+                if(nextSheet.Name.Trim() != day.ToString())
+                {
+                    MessageBox.Show("Sheets might not be in order; Expected sheet = "
+                        + day.ToString() + "; but the sheet obtained = " + nextSheet.Name);
+                    error_found = true;
+                    return false;
+                }
+
+
+                find_headings(ref SiGlobalVars.
+                 Instance.payLoadHeadings, out error_found);
+                
+                if (error_found == true)
+                return false;
+                
+                   
+
+                //now we got all the headings
+                //connect heading and datas together
+
+                //now that we got all headings
+                //we need to start with the rows
+
             }
+
 
             return true; 
         }
 
-        private List<string> get_sheetNames_based_on_month()
+        private int get_total_days_in_this_month()
         {
             //no of sheets depends upon number of days in a month
             //eg febraury = 28 
@@ -128,16 +157,12 @@ namespace AttendanceHander.PayLoadFormat
                     + SiGlobalVars.Instance
                 .multiTransWraps.First().date.fullCell.Address +
                 "; Content = ");
-                return null;
+                return -1;
             }
             int noOfDays = DateTime.DaysInMonth(assumedDate.Year,assumedDate.Month);
 
-            List<String> days = new List<string>();
-            for (int i= 1; i <= noOfDays; i++){
-                days.Add(i.ToString());
-            }
 
-            return days;
+            return noOfDays;
         }
 
         public void MAIN_understand_the_excel_sheet(out Boolean error_found)
@@ -154,7 +179,7 @@ namespace AttendanceHander.PayLoadFormat
                     = new List<PayLoadWrap>();
 
 
-            loop_through_sheets();
+            extract_data_from_sheets(out error_found);
 
          
 
