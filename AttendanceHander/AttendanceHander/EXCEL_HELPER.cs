@@ -162,6 +162,29 @@ namespace AttendanceHander
             return cells_with_address;
 
         }
+
+        internal static int get_last_row_no_of_a_merged_cell(Excel.Range fullCell)
+        {
+            if (fullCell == null)
+                return -1;
+
+            if (fullCell.MergeCells == true)
+            {
+                //ie contains Merge Cells
+                int last_rowNo = 0;
+                foreach (Excel.Range cell in fullCell.Cells)
+                {
+                    if (cell.Row > last_rowNo)
+                        last_rowNo = cell.Row;
+                }
+                return last_rowNo;
+            }
+            else
+            {
+                return (fullCell.Row);
+            }
+        }
+
         public List<String> return_same_address_cells(
             List<List<Excel.Range>> list, int no_of_repeatings_required)
         {

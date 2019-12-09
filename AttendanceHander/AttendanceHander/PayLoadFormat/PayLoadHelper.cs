@@ -126,8 +126,8 @@ namespace AttendanceHander.PayLoadFormat
                 
                 if (error_found == true)
                 return false;
-                
-                   
+
+
 
                 //now we got all the headings
                 //connect heading and datas together
@@ -135,10 +135,59 @@ namespace AttendanceHander.PayLoadFormat
                 //now that we got all headings
                 //we need to start with the rows
 
+                read_each_rows_of_data(out error_found);
+                if (error_found == true)
+                    return false;
+
             }
 
 
             return true; 
+        }
+
+        private void read_each_rows_of_data(out bool error_found)
+        {
+            error_occured = false;
+            EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
+
+            //now we have to read the rows
+            //our beginning position to start reading the rows will be
+            //below the personal Number heading cell
+
+            Excel.Range serialNoHeading = SiGlobalVars.Instance
+                .payLoadHeadings.serialNo.fullCell;
+
+            int lastHeadingRow = EXCEL_HELPER.get_last_row_no_of_a_merged_cell(serialNoHeading);
+            //now go to below adjacent cell to personnal no.
+            int firstDataRowNo = lastHeadingRow + 1;
+
+
+
+            foreach (Excel.Range row in worksheet.UsedRange.Rows)
+            {
+                int currentRow = row.Row;
+                //our first data row starts from firstDataRowCell
+                //so skip the rows above (which are headings)
+                if (currentRow < firstDataRowNo)
+                    continue;
+
+                //read row will fail at the end of time sheet
+                //we need to stop the iteration after plumber no 50
+                //after that it is just empty space
+                //so if reached_empty_space_area = true, we came accross the empty space
+                //thus this iteration can be stopped.
+
+                Boolean reached_empty_space_area = false;
+                read_row(row,
+                    ref SiGlobalVars.Instance.multiTransWraps,
+                    out error_occured, out reached_empty_space_area);
+                if (error_occured == true)
+                    return;
+                if (reached_empty_space_area == true)
+                    break;
+
+            }
+
         }
 
         private int get_total_days_in_this_month()
