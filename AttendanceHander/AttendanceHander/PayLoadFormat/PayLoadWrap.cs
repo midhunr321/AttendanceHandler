@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace AttendanceHander.PayLoadFormat
 {
@@ -11,6 +12,7 @@ namespace AttendanceHander.PayLoadFormat
         public List<Day> days;
         public class Day
         {
+            public Excel.Worksheet sheet;
             public StrItemWrap company;
             public DateItemWrap date;
             public StrItemWrap section;

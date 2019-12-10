@@ -145,7 +145,7 @@ namespace AttendanceHander.PayLoadFormat
             return true; 
         }
 
-        private void read_each_rows_of_data(out bool error_found)
+        private void read_each_rows_of_data(out bool error_occured)
         {
             error_occured = false;
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
@@ -179,7 +179,7 @@ namespace AttendanceHander.PayLoadFormat
 
                 Boolean reached_empty_space_area = false;
                 read_row(row,
-                    ref SiGlobalVars.Instance.multiTransWraps,
+                    ref SiGlobalVars.Instance.payloadWraps,
                     out error_occured, out reached_empty_space_area);
                 if (error_occured == true)
                     return;
@@ -188,6 +188,69 @@ namespace AttendanceHander.PayLoadFormat
 
             }
 
+        }
+
+        private void read_row(Excel.Range row, 
+            ref List<PayLoadWrap> payloadWraps, 
+            out bool error_occured, out bool reached_empty_space_area, 
+            Excel.Worksheet sheet)
+        {
+            reached_empty_space_area = false;
+            error_occured = false;
+            //one way to identify whether we are in empty space
+            //that means whether we already passed 50 numbers of plumbers
+            //is by detecting if serial no,employee no and name etc are empty
+            //if the serial no, employee no and name is empty means 
+            //we have reached the end of the time sheet
+            EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
+            int rowIndex = row.Row;
+
+            Excel.Range firstCell = worksheet.Cells[rowIndex, 1];
+            Excel.Range firstFullCell = eXCEL_HELPER.return_full_merg_cell(firstCell);
+            Excel.Range nextCell = null;
+
+            Excel.Range nextFullCell = firstFullCell;
+            int totalNoUsedColumns = worksheet.UsedRange.Columns.Count;
+
+            int i = 1;
+            //to check if we have reached the empty space or blank area after 
+            // if no name or employee no is found in this row
+            // then we can say we reached the empty space
+
+            PayLoadFormat.PayLoadWrap payLoadWrap = new PayLoadWrap();
+            do
+            {
+                //first nextFullCell is firstFullCell
+                //so 
+                var currentFullCell = nextFullCell;
+
+                Boolean result1;
+                result1 = feed_datas_of_single_row(ref payLoadWrap,
+                    currentFullCell,
+                          SiGlobalVars.Instance.payLoadHeadings,
+                         out error_occured, out reached_empty_space_area, sheet);
+
+                if (reached_empty_space_area == true)
+                    return;
+
+
+                if (error_occured == true)
+                    return;
+
+
+                //iteration codes===============
+                if (nextCell == null)
+                    nextCell = firstFullCell.Next;
+                else
+                    nextCell = nextCell.Next;
+
+                nextFullCell = eXCEL_HELPER.return_full_merg_cell(nextCell);
+
+                i++;
+            } while (i <= totalNoUsedColumns);
+
+
+            payloadWraps.Add(payLoadWrap);
         }
 
         private int get_total_days_in_this_month()
