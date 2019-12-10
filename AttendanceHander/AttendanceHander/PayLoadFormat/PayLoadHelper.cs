@@ -85,6 +85,8 @@ namespace AttendanceHander.PayLoadFormat
         {
             error_found = false;
             //first find the first sheet.
+            
+            
 
             Excel.Worksheet firstSheet=null;
   
@@ -108,17 +110,28 @@ namespace AttendanceHander.PayLoadFormat
                 }
 
 
-            for(int day = 2; day <= totalDaysinMonth; day++)
+            for(int day = 1; day <= totalDaysinMonth; day++)
             {
-                //now check if the sheets are in correct order
-                Excel.Worksheet nextSheet = firstSheet.Next();
-                if(nextSheet.Name.Trim() != day.ToString())
+                Excel.Worksheet currentSheet;
+                //sheets should be in order
+
+                if (day != 1)
                 {
-                    MessageBox.Show("Sheets might not be in order; Expected sheet = "
-                        + day.ToString() + "; but the sheet obtained = " + nextSheet.Name);
-                    error_found = true;
-                    return false;
+                    currentSheet = firstSheet.Next();
+                    if (currentSheet.Name.Trim() != day.ToString())
+                    {
+                        MessageBox.Show("Sheets might not be in order; Expected sheet = "
+                            + day.ToString() + "; but the sheet obtained = " + currentSheet.Name);
+                        error_found = true;
+                        return false;
+                    }
                 }
+                else
+                {
+                    currentSheet = firstSheet;
+                }
+
+                PayLoadWrap.Day payLoadWrapDay = new PayLoadWrap.Day(currentSheet);
 
 
                 find_headings(ref SiGlobalVars.
@@ -135,7 +148,7 @@ namespace AttendanceHander.PayLoadFormat
                 //now that we got all headings
                 //we need to start with the rows
 
-                read_each_rows_of_data(out error_found);
+                read_each_rows_of_data(out error_found, payLoadWrapDay);
                 if (error_found == true)
                     return false;
 
@@ -145,7 +158,8 @@ namespace AttendanceHander.PayLoadFormat
             return true; 
         }
 
-        private void read_each_rows_of_data(out bool error_occured)
+        private void read_each_rows_of_data(out bool error_occured, 
+            PayLoadWrap.Day payloadWrapDay)
         {
             error_occured = false;
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
