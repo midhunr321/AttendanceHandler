@@ -49,6 +49,7 @@
             this.label_statusPayLoad = new System.Windows.Forms.Label();
             this.button_openPayLoad = new System.Windows.Forms.Button();
             this.groupBox_steps = new System.Windows.Forms.GroupBox();
+            this.button_step2A_siteNo = new System.Windows.Forms.Button();
             this.button_step4_TransfDataToMep = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -56,7 +57,7 @@
             this.button_step3 = new System.Windows.Forms.Button();
             this.button_step2_missingData = new System.Windows.Forms.Button();
             this.button_step1_AddSiteNO = new System.Windows.Forms.Button();
-            this.button_step2A_siteNo = new System.Windows.Forms.Button();
+            this.button_Step5_MultiTranToPay = new System.Windows.Forms.Button();
             this.groupBoxMepStyle.SuspendLayout();
             this.groupBoxMultiTrans.SuspendLayout();
             this.groupBox_DailyTrans.SuspendLayout();
@@ -274,6 +275,7 @@
             // 
             // groupBox_steps
             // 
+            this.groupBox_steps.Controls.Add(this.button_Step5_MultiTranToPay);
             this.groupBox_steps.Controls.Add(this.button_step2A_siteNo);
             this.groupBox_steps.Controls.Add(this.button_step4_TransfDataToMep);
             this.groupBox_steps.Controls.Add(this.button2);
@@ -289,6 +291,16 @@
             this.groupBox_steps.TabStop = false;
             this.groupBox_steps.Text = "STEPS";
             // 
+            // button_step2A_siteNo
+            // 
+            this.button_step2A_siteNo.Location = new System.Drawing.Point(285, 59);
+            this.button_step2A_siteNo.Name = "button_step2A_siteNo";
+            this.button_step2A_siteNo.Size = new System.Drawing.Size(113, 69);
+            this.button_step2A_siteNo.TabIndex = 7;
+            this.button_step2A_siteNo.Text = "STEP 2A: Replace \'S\' in SiteNo with \'M\'";
+            this.button_step2A_siteNo.UseVisualStyleBackColor = true;
+            this.button_step2A_siteNo.Click += new System.EventHandler(this.Button_step2A_siteNo_Click);
+            // 
             // button_step4_TransfDataToMep
             // 
             this.button_step4_TransfDataToMep.Location = new System.Drawing.Point(533, 59);
@@ -301,9 +313,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(763, 128);
+            this.button2.Location = new System.Drawing.Point(763, 148);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(86, 27);
+            this.button2.Size = new System.Drawing.Size(86, 26);
             this.button2.TabIndex = 5;
             this.button2.Text = "hide";
             this.button2.UseVisualStyleBackColor = true;
@@ -311,7 +323,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(700, 129);
+            this.button1.Location = new System.Drawing.Point(693, 148);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(64, 26);
             this.button1.TabIndex = 4;
@@ -361,22 +373,22 @@
             this.button_step1_AddSiteNO.UseVisualStyleBackColor = true;
             this.button_step1_AddSiteNO.Click += new System.EventHandler(this.Button_step1_AddSiteNO_Click);
             // 
-            // button_step2A_siteNo
+            // button_Step5_MultiTranToPay
             // 
-            this.button_step2A_siteNo.Location = new System.Drawing.Point(285, 59);
-            this.button_step2A_siteNo.Name = "button_step2A_siteNo";
-            this.button_step2A_siteNo.Size = new System.Drawing.Size(113, 69);
-            this.button_step2A_siteNo.TabIndex = 7;
-            this.button_step2A_siteNo.Text = "STEP 2A: Replace \'S\' in SiteNo with \'M\'";
-            this.button_step2A_siteNo.UseVisualStyleBackColor = true;
-            this.button_step2A_siteNo.Click += new System.EventHandler(this.Button_step2A_siteNo_Click);
+            this.button_Step5_MultiTranToPay.Location = new System.Drawing.Point(662, 59);
+            this.button_Step5_MultiTranToPay.Name = "button_Step5_MultiTranToPay";
+            this.button_Step5_MultiTranToPay.Size = new System.Drawing.Size(123, 69);
+            this.button_Step5_MultiTranToPay.TabIndex = 8;
+            this.button_Step5_MultiTranToPay.Text = "STEP 5: Transfer Multi Trans Data to PayLoad";
+            this.button_Step5_MultiTranToPay.UseVisualStyleBackColor = true;
+            this.button_Step5_MultiTranToPay.Click += new System.EventHandler(this.Button_Step5_MultiTranToPay_Click);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ClientSize = new System.Drawing.Size(894, 724);
+            this.ClientSize = new System.Drawing.Size(894, 805);
             this.Controls.Add(this.groupBox_steps);
             this.Controls.Add(this.groupBox_payLoad);
             this.Controls.Add(this.groupBox_DailyTrans);
@@ -428,5 +440,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button_step4_TransfDataToMep;
         private System.Windows.Forms.Button button_step2A_siteNo;
+        private System.Windows.Forms.Button button_Step5_MultiTranToPay;
     }
 }

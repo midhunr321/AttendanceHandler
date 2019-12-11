@@ -457,5 +457,18 @@ namespace AttendanceHander
 
         }
 
+        private void Button_Step5_MultiTranToPay_Click(object sender, EventArgs e)
+        {
+            if(SiGlobalVars.Instance.dailyTransWraps==null||
+                SiGlobalVars.Instance.multiTransWraps==null ||
+                SiGlobalVars.Instance.payLoadWrap==null)
+            {
+                MessageBox.Show("Daily Transaction or Multiple Transaction or Payload Transaction" +
+                    " is not found");
+                return;
+            }
+
+            MixTimeSheetHandler.Transfer_data_from_multiTrans_to_payLoad();
+        }
     }
 }

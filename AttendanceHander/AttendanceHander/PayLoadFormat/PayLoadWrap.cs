@@ -9,7 +9,12 @@ namespace AttendanceHander.PayLoadFormat
 {
    public class PayLoadWrap
     {
+        
         public List<Day> days;
+
+        public class StrItemWrap : AttendanceHander.StrItemWrap { }
+        public class DecimalItemWrap : AttendanceHander.DecimalItemWrap { }
+        public class DateItemWrap : AttendanceHander.DateItemWrap { }
         public class Day
         {
 
@@ -25,7 +30,7 @@ namespace AttendanceHander.PayLoadFormat
                 this.sheet = sheet;
             }
 
-            public class Employee
+            public class Employee 
             {
                
 

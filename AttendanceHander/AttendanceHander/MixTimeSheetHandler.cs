@@ -8,6 +8,7 @@ using AttendanceHander.DailyTransactions;
 using AttendanceHander.MultipleTransaction;
 using System.Windows.Forms;
 using System.Diagnostics;
+using AttendanceHander.PayLoadFormat;
 
 namespace AttendanceHander
 {
@@ -33,7 +34,7 @@ namespace AttendanceHander
                 if (StringHandler.trim_and_compare_strings(mepStyleWrap.name.content,
                    multiWrap.firstName.content) &&
                    CommonOperations
-                   .compare_multiTrans_employeeNo_to_MepStyle_employeeNo
+                   .compare_multiTrans_employeeNo_to_MepAndPayLoad_employeeNo
                    (mepStyleWrap.code.content,
                    multiWrap.personnelNo.content)
                    )
@@ -319,7 +320,7 @@ namespace AttendanceHander
                         multiWrap.siteNoMechFormat.longSiteNo.content = CommonOperations
                             .replace_first_S_in_siteNo_with_M(dailyWrap.deviceName);
                     }
-                
+
 
                     if (add_site_no_to_multiTrans_sheet(multiWrap)
                          == false)
@@ -355,7 +356,7 @@ namespace AttendanceHander
                 foreach (var mepWrap in mepStyleWraps)
                 {
                     if (CommonOperations
-                        .compare_multiTrans_employeeNo_to_MepStyle_employeeNo
+                        .compare_multiTrans_employeeNo_to_MepAndPayLoad_employeeNo
                         (mepWrap.code.content, multiWrap.personnelNo.content)
                         == true
                         )
@@ -399,7 +400,7 @@ namespace AttendanceHander
                         "been made in the multiTrans Excel File");
                     return false;
                 }
-                   
+
                 item.siteNoMechFormat.longSiteNo.content
                     = fullName;
 
@@ -420,6 +421,78 @@ namespace AttendanceHander
 
 
             return true;
+        }
+
+
+        internal static void Transfer_data_from_multiTrans_to_payLoad()
+        {
+            foreach (var multiWrap in SiGlobalVars.Instance.multiTransWraps)
+            {
+                //first we have to check if the site no is available for a particular 
+                //employee for a particular date
+
+                if (multiWrap.siteNoMechFormat.shortName == null)
+                {
+                    MessageBox.Show("The Site No is null for the Employee No = "
+                        + multiWrap.personnelNo
+                           + "; for the Date = " + multiWrap.date.contentInString);
+                    return;
+                }
+
+                foreach (var payLoadWrapDay in SiGlobalVars.Instance.payLoadWrap.days)
+                {
+                    if (payLoadWrapDay.sheet.Name.Trim()
+                        == multiWrap.date.content.Value.Day.ToString().Trim())
+                    {
+                        //that is the dates are equal
+
+                        payLoadWrapDay.date.contentInString = multiWrap.date.contentInString;
+                        payLoadWrapDay.date.content = multiWrap.date.content;
+                       
+                        //now check for the employee codes
+                        foreach (var payLoadWrapDayEmpl in payLoadWrapDay.employees)
+                        {
+
+                            if (CommonOperations
+                                .compare_multiTrans_employeeNo_to_MepAndPayLoad_employeeNo
+                                (payLoadWrapDayEmpl.code.content,multiWrap.personnelNo.content)
+                                ==true)
+                            {
+                                write_data_to_payLoadFormat(payLoadWrapDayEmpl,multiWrap);
+                            }
+
+                        }
+
+
+                    }
+                }
+
+
+
+
+            }
+
+        }
+        public class WorkTimeCalculatedWarp
+        {
+            public class TimeSpanItemWrap : AttendanceHander.TimeSpanItemWrap { }
+
+         public TimeSpanItemWrap workTime;
+         public TimeSpanItemWrap noBreak;
+         public TimeSpanItemWrap overTime;
+        }
+        private static void write_data_to_payLoadFormat
+            (PayLoadWrap.Day.Employee payLoadWrapDayEmpl,
+            MultiTransWrap multiWrap)
+        {
+           
+            payLoadWrapDayEmpl.job_siteNo.content
+                = multiWrap.siteNoMechFormat.shortName.content;
+
+
+            WorkTimeCalculatedWarp workTimeCalculated = 
+                PayLoadHelper.Calculate_worktime(multiWrap.totalTimeWorked);
+
         }
 
         internal Boolean correct_siteNo_in_multiTrans_with_shortMechSiteNo

@@ -136,12 +136,12 @@ namespace AttendanceHander
 
             return siteNo;
         }
-        public static Boolean compare_multiTrans_employeeNo_to_MepStyle_employeeNo
-            (String mepStyle_employeeNo, String multiTrans_employeeNo )
+        public static Boolean compare_multiTrans_employeeNo_to_MepAndPayLoad_employeeNo
+            (String mepOrPayLoad_employeeNo, String multiTrans_employeeNo )
         {
             //String mep_Trimmed = mepStyle_employeeNo.Trim('/');
-            String mep_Trimmed = mepStyle_employeeNo
-                .Substring(mepStyle_employeeNo.IndexOf('/') + 1);
+            String mep_Trimmed = mepOrPayLoad_employeeNo
+                .Substring(mepOrPayLoad_employeeNo.IndexOf('/') + 1);
 
             mep_Trimmed = mep_Trimmed.Trim('0');
             //eg

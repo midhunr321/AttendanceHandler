@@ -54,6 +54,9 @@ namespace AttendanceHander.PayLoadFormat
             }
         }
 
+
+
+      
         private void extract_data_from_sheets(out Boolean error_found)
         {
             error_found = false;
@@ -69,9 +72,6 @@ namespace AttendanceHander.PayLoadFormat
                 return;
 
 
-            foreach (Excel.Worksheet sheet in workbook.Sheets)
-            {
-            }
 
 
         }
@@ -154,9 +154,13 @@ namespace AttendanceHander.PayLoadFormat
                 read_each_rows_of_data(out error_found,ref payLoadWrapDay);
                 if (error_found == true)
                     return false;
+
+                //finaly add to global variable
+                SiGlobalVars.Instance.payLoadWrap.days.Add(payLoadWrapDay);
                     
             }
 
+            
 
             return true; 
         }
@@ -170,9 +174,9 @@ namespace AttendanceHander.PayLoadFormat
             //===for company
             Excel.Range company_data = eXCEL_HELPER.return_next_adjacent_range(SiGlobalVars.Instance
                 .payLoadHeadings.company.fullCell);
-            
+
             if (payLoadWrapDay.company == null)
-                payLoadWrapDay.company = new StrItemWrap();
+                payLoadWrapDay.company = new PayLoadWrap.StrItemWrap();
             payLoadWrapDay.company.fullCell = company_data;
             payLoadWrapDay.company.content = eXCEL_HELPER.get_value_of_merge_cell(company_data);
 
@@ -180,7 +184,7 @@ namespace AttendanceHander.PayLoadFormat
             Excel.Range date_data = eXCEL_HELPER.return_next_adjacent_range(SiGlobalVars.Instance
                 .payLoadHeadings.date.fullCell);
             if (payLoadWrapDay.date == null)
-                payLoadWrapDay.date = new DateItemWrap();
+                payLoadWrapDay.date = new PayLoadWrap.DateItemWrap();
             payLoadWrapDay.date.fullCell = date_data;
             payLoadWrapDay.date.contentInString = eXCEL_HELPER.get_value_of_merge_cell(date_data);
 
@@ -188,7 +192,7 @@ namespace AttendanceHander.PayLoadFormat
             Excel.Range section_data = eXCEL_HELPER.return_next_adjacent_range(SiGlobalVars.Instance
                .payLoadHeadings.section.fullCell);
             if (payLoadWrapDay.section == null)
-                payLoadWrapDay.section = new StrItemWrap();
+                payLoadWrapDay.section = new PayLoadWrap.StrItemWrap();
             payLoadWrapDay.section.fullCell = section_data;
             payLoadWrapDay.section.content = eXCEL_HELPER.get_value_of_merge_cell(section_data);
 
@@ -196,7 +200,7 @@ namespace AttendanceHander.PayLoadFormat
             Excel.Range job_data = eXCEL_HELPER.return_next_adjacent_range(SiGlobalVars.Instance
                .payLoadHeadings.job.fullCell);
             if (payLoadWrapDay.job == null)
-                payLoadWrapDay.job = new StrItemWrap();
+                payLoadWrapDay.job = new PayLoadWrap.StrItemWrap();
             payLoadWrapDay.job.fullCell = job_data;
             payLoadWrapDay.job.content = eXCEL_HELPER.get_value_of_merge_cell(job_data);
 
@@ -368,7 +372,7 @@ namespace AttendanceHander.PayLoadFormat
                             return false;
                         }
                         if (payLoadWrapDayEmpl.serialNo == null)
-                            payLoadWrapDayEmpl.serialNo = new StrItemWrap();
+                            payLoadWrapDayEmpl.serialNo = new PayLoadWrap.StrItemWrap();
                         payLoadWrapDayEmpl.serialNo.content = eXCEL_HELPER
                             .get_value_of_merge_cell(fullCell);
                         payLoadWrapDayEmpl.serialNo.fullCell = fullCell;
@@ -378,7 +382,7 @@ namespace AttendanceHander.PayLoadFormat
                     else if (heading.Equals(payLoadHeadings.code))
                     {
                         if (payLoadWrapDayEmpl.code == null)
-                            payLoadWrapDayEmpl.code = new StrItemWrap();
+                            payLoadWrapDayEmpl.code = new PayLoadWrap.StrItemWrap();
                         String extractedName = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
 
                         if (CommonOperations.name_is_valid(extractedName)
@@ -401,7 +405,7 @@ namespace AttendanceHander.PayLoadFormat
                     else if (heading.Equals(payLoadHeadings.name))
                     {
                         if (payLoadWrapDayEmpl.name == null)
-                            payLoadWrapDayEmpl.name = new StrItemWrap();
+                            payLoadWrapDayEmpl.name = new PayLoadWrap.StrItemWrap();
 
                         payLoadWrapDayEmpl.name.content = eXCEL_HELPER
                             .get_value_of_merge_cell(fullCell);
@@ -413,7 +417,7 @@ namespace AttendanceHander.PayLoadFormat
                     else if (heading.Equals(payLoadHeadings.design))
                     {
                         if (payLoadWrapDayEmpl.design == null)
-                            payLoadWrapDayEmpl.design = new StrItemWrap();
+                            payLoadWrapDayEmpl.design = new PayLoadWrap.StrItemWrap();
                         payLoadWrapDayEmpl.design.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         payLoadWrapDayEmpl.design.fullCell = fullCell;
                         payLoadWrapDayEmpl.design.heading = heading;
@@ -423,7 +427,7 @@ namespace AttendanceHander.PayLoadFormat
                     else if (heading.Equals(payLoadHeadings.job_siteNo))
                     {
                         if (payLoadWrapDayEmpl.job_siteNo == null)
-                            payLoadWrapDayEmpl.job_siteNo = new StrItemWrap();
+                            payLoadWrapDayEmpl.job_siteNo = new PayLoadWrap.StrItemWrap();
                         payLoadWrapDayEmpl.job_siteNo.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         payLoadWrapDayEmpl.job_siteNo.fullCell = fullCell;
                         payLoadWrapDayEmpl.job_siteNo.heading = heading;
@@ -433,7 +437,7 @@ namespace AttendanceHander.PayLoadFormat
                     else if (heading.Equals(payLoadHeadings.workTime))
                     {
                         if (payLoadWrapDayEmpl.workTime == null)
-                            payLoadWrapDayEmpl.workTime = new DecimalItemWrap();
+                            payLoadWrapDayEmpl.workTime = new PayLoadWrap.DecimalItemWrap();
                         payLoadWrapDayEmpl.workTime.contentInStr 
                             = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         payLoadWrapDayEmpl.workTime.fullCell = fullCell;
@@ -444,7 +448,7 @@ namespace AttendanceHander.PayLoadFormat
                     else if (heading.Equals(payLoadHeadings.noBreak))
                     {
                         if (payLoadWrapDayEmpl.workTime == null)
-                            payLoadWrapDayEmpl.workTime = new DecimalItemWrap();
+                            payLoadWrapDayEmpl.workTime = new PayLoadWrap.DecimalItemWrap();
                         payLoadWrapDayEmpl.workTime.contentInStr
                             = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         payLoadWrapDayEmpl.workTime.fullCell = fullCell;
@@ -455,7 +459,7 @@ namespace AttendanceHander.PayLoadFormat
                     else if (heading.Equals(payLoadHeadings.overTime))
                     {
                         if (payLoadWrapDayEmpl.overTime == null)
-                            payLoadWrapDayEmpl.overTime = new DecimalItemWrap();
+                            payLoadWrapDayEmpl.overTime = new PayLoadWrap.DecimalItemWrap();
                         payLoadWrapDayEmpl.overTime.contentInStr
                             = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         payLoadWrapDayEmpl.overTime.fullCell = fullCell;
@@ -468,6 +472,7 @@ namespace AttendanceHander.PayLoadFormat
             return false;
         }
 
+        
         private int get_total_days_in_this_month()
         {
             //no of sheets depends upon number of days in a month
@@ -492,6 +497,8 @@ namespace AttendanceHander.PayLoadFormat
             return noOfDays;
         }
 
+       
+
         public void MAIN_understand_the_excel_sheet(out Boolean error_found)
         {
             error_found = false;
@@ -501,9 +508,9 @@ namespace AttendanceHander.PayLoadFormat
                     = new PayLoadHelper.PayloadHeadings();
             }
 
-            if (SiGlobalVars.Instance.payloadWraps == null)
-                SiGlobalVars.Instance.payloadWraps 
-                    = new List<PayLoadWrap>();
+            if (SiGlobalVars.Instance.payLoadWrap == null)
+                SiGlobalVars.Instance.payLoadWrap
+                    = new PayLoadWrap();
 
 
             extract_data_from_sheets(out error_found);
@@ -512,6 +519,29 @@ namespace AttendanceHander.PayLoadFormat
 
 
 
+        }
+
+        internal static MixTimeSheetHandler.WorkTimeCalculatedWarp Calculate_worktime
+            (TimeSpanItemWrap totalTimeWorked)
+        {
+            MixTimeSheetHandler.WorkTimeCalculatedWarp workTimeCalculated
+                = new MixTimeSheetHandler.WorkTimeCalculatedWarp();
+
+            //TODO: Worktime is hardcorded that is 8 hours
+            //in future we need it to flexible.
+
+            if(totalTimeWorked.content.Value.Hours < 8)
+            {
+
+            }
+
+            workTimeCalculated.workTime.content = 
+                new TimeSpan(totalTimeWorked.content.Value.Hours, 0, 0);
+            workTimeCalculated.workTime.contentInString =
+                workTimeCalculated.workTime.content.Value.Hours.ToString();
+
+
+            totalTimeWorked.content
         }
 
         private Boolean find_headings(ref PayloadHeadings payLoadHeadings,

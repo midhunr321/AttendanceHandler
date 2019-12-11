@@ -64,7 +64,7 @@ namespace AttendanceHander
 
         //PAYLOAD FORMAT
         public PayLoadFormat.PayLoadHelper.PayloadHeadings payLoadHeadings;
-        public List<PayLoadFormat.PayLoadWrap> payloadWraps;
+        public PayLoadFormat.PayLoadWrap payLoadWrap;
     }
 
 
