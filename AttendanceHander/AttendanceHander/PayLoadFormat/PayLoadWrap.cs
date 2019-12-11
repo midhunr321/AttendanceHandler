@@ -15,6 +15,10 @@ namespace AttendanceHander.PayLoadFormat
 
             public Excel.Worksheet sheet;
             public List<Employee> employees;
+            public StrItemWrap company;
+            public DateItemWrap date;
+            public StrItemWrap section;
+            public StrItemWrap job;
 
             public Day(Excel.Worksheet sheet)
             {
@@ -23,10 +27,7 @@ namespace AttendanceHander.PayLoadFormat
 
             public class Employee
             {
-                public StrItemWrap company;
-                public DateItemWrap date;
-                public StrItemWrap section;
-                public StrItemWrap job;
+               
 
                 public StrItemWrap serialNo;
                 public StrItemWrap code;
