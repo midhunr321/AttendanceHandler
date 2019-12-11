@@ -38,6 +38,7 @@ namespace AttendanceHander
     public class DecimalItemWrap : ItemWrap
     {
         public Decimal content;
+        public String contentInStr;
         public HeadingWrap heading;
 
     }

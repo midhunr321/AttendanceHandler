@@ -64,13 +64,9 @@ namespace AttendanceHander.PayLoadFormat
                 return;
             }
 
-            if (loop_through_each_date_sheets_in_order(totalDaysInMonth)
-                 == false)
-            {
-                error_found = true;
+            loop_through_each_date_sheets_in_order(totalDaysInMonth, out error_found);
+            if (error_found == true)
                 return;
-            }
-
 
 
             foreach (Excel.Worksheet sheet in workbook.Sheets)
@@ -355,7 +351,7 @@ namespace AttendanceHander.PayLoadFormat
 
                     //same column number means the current cell is 
                     //the value for this heading
-                    if (heading.Equals(payLoadHeadings.personnelNo))
+                    if (heading.Equals(payLoadHeadings.serialNo))
                     {
                         //that is this particular cell is personal no data
                         String extractedEmployeeNo = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
@@ -371,18 +367,18 @@ namespace AttendanceHander.PayLoadFormat
                             reached_empty_space_or_invalid_data = true;
                             return false;
                         }
-                        if (multiTransWrap.personnelNo == null)
-                            multiTransWrap.personnelNo = new StrItemWrap();
-                        multiTransWrap.personnelNo.content = eXCEL_HELPER
+                        if (payLoadWrapDayEmpl.serialNo == null)
+                            payLoadWrapDayEmpl.serialNo = new StrItemWrap();
+                        payLoadWrapDayEmpl.serialNo.content = eXCEL_HELPER
                             .get_value_of_merge_cell(fullCell);
-                        multiTransWrap.personnelNo.fullCell = fullCell;
-                        multiTransWrap.personnelNo.heading = heading;
+                        payLoadWrapDayEmpl.serialNo.fullCell = fullCell;
+                        payLoadWrapDayEmpl.serialNo.heading = heading;
                         return true;
                     }
-                    else if (heading.Equals(payLoadHeadings.firstName))
+                    else if (heading.Equals(payLoadHeadings.code))
                     {
-                        if (multiTransWrap.firstName == null)
-                            multiTransWrap.firstName = new StrItemWrap();
+                        if (payLoadWrapDayEmpl.code == null)
+                            payLoadWrapDayEmpl.code = new StrItemWrap();
                         String extractedName = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
 
                         if (CommonOperations.name_is_valid(extractedName)
@@ -396,144 +392,76 @@ namespace AttendanceHander.PayLoadFormat
                             reached_empty_space_or_invalid_data = true;
                             return false;
                         }
-                        multiTransWrap.firstName.content = extractedName;
-                        multiTransWrap.firstName.fullCell = fullCell;
-                        multiTransWrap.firstName.heading = heading;
+                        payLoadWrapDayEmpl.code.content = extractedName;
+                        payLoadWrapDayEmpl.code.fullCell = fullCell;
+                        payLoadWrapDayEmpl.code.heading = heading;
 
                         return true;
                     }
-                    else if (heading.Equals(payLoadHeadings.lastName))
+                    else if (heading.Equals(payLoadHeadings.name))
                     {
-                        if (multiTransWrap.lastName == null)
-                            multiTransWrap.lastName = new StrItemWrap();
+                        if (payLoadWrapDayEmpl.name == null)
+                            payLoadWrapDayEmpl.name = new StrItemWrap();
 
-                        multiTransWrap.lastName.content = eXCEL_HELPER
+                        payLoadWrapDayEmpl.name.content = eXCEL_HELPER
                             .get_value_of_merge_cell(fullCell);
-                        multiTransWrap.lastName.fullCell = fullCell;
-                        multiTransWrap.lastName.heading = heading;
+                        payLoadWrapDayEmpl.name.fullCell = fullCell;
+                        payLoadWrapDayEmpl.name.heading = heading;
 
                         return true;
                     }
-                    else if (heading.Equals(payLoadHeadings.position))
+                    else if (heading.Equals(payLoadHeadings.design))
                     {
-                        if (multiTransWrap.position == null)
-                            multiTransWrap.position = new StrItemWrap();
-                        multiTransWrap.position.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
-                        multiTransWrap.position.fullCell = fullCell;
-                        multiTransWrap.position.heading = heading;
+                        if (payLoadWrapDayEmpl.design == null)
+                            payLoadWrapDayEmpl.design = new StrItemWrap();
+                        payLoadWrapDayEmpl.design.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
+                        payLoadWrapDayEmpl.design.fullCell = fullCell;
+                        payLoadWrapDayEmpl.design.heading = heading;
 
                         return true;
                     }
-                    else if (heading.Equals(payLoadHeadings.department))
+                    else if (heading.Equals(payLoadHeadings.job_siteNo))
                     {
-                        if (multiTransWrap.department == null)
-                            multiTransWrap.department = new StrItemWrap();
-                        multiTransWrap.department.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
-                        multiTransWrap.department.fullCell = fullCell;
-                        multiTransWrap.department.heading = heading;
+                        if (payLoadWrapDayEmpl.job_siteNo == null)
+                            payLoadWrapDayEmpl.job_siteNo = new StrItemWrap();
+                        payLoadWrapDayEmpl.job_siteNo.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
+                        payLoadWrapDayEmpl.job_siteNo.fullCell = fullCell;
+                        payLoadWrapDayEmpl.job_siteNo.heading = heading;
 
                         return true;
                     }
-                    else if (heading.Equals(payLoadHeadings.date))
+                    else if (heading.Equals(payLoadHeadings.workTime))
                     {
-                        if (multiTransWrap.date == null)
-                            multiTransWrap.date = new DateItemWrap();
-                        String extractedDate_in_string = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
-                        DateTime extractedDAte;
-
-                        if (DateTime.TryParse(extractedDate_in_string, out extractedDAte)
-                        == true)
-                            multiTransWrap.date.content = extractedDAte;
-                        else
-                        {
-                            MessageBox.Show("Found invalid date in cell = " +
-                               fullCell.Address);
-                            error_occured = true;
-                            return false;
-                        }
-                        multiTransWrap.date.contentInString =
-                            eXCEL_HELPER.get_value_of_merge_cell(fullCell);
-                        multiTransWrap.date.fullCell = fullCell;
-                        multiTransWrap.date.heading = heading;
-
-                        //reaching the total over time
-                        //as you know after total over time it is overtime datas
-                        //so we need to break from this iteration now
+                        if (payLoadWrapDayEmpl.workTime == null)
+                            payLoadWrapDayEmpl.workTime = new DecimalItemWrap();
+                        payLoadWrapDayEmpl.workTime.contentInStr 
+                            = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
+                        payLoadWrapDayEmpl.workTime.fullCell = fullCell;
+                        payLoadWrapDayEmpl.workTime.heading = heading;
 
                         return true;
-
                     }
-                    else if (heading.Equals(payLoadHeadings.checkInTime1))
+                    else if (heading.Equals(payLoadHeadings.noBreak))
                     {
-
-                        CommonOperations.feed_time_data_to_dataWrap(ref multiTransWrap.checkInTime1,
-                            eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
-
+                        if (payLoadWrapDayEmpl.workTime == null)
+                            payLoadWrapDayEmpl.workTime = new DecimalItemWrap();
+                        payLoadWrapDayEmpl.workTime.contentInStr
+                            = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
+                        payLoadWrapDayEmpl.workTime.fullCell = fullCell;
+                        payLoadWrapDayEmpl.workTime.heading = heading;
 
                         return true;
-
                     }
-                    else if (heading.Equals(payLoadHeadings.checkOutTime1))
+                    else if (heading.Equals(payLoadHeadings.overTime))
                     {
-                        CommonOperations.feed_time_data_to_dataWrap(ref multiTransWrap.checkOutTime1,
-                            eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
-
-
-
+                        if (payLoadWrapDayEmpl.overTime == null)
+                            payLoadWrapDayEmpl.overTime = new DecimalItemWrap();
+                        payLoadWrapDayEmpl.overTime.contentInStr
+                            = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
+                        payLoadWrapDayEmpl.overTime.fullCell = fullCell;
+                        payLoadWrapDayEmpl.overTime.heading = heading;
                         return true;
-
                     }
-                    else if (heading.Equals(payLoadHeadings.workingTime1))
-                    {
-                        CommonOperations.feed_time_data_to_dataWrap(ref multiTransWrap.workingTime1,
-                            eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
-
-
-
-                        return true;
-
-                    }
-                    else if (heading.Equals(payLoadHeadings.checkInTime2))
-                    {
-                        CommonOperations.feed_time_data_to_dataWrap(ref multiTransWrap.checkInTime2,
-                            eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
-
-
-
-                        return true;
-
-                    }
-                    else if (heading.Equals(payLoadHeadings.checkOutTime2))
-                    {
-                        CommonOperations.feed_time_data_to_dataWrap(ref multiTransWrap.checkOutTime2,
-                            eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
-
-
-
-                        return true;
-
-                    }
-                    else if (heading.Equals(payLoadHeadings.workingTime2))
-                    {
-                        CommonOperations.feed_time_data_to_dataWrap(ref multiTransWrap.workingTime2,
-                            eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
-
-
-
-                        return true;
-
-                    }
-                    else if (heading.Equals(payLoadHeadings.totalTimeWorked))
-                    {
-                        CommonOperations.feed_time_data_to_dataWrap(ref multiTransWrap.totalTimeWorked,
-                            eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
-
-
-
-                        return true;
-
-                    }
-
 
                 }
             }
