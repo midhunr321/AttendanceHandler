@@ -521,6 +521,8 @@ namespace AttendanceHander.PayLoadFormat
 
         }
 
+        
+
         internal static MixTimeSheetHandler.WorkTimeCalculatedWarp Calculate_worktime
             (TimeSpanItemWrap totalTimeWorked)
         {
@@ -532,7 +534,7 @@ namespace AttendanceHander.PayLoadFormat
 
             if(totalTimeWorked.content.Value.Hours < 8)
             {
-
+                roundup_hours_based_on_minutes(totalTimeWorked.content.Value);
             }
 
             workTimeCalculated.workTime.content = 
@@ -542,6 +544,19 @@ namespace AttendanceHander.PayLoadFormat
 
 
             totalTimeWorked.content
+        }
+
+        private static void roundup_hours_based_on_minutes(TimeSpan timeSpan, out decimal result_hour)
+        {
+            if(timeSpan.Minutes>=0 && timeSpan.Minutes <= 15)
+            {
+                result_hour = timeSpan.Hours;
+            }
+            else if(timeSpan.Minutes>=16 && timeSpan.Minutes <= 45)
+            {
+                result_hour = timeSpan.Hours + 0.5M;
+            }
+
         }
 
         private Boolean find_headings(ref PayloadHeadings payLoadHeadings,
