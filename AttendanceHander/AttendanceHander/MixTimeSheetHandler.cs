@@ -424,7 +424,7 @@ namespace AttendanceHander
         }
 
 
-        internal static void Transfer_data_from_multiTrans_to_payLoad()
+        internal static void Transfer_data_from_multiTrans_to_payLoad(List<DateTime> holidays)
         {
             foreach (var multiWrap in SiGlobalVars.Instance.multiTransWraps)
             {
@@ -475,11 +475,15 @@ namespace AttendanceHander
         }
         public class WorkTimeCalculatedWarp
         {
-            public class TimeSpanItemWrap : AttendanceHander.TimeSpanItemWrap { }
+            public class Wrap 
+            {
+                public decimal content;
+               
+            }
 
-         public TimeSpanItemWrap workTime;
-         public TimeSpanItemWrap noBreak;
-         public TimeSpanItemWrap overTime;
+         public Wrap workTimeHours;
+         public Wrap noBreak;
+         public Wrap overTime;
         }
         private static void write_data_to_payLoadFormat
             (PayLoadWrap.Day.Employee payLoadWrapDayEmpl,
@@ -492,6 +496,8 @@ namespace AttendanceHander
 
             WorkTimeCalculatedWarp workTimeCalculated = 
                 PayLoadHelper.Calculate_worktime(multiWrap.totalTimeWorked);
+
+
 
         }
 

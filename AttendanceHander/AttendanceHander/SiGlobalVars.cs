@@ -65,6 +65,8 @@ namespace AttendanceHander
         //PAYLOAD FORMAT
         public PayLoadFormat.PayLoadHelper.PayloadHeadings payLoadHeadings;
         public PayLoadFormat.PayLoadWrap payLoadWrap;
+        public decimal NORMAL_WORKING_HOURS = 8;
+        public decimal NORMAL_BREAK_HOURS = 1;
     }
 
 

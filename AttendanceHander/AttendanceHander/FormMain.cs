@@ -467,8 +467,20 @@ namespace AttendanceHander
                     " is not found");
                 return;
             }
+            Form_holidaysSelector form_HolidaysSelector = new Form_holidaysSelector(this);
+           DialogResult dialogResult =  form_HolidaysSelector.ShowDialog();
+            if(dialogResult == DialogResult.OK)
+            {
+                var holidays = form_HolidaysSelector.SelectedHolidays;
+                MixTimeSheetHandler.Transfer_data_from_multiTrans_to_payLoad(holidays);
+            }
+            else
+            {
+                MessageBox.Show("Holiday Dates are not selected");
+                return;
+            }
 
-            MixTimeSheetHandler.Transfer_data_from_multiTrans_to_payLoad();
+            
         }
     }
 }

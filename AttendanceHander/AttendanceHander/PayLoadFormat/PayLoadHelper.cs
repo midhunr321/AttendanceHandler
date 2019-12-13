@@ -5,11 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static AttendanceHander.MixTimeSheetHandler;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace AttendanceHander.PayLoadFormat
 {
-  public class PayLoadHelper
+    public class PayLoadHelper
     {
         private Excel.Worksheet worksheet;
         private Excel.Workbook workbook;
@@ -22,7 +23,7 @@ namespace AttendanceHander.PayLoadFormat
 
         public class PayloadHeadings : IEnumerable<HeadingWrap>
         {
-           
+
             public HeadingWrap company = new HeadingWrap("Company");
             public HeadingWrap date = new HeadingWrap("Date");
             public HeadingWrap section = new HeadingWrap("Section");
@@ -56,12 +57,12 @@ namespace AttendanceHander.PayLoadFormat
 
 
 
-      
+
         private void extract_data_from_sheets(out Boolean error_found)
         {
             error_found = false;
             int totalDaysInMonth = get_total_days_in_this_month();
-            if(totalDaysInMonth <0)
+            if (totalDaysInMonth < 0)
             {
                 error_found = true;
                 return;
@@ -81,32 +82,32 @@ namespace AttendanceHander.PayLoadFormat
         {
             error_found = false;
             //first find the first sheet.
-            
-            
 
-            Excel.Worksheet firstSheet=null;
-  
-                foreach (Excel.Worksheet sheet in workbook.Sheets)
-                {
-                    
-                    if (sheet.Name.Trim() == "1")
+
+
+            Excel.Worksheet firstSheet = null;
+
+            foreach (Excel.Worksheet sheet in workbook.Sheets)
+            {
+
+                if (sheet.Name.Trim() == "1")
                 {
                     firstSheet = sheet;
                     break;
                 }
-                
 
-                }
 
-                if (firstSheet == null)
-                {
-                    MessageBox.Show("Couldn't find sheet no = 1 in PayloadFormat");
+            }
+
+            if (firstSheet == null)
+            {
+                MessageBox.Show("Couldn't find sheet no = 1 in PayloadFormat");
                 error_found = true;
-                    return false;
-                }
+                return false;
+            }
 
 
-            for(int day = 1; day <= totalDaysinMonth; day++)
+            for (int day = 1; day <= totalDaysinMonth; day++)
             {
                 Excel.Worksheet currentSheet;
                 //sheets should be in order
@@ -132,9 +133,9 @@ namespace AttendanceHander.PayLoadFormat
 
                 find_headings(ref SiGlobalVars.
                  Instance.payLoadHeadings, out error_found);
-                
+
                 if (error_found == true)
-                return false;
+                    return false;
                 //now we got all the headings
                 //connect heading and datas together
 
@@ -149,23 +150,23 @@ namespace AttendanceHander.PayLoadFormat
                     return false;
                 }
 
-              //Once we got pre-table datas like company, date, section, job etc
-              //we need to find the datas for each employee.
-                read_each_rows_of_data(out error_found,ref payLoadWrapDay);
+                //Once we got pre-table datas like company, date, section, job etc
+                //we need to find the datas for each employee.
+                read_each_rows_of_data(out error_found, ref payLoadWrapDay);
                 if (error_found == true)
                     return false;
 
                 //finaly add to global variable
                 SiGlobalVars.Instance.payLoadWrap.days.Add(payLoadWrapDay);
-                    
+
             }
 
-            
 
-            return true; 
+
+            return true;
         }
 
-       
+
 
         private void read_preTable_datas(out bool error_found, ref PayLoadWrap.Day payLoadWrapDay)
         {
@@ -206,7 +207,7 @@ namespace AttendanceHander.PayLoadFormat
 
         }
 
-        private void read_each_rows_of_data(out bool error_occured, 
+        private void read_each_rows_of_data(out bool error_occured,
            ref PayLoadWrap.Day payloadWrapDay)
         {
             error_occured = false;
@@ -252,8 +253,8 @@ namespace AttendanceHander.PayLoadFormat
 
         }
 
-        private void read_row(Excel.Range row, 
-            ref PayLoadWrap.Day payLoadWrapDay, 
+        private void read_row(Excel.Range row,
+            ref PayLoadWrap.Day payLoadWrapDay,
             out bool error_occured, out bool reached_empty_space_area)
         {
             reached_empty_space_area = false;
@@ -285,7 +286,7 @@ namespace AttendanceHander.PayLoadFormat
                 //so 
                 var currentFullCell = nextFullCell;
 
-                
+
 
 
                 Boolean result1;
@@ -317,15 +318,15 @@ namespace AttendanceHander.PayLoadFormat
             payLoadWrapDay.employees.Add(payLoadWrapDayEmpl);
         }
 
-        private bool feed_datas_of_single_row(ref PayLoadWrap.Day.Employee payLoadWrapDayEmpl, 
-            Excel.Range fullCell, PayloadHeadings payLoadHeadings, 
+        private bool feed_datas_of_single_row(ref PayLoadWrap.Day.Employee payLoadWrapDayEmpl,
+            Excel.Range fullCell, PayloadHeadings payLoadHeadings,
             out bool error_occured, out bool reached_empty_space_or_invalid_data)
         {
             error_occured = false;
             reached_empty_space_or_invalid_data = false;
             if (fullCell.Column > payLoadHeadings.overTime.fullCell.Column)
                 return false;
-           
+
 
             //Todo: should check there is no merged cells in the timesheet data in future
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
@@ -333,7 +334,7 @@ namespace AttendanceHander.PayLoadFormat
 
             foreach (HeadingWrap heading in payLoadHeadings)
             {
-              
+
 
                 if (fullCell.Column == heading.fullCell.Column)
                 {
@@ -438,7 +439,7 @@ namespace AttendanceHander.PayLoadFormat
                     {
                         if (payLoadWrapDayEmpl.workTime == null)
                             payLoadWrapDayEmpl.workTime = new PayLoadWrap.DecimalItemWrap();
-                        payLoadWrapDayEmpl.workTime.contentInStr 
+                        payLoadWrapDayEmpl.workTime.contentInStr
                             = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         payLoadWrapDayEmpl.workTime.fullCell = fullCell;
                         payLoadWrapDayEmpl.workTime.heading = heading;
@@ -472,7 +473,7 @@ namespace AttendanceHander.PayLoadFormat
             return false;
         }
 
-        
+
         private int get_total_days_in_this_month()
         {
             //no of sheets depends upon number of days in a month
@@ -483,7 +484,7 @@ namespace AttendanceHander.PayLoadFormat
             DateTime assumedDate = SiGlobalVars.Instance
                 .multiTransWraps.First().date.content.Value;
 
-            if(assumedDate==null)
+            if (assumedDate == null)
             {
                 MessageBox.Show("Date in Multiple Transaction is null; Cell Address = "
                     + SiGlobalVars.Instance
@@ -491,13 +492,13 @@ namespace AttendanceHander.PayLoadFormat
                 "; Content = ");
                 return -1;
             }
-            int noOfDays = DateTime.DaysInMonth(assumedDate.Year,assumedDate.Month);
+            int noOfDays = DateTime.DaysInMonth(assumedDate.Year, assumedDate.Month);
 
 
             return noOfDays;
         }
 
-       
+
 
         public void MAIN_understand_the_excel_sheet(out Boolean error_found)
         {
@@ -515,13 +516,13 @@ namespace AttendanceHander.PayLoadFormat
 
             extract_data_from_sheets(out error_found);
 
-         
+
 
 
 
         }
 
-        
+
 
         internal static MixTimeSheetHandler.WorkTimeCalculatedWarp Calculate_worktime
             (TimeSpanItemWrap totalTimeWorked)
@@ -532,30 +533,86 @@ namespace AttendanceHander.PayLoadFormat
             //TODO: Worktime is hardcorded that is 8 hours
             //in future we need it to flexible.
 
-            if(totalTimeWorked.content.Value.Hours < 8)
+
+            if (totalTimeWorked.content.Value.Hours < SiGlobalVars.Instance.NORMAL_WORKING_HOURS)
             {
-                roundup_hours_based_on_minutes(totalTimeWorked.content.Value);
+                //i.e case when work time is below 8 hours ...like 7 hours
+                //in this case we only have worktime and the overtime is zero.
+
+                if (workTimeCalculated.workTimeHours == null)
+                    workTimeCalculated.workTimeHours = new WorkTimeCalculatedWarp.Wrap();
+                if (workTimeCalculated.overTime == null)
+                    workTimeCalculated.overTime = new WorkTimeCalculatedWarp.Wrap();
+
+                roundup_hours_based_on_minutes(totalTimeWorked.content.Value,
+                    out workTimeCalculated.workTimeHours.content);
+
+                if (workTimeCalculated.workTimeHours.content == -1)
+                {
+                    MessageBox.Show("Worktime Hours was found to be -1");
+                    return null;
+                }
+
+                workTimeCalculated.overTime.content = 0;
+
+
             }
+            else if(totalTimeWorked.content.Value.Hours > SiGlobalVars.Instance.NORMAL_WORKING_HOURS)
+            {
+                //ie case when total biometric time is greater than 8 hours ...like (13 hours in biometric)
+                if (workTimeCalculated.workTimeHours == null)
+                    workTimeCalculated.workTimeHours = new WorkTimeCalculatedWarp.Wrap();
+                if (workTimeCalculated.overTime == null)
+                    workTimeCalculated.overTime = new WorkTimeCalculatedWarp.Wrap();
 
-            workTimeCalculated.workTime.content = 
-                new TimeSpan(totalTimeWorked.content.Value.Hours, 0, 0);
-            workTimeCalculated.workTime.contentInString =
-                workTimeCalculated.workTime.content.Value.Hours.ToString();
+                decimal total_hours;
 
+                roundup_hours_based_on_minutes(totalTimeWorked.content.Value,
+                    out total_hours);
 
-            totalTimeWorked.content
+                if (workTimeCalculated.workTimeHours.content == -1)
+                {
+                    MessageBox.Show("Worktime Hours was found to be -1");
+                    return null;
+                }
+                workTimeCalculated.workTimeHours.content = SiGlobalVars.Instance.NORMAL_WORKING_HOURS;
+                workTimeCalculated.overTime.content
+                    = (total_hours -
+                    (SiGlobalVars.Instance.NORMAL_WORKING_HOURS + SiGlobalVars.Instance.NORMAL_BREAK_HOURS));
+
+            }
+            return workTimeCalculated;
         }
 
-        private static void roundup_hours_based_on_minutes(TimeSpan timeSpan, out decimal result_hour)
+        private static Boolean roundup_hours_based_on_minutes(TimeSpan timeSpan,
+            out decimal resultHours)
         {
-            if(timeSpan.Minutes>=0 && timeSpan.Minutes <= 15)
+            resultHours = -1;
+
+            if (timeSpan == null)
+                return false;
+
+            if (timeSpan.Minutes >= 0 && timeSpan.Minutes <= 15)
             {
-                result_hour = timeSpan.Hours;
+                resultHours = timeSpan.Hours;
+                return true;
+
+
             }
-            else if(timeSpan.Minutes>=16 && timeSpan.Minutes <= 45)
+            else if (timeSpan.Minutes >= 16 && timeSpan.Minutes <= 45)
             {
-                result_hour = timeSpan.Hours + 0.5M;
+                resultHours = timeSpan.Hours + 0.5M;
+                return true;
+
+
             }
+            else if (timeSpan.Minutes >= 46 && timeSpan.Minutes <= 60)
+            {
+                resultHours = timeSpan.Hours + 1;
+                return true;
+            }
+
+            return false;
 
         }
 
@@ -606,7 +663,7 @@ namespace AttendanceHander.PayLoadFormat
                         + "; Cell Address = ");
                     error_found = true;
                     return false;
-            
+
                 }
 
             }
