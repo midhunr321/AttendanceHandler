@@ -525,7 +525,7 @@ namespace AttendanceHander.PayLoadFormat
 
 
         internal static MixTimeSheetHandler.WorkTimeCalculatedWarp Calculate_worktime
-            (TimeSpanItemWrap totalTimeWorked)
+            (TimeSpanItemWrap totalTimeWorked, bool thisDate_is_fridayOrHoliday)
         {
             MixTimeSheetHandler.WorkTimeCalculatedWarp workTimeCalculated
                 = new MixTimeSheetHandler.WorkTimeCalculatedWarp();
@@ -534,7 +534,7 @@ namespace AttendanceHander.PayLoadFormat
             //in future we need it to flexible.
 
 
-            if (totalTimeWorked.content.Value.Hours < SiGlobalVars.Instance.NORMAL_WORKING_HOURS)
+            if (totalTimeWorked.content.Value.Hours < SiGlobalVars.Instance.DEFAULT_WORKING_HOURS)
             {
                 //i.e case when work time is below 8 hours ...like 7 hours
                 //in this case we only have worktime and the overtime is zero.
@@ -543,21 +543,36 @@ namespace AttendanceHander.PayLoadFormat
                     workTimeCalculated.workTimeHours = new WorkTimeCalculatedWarp.Wrap();
                 if (workTimeCalculated.overTime == null)
                     workTimeCalculated.overTime = new WorkTimeCalculatedWarp.Wrap();
+                decimal resultTotalHours;
 
                 roundup_hours_based_on_minutes(totalTimeWorked.content.Value,
-                    out workTimeCalculated.workTimeHours.content);
+                    out resultTotalHours);
 
-                if (workTimeCalculated.workTimeHours.content == -1)
+                if (resultTotalHours == -1)
                 {
                     MessageBox.Show("Worktime Hours was found to be -1");
                     return null;
                 }
+                if (thisDate_is_fridayOrHoliday == true)
+                {
+                    //ie friday or holiday means
+                    //what ever duration he worked will go to overtime instead of normal work time
+                    workTimeCalculated.workTimeHours.content = 0;
+                    workTimeCalculated.overTime.content = resultTotalHours;
 
-                workTimeCalculated.overTime.content = 0;
+                }
+                else
+                {
+                    //ie not friday or holiday
+                    //means the time worked will go into normal work time
+                    workTimeCalculated.workTimeHours.content = resultTotalHours;
+                    workTimeCalculated.overTime.content = 0;
+                }
+
 
 
             }
-            else if(totalTimeWorked.content.Value.Hours > SiGlobalVars.Instance.NORMAL_WORKING_HOURS)
+            else if (totalTimeWorked.content.Value.Hours > SiGlobalVars.Instance.DEFAULT_WORKING_HOURS)
             {
                 //ie case when total biometric time is greater than 8 hours ...like (13 hours in biometric)
                 if (workTimeCalculated.workTimeHours == null)
@@ -565,20 +580,37 @@ namespace AttendanceHander.PayLoadFormat
                 if (workTimeCalculated.overTime == null)
                     workTimeCalculated.overTime = new WorkTimeCalculatedWarp.Wrap();
 
-                decimal total_hours;
+                decimal resultTotalHours;
 
                 roundup_hours_based_on_minutes(totalTimeWorked.content.Value,
-                    out total_hours);
+                    out resultTotalHours);
 
                 if (workTimeCalculated.workTimeHours.content == -1)
                 {
                     MessageBox.Show("Worktime Hours was found to be -1");
                     return null;
                 }
-                workTimeCalculated.workTimeHours.content = SiGlobalVars.Instance.NORMAL_WORKING_HOURS;
-                workTimeCalculated.overTime.content
-                    = (total_hours -
-                    (SiGlobalVars.Instance.NORMAL_WORKING_HOURS + SiGlobalVars.Instance.NORMAL_BREAK_HOURS));
+
+                if (thisDate_is_fridayOrHoliday == true)
+                {
+                    //ie friday or holiday means
+                    //what ever duration he worked will go to overtime instead of normal work time
+                    workTimeCalculated.workTimeHours.content = 0;
+                    workTimeCalculated.overTime.content = resultTotalHours;
+
+                }
+                else
+                {
+                    //ie not friday or holiday
+                    //means the time worked will go into normal work time
+                    workTimeCalculated.workTimeHours.content = SiGlobalVars.Instance.DEFAULT_WORKING_HOURS;
+                    workTimeCalculated.overTime.content
+                        = (resultTotalHours -
+                        (SiGlobalVars.Instance.DEFAULT_WORKING_HOURS +
+                        SiGlobalVars.Instance.DEFAULT_BREAK_HOURS));
+                }
+
+
 
             }
             return workTimeCalculated;

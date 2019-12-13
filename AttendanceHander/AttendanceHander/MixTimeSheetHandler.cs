@@ -448,7 +448,12 @@ namespace AttendanceHander
 
                         payLoadWrapDay.date.contentInString = multiWrap.date.contentInString;
                         payLoadWrapDay.date.content = multiWrap.date.content;
-                       
+
+                        //now check if this date is a holiday or friday
+                        Boolean holidayOrFriday
+                            = this_date_is_a_holidayOrFriday(payLoadWrapDay.date.content.Value,
+                            holidays);
+
                         //now check for the employee codes
                         foreach (var payLoadWrapDayEmpl in payLoadWrapDay.employees)
                         {
@@ -458,7 +463,8 @@ namespace AttendanceHander
                                 (payLoadWrapDayEmpl.code.content,multiWrap.personnelNo.content)
                                 ==true)
                             {
-                                write_data_to_payLoadFormat(payLoadWrapDayEmpl,multiWrap);
+                                write_data_to_payLoadFormat( payLoadWrapDayEmpl,multiWrap,
+                                    holidayOrFriday);
                             }
 
                         }
@@ -473,6 +479,31 @@ namespace AttendanceHander
             }
 
         }
+
+        private static bool this_date_is_a_holidayOrFriday(DateTime thisDate, List<DateTime> explicit_holidays)
+        {
+            foreach(var day in SiGlobalVars.Instance.DEFAULT_HOLIDAYS)
+            {
+                //check if fridays ..or like that
+                if (thisDate.DayOfWeek == day)
+                    return true; //means normal off day like friday
+
+            }
+
+            //now for explicit holidays which was selected in the form
+
+            foreach(var explictHoliday in explicit_holidays)
+            {
+                if (DateTimeHandler.Compare_dates_only(thisDate, explictHoliday)
+                    == true)
+                    return true; //means a holiday like national day
+            }
+
+            return false;
+
+
+        }
+
         public class WorkTimeCalculatedWarp
         {
             public class Wrap 
@@ -485,9 +516,10 @@ namespace AttendanceHander
          public Wrap noBreak;
          public Wrap overTime;
         }
-        private static void write_data_to_payLoadFormat
+        private static Boolean write_data_to_payLoadFormat
             (PayLoadWrap.Day.Employee payLoadWrapDayEmpl,
-            MultiTransWrap multiWrap)
+            MultiTransWrap multiWrap,
+            Boolean thisDate_is_fridayOrHoliday)
         {
            
             payLoadWrapDayEmpl.job_siteNo.content
@@ -495,9 +527,23 @@ namespace AttendanceHander
 
 
             WorkTimeCalculatedWarp workTimeCalculated = 
-                PayLoadHelper.Calculate_worktime(multiWrap.totalTimeWorked);
+                PayLoadHelper.Calculate_worktime(multiWrap.totalTimeWorked, thisDate_is_fridayOrHoliday);
 
+            if (workTimeCalculated == null)
+                return false;
 
+            //now we need to write it to payload
+
+            //for worktime
+            payLoadWrapDayEmpl.workTime.content = workTimeCalculated.workTimeHours.content;
+            payLoadWrapDayEmpl.workTime.contentInStr = workTimeCalculated.workTimeHours.content.ToString();
+            payLoadWrapDayEmpl.workTime.fullCell.Value = payLoadWrapDayEmpl.workTime.contentInStr;
+            //for overtime
+            payLoadWrapDayEmpl.overTime.content = workTimeCalculated.overTime.content;
+            payLoadWrapDayEmpl.overTime.contentInStr = workTimeCalculated.overTime.content.ToString();
+            payLoadWrapDayEmpl.overTime.fullCell.Value = payLoadWrapDayEmpl.overTime.contentInStr;
+
+            return true;
 
         }
 

@@ -65,8 +65,9 @@ namespace AttendanceHander
         //PAYLOAD FORMAT
         public PayLoadFormat.PayLoadHelper.PayloadHeadings payLoadHeadings;
         public PayLoadFormat.PayLoadWrap payLoadWrap;
-        public decimal NORMAL_WORKING_HOURS = 8;
-        public decimal NORMAL_BREAK_HOURS = 1;
+        public decimal DEFAULT_WORKING_HOURS = 8;
+        public decimal DEFAULT_BREAK_HOURS = 1;
+        public List<DayOfWeek> DEFAULT_HOLIDAYS = new List<DayOfWeek>() { DayOfWeek.Friday };
     }
 
 
