@@ -12,12 +12,10 @@ namespace AttendanceHander.PayLoadFormat
 {
     public class PayLoadHelper
     {
-        private Excel.Worksheet worksheet;
         private Excel.Workbook workbook;
 
-        public PayLoadHelper(Excel.Worksheet worksheet, Excel.Workbook workbook)
+        public PayLoadHelper( Excel.Workbook workbook)
         {
-            this.worksheet = worksheet;
             this.workbook = workbook;
         }
 
@@ -128,11 +126,11 @@ namespace AttendanceHander.PayLoadFormat
                     currentSheet = firstSheet;
                 }
 
-                PayLoadWrap.Day payLoadWrapDay = new PayLoadWrap.Day(currentSheet);
+                PayLoadWrap.Day payLoadWrapDay = new PayLoadWrap.Day( ref currentSheet);
 
 
                 find_headings(ref SiGlobalVars.
-                 Instance.payLoadHeadings, out error_found);
+                 Instance.payLoadHeadings, out error_found, ref currentSheet);
 
                 if (error_found == true)
                     return false;
@@ -152,7 +150,7 @@ namespace AttendanceHander.PayLoadFormat
 
                 //Once we got pre-table datas like company, date, section, job etc
                 //we need to find the datas for each employee.
-                read_each_rows_of_data(out error_found, ref payLoadWrapDay);
+                read_each_rows_of_data(out error_found, ref payLoadWrapDay, ref currentSheet);
                 if (error_found == true)
                     return false;
 
@@ -208,10 +206,11 @@ namespace AttendanceHander.PayLoadFormat
         }
 
         private void read_each_rows_of_data(out bool error_occured,
-           ref PayLoadWrap.Day payloadWrapDay)
+           ref PayLoadWrap.Day payloadWrapDay,
+           ref Excel.Worksheet currentSheet)
         {
             error_occured = false;
-            EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
+            EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(currentSheet);
 
             //now we have to read the rows
             //our beginning position to start reading the rows will be
@@ -226,7 +225,7 @@ namespace AttendanceHander.PayLoadFormat
 
 
 
-            foreach (Excel.Range row in worksheet.UsedRange.Rows)
+            foreach (Excel.Range row in currentSheet.UsedRange.Rows)
             {
                 int currentRow = row.Row;
                 //our first data row starts from firstDataRowCell
@@ -243,7 +242,7 @@ namespace AttendanceHander.PayLoadFormat
                 Boolean reached_empty_space_area = false;
                 read_row(row,
                     ref payloadWrapDay,
-                    out error_occured, out reached_empty_space_area);
+                    out error_occured, out reached_empty_space_area,ref currentSheet);
                 if (error_occured == true)
                     return;
                 if (reached_empty_space_area == true)
@@ -255,7 +254,8 @@ namespace AttendanceHander.PayLoadFormat
 
         private void read_row(Excel.Range row,
             ref PayLoadWrap.Day payLoadWrapDay,
-            out bool error_occured, out bool reached_empty_space_area)
+            out bool error_occured, out bool reached_empty_space_area,
+            ref Excel.Worksheet currentSheet)
         {
             reached_empty_space_area = false;
             error_occured = false;
@@ -264,15 +264,15 @@ namespace AttendanceHander.PayLoadFormat
             //is by detecting if serial no,employee no and name etc are empty
             //if the serial no, employee no and name is empty means 
             //we have reached the end of the time sheet
-            EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
+            EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(currentSheet);
             int rowIndex = row.Row;
 
-            Excel.Range firstCell = worksheet.Cells[rowIndex, 1];
+            Excel.Range firstCell = currentSheet.Cells[rowIndex, 1];
             Excel.Range firstFullCell = eXCEL_HELPER.return_full_merg_cell(firstCell);
             Excel.Range nextCell = null;
 
             Excel.Range nextFullCell = firstFullCell;
-            int totalNoUsedColumns = worksheet.UsedRange.Columns.Count;
+            int totalNoUsedColumns = currentSheet.UsedRange.Columns.Count;
 
             int i = 1;
             //to check if we have reached the empty space or blank area after 
@@ -293,7 +293,8 @@ namespace AttendanceHander.PayLoadFormat
                 result1 = feed_datas_of_single_row(ref payLoadWrapDayEmpl,
                     currentFullCell,
                           SiGlobalVars.Instance.payLoadHeadings,
-                         out error_occured, out reached_empty_space_area);
+                         out error_occured, out reached_empty_space_area,
+                         ref currentSheet);
 
                 if (reached_empty_space_area == true)
                     return;
@@ -320,7 +321,8 @@ namespace AttendanceHander.PayLoadFormat
 
         private bool feed_datas_of_single_row(ref PayLoadWrap.Day.Employee payLoadWrapDayEmpl,
             Excel.Range fullCell, PayloadHeadings payLoadHeadings,
-            out bool error_occured, out bool reached_empty_space_or_invalid_data)
+            out bool error_occured, out bool reached_empty_space_or_invalid_data,
+           ref Excel.Worksheet currentSheet)
         {
             error_occured = false;
             reached_empty_space_or_invalid_data = false;
@@ -329,7 +331,7 @@ namespace AttendanceHander.PayLoadFormat
 
 
             //Todo: should check there is no merged cells in the timesheet data in future
-            EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
+            EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(currentSheet);
 
 
             foreach (HeadingWrap heading in payLoadHeadings)
@@ -649,10 +651,11 @@ namespace AttendanceHander.PayLoadFormat
         }
 
         private Boolean find_headings(ref PayloadHeadings payLoadHeadings,
-            out bool error_found)
+            out bool error_found,
+           ref Excel.Worksheet currentSheet)
         {
             error_found = false;
-            EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
+            EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(currentSheet);
             foreach (HeadingWrap heading in payLoadHeadings)
             {
 

@@ -49,6 +49,7 @@
             this.label_statusPayLoad = new System.Windows.Forms.Label();
             this.button_openPayLoad = new System.Windows.Forms.Button();
             this.groupBox_steps = new System.Windows.Forms.GroupBox();
+            this.button_Step5_MultiTranToPay = new System.Windows.Forms.Button();
             this.button_step2A_siteNo = new System.Windows.Forms.Button();
             this.button_step4_TransfDataToMep = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -57,7 +58,6 @@
             this.button_step3 = new System.Windows.Forms.Button();
             this.button_step2_missingData = new System.Windows.Forms.Button();
             this.button_step1_AddSiteNO = new System.Windows.Forms.Button();
-            this.button_Step5_MultiTranToPay = new System.Windows.Forms.Button();
             this.groupBoxMepStyle.SuspendLayout();
             this.groupBoxMultiTrans.SuspendLayout();
             this.groupBox_DailyTrans.SuspendLayout();
@@ -272,6 +272,7 @@
             this.button_openPayLoad.TabIndex = 7;
             this.button_openPayLoad.Text = "Open and Process";
             this.button_openPayLoad.UseVisualStyleBackColor = true;
+            this.button_openPayLoad.Click += new System.EventHandler(this.Button_openPayLoad_Click);
             // 
             // groupBox_steps
             // 
@@ -290,6 +291,16 @@
             this.groupBox_steps.TabIndex = 11;
             this.groupBox_steps.TabStop = false;
             this.groupBox_steps.Text = "STEPS";
+            // 
+            // button_Step5_MultiTranToPay
+            // 
+            this.button_Step5_MultiTranToPay.Location = new System.Drawing.Point(662, 59);
+            this.button_Step5_MultiTranToPay.Name = "button_Step5_MultiTranToPay";
+            this.button_Step5_MultiTranToPay.Size = new System.Drawing.Size(123, 69);
+            this.button_Step5_MultiTranToPay.TabIndex = 8;
+            this.button_Step5_MultiTranToPay.Text = "STEP 5: Transfer Multi Trans Data to PayLoad";
+            this.button_Step5_MultiTranToPay.UseVisualStyleBackColor = true;
+            this.button_Step5_MultiTranToPay.Click += new System.EventHandler(this.Button_Step5_MultiTranToPay_Click);
             // 
             // button_step2A_siteNo
             // 
@@ -372,16 +383,6 @@
             this.button_step1_AddSiteNO.Text = "STEP1: Add Site No. in Multiple Transaction from Daily Transaction";
             this.button_step1_AddSiteNO.UseVisualStyleBackColor = true;
             this.button_step1_AddSiteNO.Click += new System.EventHandler(this.Button_step1_AddSiteNO_Click);
-            // 
-            // button_Step5_MultiTranToPay
-            // 
-            this.button_Step5_MultiTranToPay.Location = new System.Drawing.Point(662, 59);
-            this.button_Step5_MultiTranToPay.Name = "button_Step5_MultiTranToPay";
-            this.button_Step5_MultiTranToPay.Size = new System.Drawing.Size(123, 69);
-            this.button_Step5_MultiTranToPay.TabIndex = 8;
-            this.button_Step5_MultiTranToPay.Text = "STEP 5: Transfer Multi Trans Data to PayLoad";
-            this.button_Step5_MultiTranToPay.UseVisualStyleBackColor = true;
-            this.button_Step5_MultiTranToPay.Click += new System.EventHandler(this.Button_Step5_MultiTranToPay_Click);
             // 
             // FormMain
             // 

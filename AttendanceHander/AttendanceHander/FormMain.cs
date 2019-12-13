@@ -24,7 +24,10 @@ namespace AttendanceHander
             InitializeComponent();
         }
 
-
+        private void signal_payLoad_loaded_successfuly()
+        {
+            label_statusPayLoad.BackColor = Color.GreenYellow;
+        }
         private void signal_multiTrans_loaded_successfuly()
         {
             button_step1_AddSiteNO.Enabled = true;
@@ -90,7 +93,19 @@ namespace AttendanceHander
 
             }
         }
+        private void clear_payLoad_instance()
+        {
+            if (SiGlobalVars.Instance.payLoadWrap != null)
+            {
+                //if excel is open, close it
+                SiGlobalVars.Instance.payLoadWorkbook.Close();
+                SiGlobalVars.Instance.payLoadWrap = null;
+                SiGlobalVars.Instance.payLoadHeadings = null;
+                SiGlobalVars.Instance.payLoadWorkbook = null;
+                label_statusPayLoad.BackColor = Color.Gray;
 
+            }
+        }
         private void clear_mepStyle_instance()
         {
             if (SiGlobalVars.Instance.mepStyleWorkbook != null)
@@ -481,6 +496,43 @@ namespace AttendanceHander
             }
 
             
+        }
+
+        private void Button_openPayLoad_Click(object sender, EventArgs e)
+        {
+            Excel.Workbook workbook = openFile(true);
+            if (workbook == null)
+                return;
+
+            SiGlobalVars.Instance.payLoadWorkbook = workbook;
+       
+                initiate_understanding_payLoad_timeSheet();
+            this.Activate();
+        }
+
+        private void initiate_understanding_payLoad_timeSheet()
+        {
+
+            var workbook = SiGlobalVars.Instance.payLoadWorkbook;
+            //TODO: later the headings should be loaded from the settings
+            //code for the same should be implemented
+            //now the name of the columns are hard coded
+            //but later a settings shall be introduced to change the
+            //heading names dynamically
+
+            PayLoadFormat.PayLoadHelper payLoadHelper
+                = new PayLoadFormat.PayLoadHelper(workbook);
+            Boolean error_found = false;
+
+            payLoadHelper.MAIN_understand_the_excel_sheet(out error_found);
+            if (error_found == false)
+            {
+                signal_payLoad_loaded_successfuly();
+            }
+            else
+            {
+                clear_payLoad_instance();
+            }
         }
     }
 }

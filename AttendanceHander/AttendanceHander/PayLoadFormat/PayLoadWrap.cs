@@ -25,7 +25,7 @@ namespace AttendanceHander.PayLoadFormat
             public StrItemWrap section;
             public StrItemWrap job;
 
-            public Day(Excel.Worksheet sheet)
+            public Day(ref Excel.Worksheet sheet)
             {
                 this.sheet = sheet;
             }
