@@ -526,7 +526,7 @@ namespace AttendanceHander.PayLoadFormat
 
 
 
-        internal static MixTimeSheetHandler.WorkTimeCalculatedWarp Calculate_worktime
+        internal static MixTimeSheetHandler.WorkTimeCalculatedWarp Calculate_worktime_from_bioTotalWorkTime
             (TimeSpanItemWrap totalTimeWorked, bool thisDate_is_fridayOrHoliday)
         {
             MixTimeSheetHandler.WorkTimeCalculatedWarp workTimeCalculated

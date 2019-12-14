@@ -39,6 +39,7 @@ namespace AttendanceHander
         public List< MepStyleWrap> mepStyleWraps;
         public MepStyleHelper.Headings mepStyleHeadings;
         public DateTime mepStyleTimesheetMonthYear;
+        public String ABSENT = "A";
 
     
         public Excel.Workbook multiTransWorkbook;

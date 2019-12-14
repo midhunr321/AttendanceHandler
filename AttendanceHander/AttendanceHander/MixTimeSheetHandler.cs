@@ -424,8 +424,15 @@ namespace AttendanceHander
         }
 
 
-        internal static void Transfer_data_from_multiTrans_to_payLoad(List<DateTime> holidays)
+        internal static Boolean Transfer_data_from_multiTrans_to_payLoad(List<DateTime> holidays)
         {
+
+            if (all_employees_of_MultiTrans_is_available_with_PayLoad
+               (SiGlobalVars.Instance.multiTransWraps,
+               SiGlobalVars.Instance.payLoadWrap) == false)
+                return false;
+
+
             foreach (var multiWrap in SiGlobalVars.Instance.multiTransWraps)
             {
                 //first we have to check if the site no is available for a particular 
@@ -436,7 +443,7 @@ namespace AttendanceHander
                     MessageBox.Show("The Site No is null for the Employee No = "
                         + multiWrap.personnelNo
                            + "; for the Date = " + multiWrap.date.contentInString);
-                    return;
+                    return false;
                 }
 
                 foreach (var payLoadWrapDay in SiGlobalVars.Instance.payLoadWrap.days)
@@ -460,10 +467,10 @@ namespace AttendanceHander
 
                             if (CommonOperations
                                 .compare_multiTrans_employeeNo_to_MepAndPayLoad_employeeNo
-                                (payLoadWrapDayEmpl.code.content,multiWrap.personnelNo.content)
-                                ==true)
+                                (payLoadWrapDayEmpl.code.content, multiWrap.personnelNo.content)
+                                == true)
                             {
-                                write_data_to_payLoadFormat( payLoadWrapDayEmpl,multiWrap,
+                                write_data_to_payLoadFormat_from_MultiTrans(payLoadWrapDayEmpl, multiWrap,
                                     holidayOrFriday);
                             }
 
@@ -477,7 +484,38 @@ namespace AttendanceHander
 
 
             }
+            return true;
+        }
 
+        private static bool all_employees_of_MultiTrans_is_available_with_PayLoad
+            (List<MultiTransWrap> multiTransWraps, PayLoadWrap payLoadWrap)
+        {
+            foreach (var payLoadWrapDay in payLoadWrap.days)
+            {
+                foreach (var multiEmp in multiTransWraps)
+                {
+                    Boolean employeeFound = false;
+                    foreach (var payLoadWrapDayEmp in payLoadWrapDay.employees)
+                    {
+                        if (CommonOperations
+                            .compare_multiTrans_employeeNo_to_MepAndPayLoad_employeeNo
+                            (payLoadWrapDayEmp.code.content, multiEmp.personnelNo.content))
+                        {
+                            employeeFound = true;
+                            break;
+                        }
+                    }
+
+                    if (employeeFound == false)
+                    {
+                        MessageBox.Show("Employee Code = " + multiEmp.personnelNo
+                            + " is not found in PayLoad but the same is available in Multiple Transactions");
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         internal static bool Transfer_MEPdata_to_payLoad()
@@ -496,9 +534,9 @@ namespace AttendanceHander
                 SiGlobalVars.Instance.payLoadWrap) == false)
                 return false;
 
-            foreach(var mepWrap in SiGlobalVars.Instance.mepStyleWraps)
+            foreach (var mepWrap in SiGlobalVars.Instance.mepStyleWraps)
             {
-               foreach( var mepDateOverWrap in mepWrap.dateOvertimes)
+                foreach (var mepDateOverWrap in mepWrap.dateOvertimes)
                 {
                     foreach (var payLoadDay in SiGlobalVars.Instance.payLoadWrap.days)
                     {
@@ -507,12 +545,12 @@ namespace AttendanceHander
                         foreach (var payLoadDayEmp in payLoadDay.employees)
                         {
                             if (DateTimeHandler
-                                .Compare_dates_only(payLoadDay.date.content.Value,mepDateOverWrap.date))
+                                .Compare_dates_only(payLoadDay.date.content.Value, mepDateOverWrap.date))
                             {
                                 //ie same dates.
                                 if (mepWrap.code == payLoadDayEmp.code)
                                 {
-
+                                    write_data_to_payLoadFormat_from_mepStyle()
                                 }
 
                             }
@@ -520,7 +558,7 @@ namespace AttendanceHander
                         }
                     }
                 }
-               
+
             }
 
             return true;
@@ -529,20 +567,20 @@ namespace AttendanceHander
         private static bool all_employees_of_MEPformat_is_available_with_PayLoad
             (List<MepStyleWrap> mepStyleWraps, PayLoadWrap payLoadWrap)
         {
-           foreach(var payLoadWrapDay in payLoadWrap.days)
+            foreach (var payLoadWrapDay in payLoadWrap.days)
             {
-                foreach(var mepWrap in mepStyleWraps)
+                foreach (var mepEmpl in mepStyleWraps)
                 {
                     Boolean employee_found = false;
 
                     foreach (var payLoadWrapDayEmp in payLoadWrapDay.employees)
                     {
-                        if (mepWrap.code == payLoadWrapDayEmp.code)
+                        if (mepEmpl.code == payLoadWrapDayEmp.code)
                         {
                             employee_found = true;
                             break;
                         }
-                           
+
 
                     }
 
@@ -551,14 +589,14 @@ namespace AttendanceHander
 
                     if (employee_found == false)
                     {
-                        MessageBox.Show("Employee Code = " + mepWrap.code
+                        MessageBox.Show("Employee Code = " + mepEmpl.code
                             + " Couldn't be found in PayLoad Format but it is available in Mep Style Timesheet");
                         return false;
                     }
 
                 }
 
-               
+
             }
 
             return true;
@@ -566,7 +604,7 @@ namespace AttendanceHander
 
         private static bool this_date_is_a_holidayOrFriday(DateTime thisDate, List<DateTime> explicit_holidays)
         {
-            foreach(var day in SiGlobalVars.Instance.DEFAULT_HOLIDAYS)
+            foreach (var day in SiGlobalVars.Instance.DEFAULT_HOLIDAYS)
             {
                 //check if fridays ..or like that
                 if (thisDate.DayOfWeek == day)
@@ -576,7 +614,7 @@ namespace AttendanceHander
 
             //now for explicit holidays which was selected in the form
 
-            foreach(var explictHoliday in explicit_holidays)
+            foreach (var explictHoliday in explicit_holidays)
             {
                 if (DateTimeHandler.Compare_dates_only(thisDate, explictHoliday)
                     == true)
@@ -590,28 +628,143 @@ namespace AttendanceHander
 
         public class WorkTimeCalculatedWarp
         {
-            public class Wrap 
+            public class Wrap
             {
                 public decimal content;
-               
+
             }
 
-         public Wrap workTimeHours;
-         public Wrap noBreak;
-         public Wrap overTime;
+            public Wrap workTimeHours;
+            public Wrap noBreak;
+            public Wrap overTime;
         }
-        private static Boolean write_data_to_payLoadFormat
+
+        private static MixTimeSheetHandler.WorkTimeCalculatedWarp calculate_workTime_from_MEPStyleOvertime
+           (DateOvertime mepOvertime, bool thisDate_is_fridayOrHoliday, MepStyleWrap mepStyleWrap)
+        {
+            MixTimeSheetHandler.WorkTimeCalculatedWarp workTimeCalculated
+                = new MixTimeSheetHandler.WorkTimeCalculatedWarp();
+
+            StringHandler stringHandler = new StringHandler();
+            int result_totalWorkTime;
+
+            if (thisDate_is_fridayOrHoliday == true)
+            {
+                //i.e friday means...absents don't count
+
+                //if there is some overtime then add it.
+                int converted;
+                if (int.TryParse(mepOvertime.overtime, out converted) == true)
+                {
+                    //if friday means all worktime will be converted to overtime
+                    //so normal worktime will be zero
+                    workTimeCalculated.overTime.content
+                        = (int)SiGlobalVars.Instance.DEFAULT_WORKING_HOURS + converted;
+
+                    workTimeCalculated.workTimeHours.content = 0;
+                }
+                else
+                {
+                    //means friday but the employee didn't work. so
+                    //overtime will be normal 8 hours
+                    workTimeCalculated.overTime.content
+                        = (int)SiGlobalVars.Instance.DEFAULT_WORKING_HOURS;
+
+                    workTimeCalculated.workTimeHours.content = 0;
+                }
+
+            }
+            else
+            {
+                //ie. not friday
+
+                if (mepOvertime.overtime == SiGlobalVars.Instance.ABSENT ||
+               thisDate_is_fridayOrHoliday == false
+               )
+                {
+                    //ie not firday and absent
+
+                    workTimeCalculated.workTimeHours.content = 0;
+                    workTimeCalculated.overTime.content = 0;
+                }
+                else
+                {
+                    //ie not absent and not friday
+                    //means there should be some overtime
+                    int resultOvertime;
+                    if (int.TryParse(mepOvertime.overtime, out resultOvertime) == false)
+                    {
+                        MessageBox.Show("The overtime value for Employee = " +
+                            mepStyleWrap.code + " for the date = "
+                            + mepOvertime.date.ToString() + "; Cell Address = "
+                            + mepOvertime.fullCell.Address);
+                        return null;
+                    }
+                    else
+                    {
+                        workTimeCalculated.workTimeHours.content
+                            = SiGlobalVars.Instance.DEFAULT_WORKING_HOURS;
+                        workTimeCalculated.overTime.content
+                            = SiGlobalVars.Instance.DEFAULT_WORKING_HOURS
+                            + resultOvertime;
+                    }
+
+
+                }
+
+            }
+
+
+            return workTimeCalculated;
+        }
+
+        private static Boolean write_data_to_payLoadFormat_from_mepStyle
+       (PayLoadWrap.Day.Employee payLoadWrapDayEmpl,
+       MepStyleWrap mepStyleWrap,
+       Boolean thisDate_is_fridayOrHoliday)
+        {
+            payLoadWrapDayEmpl.job_siteNo.content
+               = mepStyleWrap.siteNo.content;
+
+            foreach (var dateOverTime in mepStyleWrap.dateOvertimes)
+            {
+                WorkTimeCalculatedWarp workTimeCalculated =
+                MixTimeSheetHandler.calculate_workTime_from_MEPStyleOvertime
+                (dateOverTime,
+                thisDate_is_fridayOrHoliday, mepStyleWrap);
+
+                if (workTimeCalculated == null)
+                    return false;
+
+                //now we need to write it to payload
+
+                //for worktime
+                payLoadWrapDayEmpl.workTime.content = workTimeCalculated.workTimeHours.content;
+                payLoadWrapDayEmpl.workTime.contentInStr = workTimeCalculated.workTimeHours.content.ToString();
+                payLoadWrapDayEmpl.workTime.fullCell.Value = payLoadWrapDayEmpl.workTime.contentInStr;
+                //for overtime
+                payLoadWrapDayEmpl.overTime.content = workTimeCalculated.overTime.content;
+                payLoadWrapDayEmpl.overTime.contentInStr = workTimeCalculated.overTime.content.ToString();
+                payLoadWrapDayEmpl.overTime.fullCell.Value = payLoadWrapDayEmpl.overTime.contentInStr;
+            }
+
+
+            return true;
+
+        }
+
+        private static Boolean write_data_to_payLoadFormat_from_MultiTrans
             (PayLoadWrap.Day.Employee payLoadWrapDayEmpl,
             MultiTransWrap multiWrap,
             Boolean thisDate_is_fridayOrHoliday)
         {
-           
+
             payLoadWrapDayEmpl.job_siteNo.content
                 = multiWrap.siteNoMechFormat.shortName.content;
 
 
-            WorkTimeCalculatedWarp workTimeCalculated = 
-                PayLoadHelper.Calculate_worktime(multiWrap.totalTimeWorked, thisDate_is_fridayOrHoliday);
+            WorkTimeCalculatedWarp workTimeCalculated =
+                PayLoadHelper.Calculate_worktime_from_bioTotalWorkTime(multiWrap.totalTimeWorked, thisDate_is_fridayOrHoliday);
 
             if (workTimeCalculated == null)
                 return false;

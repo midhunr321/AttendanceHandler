@@ -49,6 +49,7 @@
             this.label_statusPayLoad = new System.Windows.Forms.Label();
             this.button_openPayLoad = new System.Windows.Forms.Button();
             this.groupBox_steps = new System.Windows.Forms.GroupBox();
+            this.button_step6_transMEPtoPay = new System.Windows.Forms.Button();
             this.button_Step5_MultiTranToPay = new System.Windows.Forms.Button();
             this.button_step2A_siteNo = new System.Windows.Forms.Button();
             this.button_step4_TransfDataToMep = new System.Windows.Forms.Button();
@@ -276,6 +277,7 @@
             // 
             // groupBox_steps
             // 
+            this.groupBox_steps.Controls.Add(this.button_step6_transMEPtoPay);
             this.groupBox_steps.Controls.Add(this.button_Step5_MultiTranToPay);
             this.groupBox_steps.Controls.Add(this.button_step2A_siteNo);
             this.groupBox_steps.Controls.Add(this.button_step4_TransfDataToMep);
@@ -291,6 +293,16 @@
             this.groupBox_steps.TabIndex = 11;
             this.groupBox_steps.TabStop = false;
             this.groupBox_steps.Text = "STEPS";
+            // 
+            // button_step6_transMEPtoPay
+            // 
+            this.button_step6_transMEPtoPay.Location = new System.Drawing.Point(27, 146);
+            this.button_step6_transMEPtoPay.Name = "button_step6_transMEPtoPay";
+            this.button_step6_transMEPtoPay.Size = new System.Drawing.Size(123, 69);
+            this.button_step6_transMEPtoPay.TabIndex = 9;
+            this.button_step6_transMEPtoPay.Text = "STEP 6: Transfer Mep Data to PayLoad";
+            this.button_step6_transMEPtoPay.UseVisualStyleBackColor = true;
+            this.button_step6_transMEPtoPay.Click += new System.EventHandler(this.Button_step6_transMEPtoPay_Click);
             // 
             // button_Step5_MultiTranToPay
             // 
@@ -324,7 +336,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(763, 148);
+            this.button2.Location = new System.Drawing.Point(748, 229);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(86, 26);
             this.button2.TabIndex = 5;
@@ -334,7 +346,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(693, 148);
+            this.button1.Location = new System.Drawing.Point(678, 229);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(64, 26);
             this.button1.TabIndex = 4;
@@ -346,7 +358,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(24, 148);
+            this.label1.Location = new System.Drawing.Point(9, 229);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(409, 17);
             this.label1.TabIndex = 3;
@@ -442,6 +454,7 @@
         private System.Windows.Forms.Button button_step4_TransfDataToMep;
         private System.Windows.Forms.Button button_step2A_siteNo;
         private System.Windows.Forms.Button button_Step5_MultiTranToPay;
+        private System.Windows.Forms.Button button_step6_transMEPtoPay;
         private System.Windows.Forms.Button button_step6_MEPtoPay;
     }
 }

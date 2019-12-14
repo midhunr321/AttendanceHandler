@@ -448,7 +448,7 @@ namespace AttendanceHander
             {
                 Boolean shortSiteNo = form_CorrectSiteNo.ShortSiteNo;
 
-                if(shortSiteNo==true)
+                if (shortSiteNo == true)
                 {
                     if (mixTimeSheetHandler
                           .correct_siteNo_in_multiTrans_with_shortMechSiteNo
@@ -459,11 +459,11 @@ namespace AttendanceHander
                 }
                 else
                 {
-                   if( mixTimeSheetHandler
-                        .correct_siteNo_in_multiTrans_with_fullMechSiteNo
-                        (SiGlobalVars.Instance.multiTransWraps)==true)
+                    if (mixTimeSheetHandler
+                         .correct_siteNo_in_multiTrans_with_fullMechSiteNo
+                         (SiGlobalVars.Instance.multiTransWraps) == true)
                         MessageBox.Show("Site No.s  are corrected to Long Mech Site No in MultiTrans Excel file");
-                   else
+                    else
                         MessageBox.Show("Site No. correction failed");
 
                 }
@@ -474,20 +474,24 @@ namespace AttendanceHander
 
         private void Button_Step5_MultiTranToPay_Click(object sender, EventArgs e)
         {
-            if(SiGlobalVars.Instance.dailyTransWraps==null||
-                SiGlobalVars.Instance.multiTransWraps==null ||
-                SiGlobalVars.Instance.payLoadWrap==null)
+            if (SiGlobalVars.Instance.dailyTransWraps == null ||
+                SiGlobalVars.Instance.multiTransWraps == null ||
+                SiGlobalVars.Instance.payLoadWrap == null)
             {
                 MessageBox.Show("Daily Transaction or Multiple Transaction or Payload Transaction" +
                     " is not found");
                 return;
             }
             Form_holidaysSelector form_HolidaysSelector = new Form_holidaysSelector(this);
-           DialogResult dialogResult =  form_HolidaysSelector.ShowDialog();
-            if(dialogResult == DialogResult.OK)
+            DialogResult dialogResult = form_HolidaysSelector.ShowDialog();
+            if (dialogResult == DialogResult.OK)
             {
                 var holidays = form_HolidaysSelector.SelectedHolidays;
-                MixTimeSheetHandler.Transfer_data_from_multiTrans_to_payLoad(holidays);
+                if (MixTimeSheetHandler.Transfer_data_from_multiTrans_to_payLoad(holidays)
+                      == false)
+                    MessageBox.Show("Transfer from Multiple Transaction to PayLoad failed");
+                else
+                    MessageBox.Show("Succesfully Transferred from Multiple Transaction to PayLoad");
             }
             else
             {
@@ -495,7 +499,7 @@ namespace AttendanceHander
                 return;
             }
 
-            
+
         }
 
         private void Button_openPayLoad_Click(object sender, EventArgs e)
@@ -505,8 +509,8 @@ namespace AttendanceHander
                 return;
 
             SiGlobalVars.Instance.payLoadWorkbook = workbook;
-       
-                initiate_understanding_payLoad_timeSheet();
+
+            initiate_understanding_payLoad_timeSheet();
             this.Activate();
         }
 
@@ -535,10 +539,12 @@ namespace AttendanceHander
             }
         }
 
-        private void button_step6_MEPtoPay_Click(object sender, EventArgs e)
+
+
+        private void Button_step6_transMEPtoPay_Click(object sender, EventArgs e)
         {
-            if (SiGlobalVars.Instance.mepStyleWraps==null||
-                SiGlobalVars.Instance.payLoadWrap == null)
+            if (SiGlobalVars.Instance.mepStyleWraps == null ||
+                            SiGlobalVars.Instance.payLoadWrap == null)
             {
                 MessageBox.Show("MEP Format or Payload Transaction" +
                     " is not found");
@@ -549,7 +555,6 @@ namespace AttendanceHander
                 MessageBox.Show("Transfer from MEP to PayLoad Successfuly Completed");
             else
                 MessageBox.Show("Failed to transfer data from MEP to PayLoad");
-
         }
     }
 }
