@@ -488,6 +488,14 @@ namespace AttendanceHander
                 return false;
             }
 
+            //first we need to check if the payload sheet has all the employee codes
+            //mentioned in the mepformat
+
+            if (all_employees_of_MEPformat_is_available_with_PayLoad
+                (SiGlobalVars.Instance.mepStyleWraps,
+                SiGlobalVars.Instance.payLoadWrap) == false)
+                return false;
+
             foreach(var mepWrap in SiGlobalVars.Instance.mepStyleWraps)
             {
                foreach( var mepDateOverWrap in mepWrap.dateOvertimes)
@@ -498,9 +506,14 @@ namespace AttendanceHander
 
                         foreach (var payLoadDayEmp in payLoadDay.employees)
                         {
-                            if (payLoadDay.sheet.Name.Trim()
-                         == mepDateOverWrap.date.Day.ToString().Trim())
+                            if (DateTimeHandler
+                                .Compare_dates_only(payLoadDay.date.content.Value,mepDateOverWrap.date))
                             {
+                                //ie same dates.
+                                if (mepWrap.code == payLoadDayEmp.code)
+                                {
+
+                                }
 
                             }
 
@@ -509,6 +522,46 @@ namespace AttendanceHander
                 }
                
             }
+
+            return true;
+        }
+
+        private static bool all_employees_of_MEPformat_is_available_with_PayLoad
+            (List<MepStyleWrap> mepStyleWraps, PayLoadWrap payLoadWrap)
+        {
+           foreach(var payLoadWrapDay in payLoadWrap.days)
+            {
+                foreach(var mepWrap in mepStyleWraps)
+                {
+                    Boolean employee_found = false;
+
+                    foreach (var payLoadWrapDayEmp in payLoadWrapDay.employees)
+                    {
+                        if (mepWrap.code == payLoadWrapDayEmp.code)
+                        {
+                            employee_found = true;
+                            break;
+                        }
+                           
+
+                    }
+
+                    //if employee is not found in the payload format
+                    //then it is an error
+
+                    if (employee_found == false)
+                    {
+                        MessageBox.Show("Employee Code = " + mepWrap.code
+                            + " Couldn't be found in PayLoad Format but it is available in Mep Style Timesheet");
+                        return false;
+                    }
+
+                }
+
+               
+            }
+
+            return true;
         }
 
         private static bool this_date_is_a_holidayOrFriday(DateTime thisDate, List<DateTime> explicit_holidays)
