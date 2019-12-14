@@ -480,6 +480,37 @@ namespace AttendanceHander
 
         }
 
+        internal static bool Transfer_MEPdata_to_payLoad()
+        {
+            if (SiGlobalVars.Instance.mepStyleWraps == null ||
+               SiGlobalVars.Instance.payLoadWrap == null)
+            {
+                return false;
+            }
+
+            foreach(var mepWrap in SiGlobalVars.Instance.mepStyleWraps)
+            {
+               foreach( var mepDateOverWrap in mepWrap.dateOvertimes)
+                {
+                    foreach (var payLoadDay in SiGlobalVars.Instance.payLoadWrap.days)
+                    {
+
+
+                        foreach (var payLoadDayEmp in payLoadDay.employees)
+                        {
+                            if (payLoadDay.sheet.Name.Trim()
+                         == mepDateOverWrap.date.Day.ToString().Trim())
+                            {
+
+                            }
+
+                        }
+                    }
+                }
+               
+            }
+        }
+
         private static bool this_date_is_a_holidayOrFriday(DateTime thisDate, List<DateTime> explicit_holidays)
         {
             foreach(var day in SiGlobalVars.Instance.DEFAULT_HOLIDAYS)

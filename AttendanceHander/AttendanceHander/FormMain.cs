@@ -534,5 +534,22 @@ namespace AttendanceHander
                 clear_payLoad_instance();
             }
         }
+
+        private void button_step6_MEPtoPay_Click(object sender, EventArgs e)
+        {
+            if (SiGlobalVars.Instance.mepStyleWraps==null||
+                SiGlobalVars.Instance.payLoadWrap == null)
+            {
+                MessageBox.Show("MEP Format or Payload Transaction" +
+                    " is not found");
+                return;
+            }
+
+            if (MixTimeSheetHandler.Transfer_MEPdata_to_payLoad() == true)
+                MessageBox.Show("Transfer from MEP to PayLoad Successfuly Completed");
+            else
+                MessageBox.Show("Failed to transfer data from MEP to PayLoad");
+
+        }
     }
 }
