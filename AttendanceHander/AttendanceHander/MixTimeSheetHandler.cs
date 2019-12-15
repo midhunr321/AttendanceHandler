@@ -550,7 +550,8 @@ namespace AttendanceHander
                                 //ie same dates.
                                 if (mepWrap.code == payLoadDayEmp.code)
                                 {
-                                    write_data_to_payLoadFormat_from_mepStyle()
+                                    write_data_to_payLoadFormat_from_mepStyle
+                                        (payLoadDayEmp,mepWrap,)
                                 }
 
                             }
