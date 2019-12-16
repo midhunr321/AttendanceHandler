@@ -84,14 +84,13 @@ namespace AttendanceHander
             {
                 //if excel is open, close it
                 SiGlobalVars.Instance.multiTransWorkbook.Close();
-                SiGlobalVars.Instance.multiTransWraps = null;
-                SiGlobalVars.Instance.multiTransHeadings = null;
-                SiGlobalVars.Instance.multiTransCurrentWorkSheet = null;
-                SiGlobalVars.Instance.multiTransWorkbook = null;
-                button_step1_AddSiteNO.Enabled = false;
-                label_StatusMultiTrans.BackColor = Color.Gray;
-
             }
+            SiGlobalVars.Instance.multiTransWraps = null;
+            SiGlobalVars.Instance.multiTransHeadings = null;
+            SiGlobalVars.Instance.multiTransCurrentWorkSheet = null;
+            SiGlobalVars.Instance.multiTransWorkbook = null;
+            button_step1_AddSiteNO.Enabled = false;
+            label_StatusMultiTrans.BackColor = Color.Gray;
         }
         private void clear_payLoad_instance()
         {
@@ -112,13 +111,12 @@ namespace AttendanceHander
             {
                 //if excel is open, close it
                 SiGlobalVars.Instance.mepStyleWorkbook.Close();
-                SiGlobalVars.Instance.mepStyleWraps = null;
-                SiGlobalVars.Instance.mepStyleHeadings = null;
-                SiGlobalVars.Instance.mepStyleCurrentWorkSheet = null;
-                SiGlobalVars.Instance.mepStyleWorkbook = null;
-                label_StatusMepSty.BackColor = Color.Gray;
-
             }
+            SiGlobalVars.Instance.mepStyleWraps = null;
+            SiGlobalVars.Instance.mepStyleHeadings = null;
+            SiGlobalVars.Instance.mepStyleCurrentWorkSheet = null;
+            SiGlobalVars.Instance.mepStyleWorkbook = null;
+            label_StatusMepSty.BackColor = Color.Gray;
         }
         private void clear_dailyTrans_instance()
         {
@@ -126,15 +124,28 @@ namespace AttendanceHander
             {
                 //if excel is open, close it
                 SiGlobalVars.Instance.dailyTransWorkbook.Close();
-                SiGlobalVars.Instance.dailyTransWraps = null;
-                SiGlobalVars.Instance.dailyTransHeadings = null;
-                SiGlobalVars.Instance.dailyTransCurrentWorkSheet = null;
-                SiGlobalVars.Instance.dailyTransWorkbook = null;
-                label_StatusDailyTrans.BackColor = Color.Gray;
-
+               
             }
+            SiGlobalVars.Instance.dailyTransWraps = null;
+            SiGlobalVars.Instance.dailyTransHeadings = null;
+            SiGlobalVars.Instance.dailyTransCurrentWorkSheet = null;
+            SiGlobalVars.Instance.dailyTransWorkbook = null;
+            label_StatusDailyTrans.BackColor = Color.Gray;
         }
 
+        private void clear_payLoadTrans_instance()
+        {
+            if (SiGlobalVars.Instance.payLoadWorkbook != null)
+            {
+                //if excel is open, close it
+                SiGlobalVars.Instance.payLoadWorkbook.Close();
+               
+            }
+            SiGlobalVars.Instance.payLoadWrap = null;
+            SiGlobalVars.Instance.payLoadHeadings = null;
+            SiGlobalVars.Instance.payLoadWorkbook = null;
+            label_statusPayLoad.BackColor = Color.Gray;
+        }
 
 
         private void initiate_understanding_MultipleTransaction_timesheet()
@@ -578,6 +589,11 @@ namespace AttendanceHander
                 MessageBox.Show("Transfer from MEP to PayLoad Successfuly Completed");
             else
                 MessageBox.Show("Failed to transfer data from MEP to PayLoad");
+        }
+
+        private void button_clearPayLoad_Click(object sender, EventArgs e)
+        {
+            clear_payLoadTrans_instance();
         }
     }
 }

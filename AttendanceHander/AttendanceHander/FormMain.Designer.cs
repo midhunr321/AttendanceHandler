@@ -49,6 +49,7 @@
             this.label_statusPayLoad = new System.Windows.Forms.Label();
             this.button_openPayLoad = new System.Windows.Forms.Button();
             this.groupBox_steps = new System.Windows.Forms.GroupBox();
+            this.label_holidays = new System.Windows.Forms.Label();
             this.button_step6_transMEPtoPay = new System.Windows.Forms.Button();
             this.button_Step5_MultiTranToPay = new System.Windows.Forms.Button();
             this.button_step2A_siteNo = new System.Windows.Forms.Button();
@@ -59,7 +60,7 @@
             this.button_step3 = new System.Windows.Forms.Button();
             this.button_step2_missingData = new System.Windows.Forms.Button();
             this.button_step1_AddSiteNO = new System.Windows.Forms.Button();
-            this.label_holidays = new System.Windows.Forms.Label();
+            this.button_clearPayLoad = new System.Windows.Forms.Button();
             this.groupBoxMepStyle.SuspendLayout();
             this.groupBoxMultiTrans.SuspendLayout();
             this.groupBox_DailyTrans.SuspendLayout();
@@ -236,6 +237,7 @@
             // 
             // groupBox_payLoad
             // 
+            this.groupBox_payLoad.Controls.Add(this.button_clearPayLoad);
             this.groupBox_payLoad.Controls.Add(this.button_testPayLoad);
             this.groupBox_payLoad.Controls.Add(this.label_statusPayLoad);
             this.groupBox_payLoad.Controls.Add(this.button_openPayLoad);
@@ -295,6 +297,16 @@
             this.groupBox_steps.TabIndex = 11;
             this.groupBox_steps.TabStop = false;
             this.groupBox_steps.Text = "STEPS";
+            // 
+            // label_holidays
+            // 
+            this.label_holidays.AutoSize = true;
+            this.label_holidays.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_holidays.Location = new System.Drawing.Point(24, 183);
+            this.label_holidays.Name = "label_holidays";
+            this.label_holidays.Size = new System.Drawing.Size(70, 17);
+            this.label_holidays.TabIndex = 10;
+            this.label_holidays.Text = "Holidays :";
             // 
             // button_step6_transMEPtoPay
             // 
@@ -398,15 +410,15 @@
             this.button_step1_AddSiteNO.UseVisualStyleBackColor = true;
             this.button_step1_AddSiteNO.Click += new System.EventHandler(this.Button_step1_AddSiteNO_Click);
             // 
-            // label_holidays
+            // button_clearPayLoad
             // 
-            this.label_holidays.AutoSize = true;
-            this.label_holidays.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_holidays.Location = new System.Drawing.Point(24, 183);
-            this.label_holidays.Name = "label_holidays";
-            this.label_holidays.Size = new System.Drawing.Size(70, 17);
-            this.label_holidays.TabIndex = 10;
-            this.label_holidays.Text = "Holidays :";
+            this.button_clearPayLoad.Location = new System.Drawing.Point(733, 55);
+            this.button_clearPayLoad.Name = "button_clearPayLoad";
+            this.button_clearPayLoad.Size = new System.Drawing.Size(101, 41);
+            this.button_clearPayLoad.TabIndex = 11;
+            this.button_clearPayLoad.Text = "Clear";
+            this.button_clearPayLoad.UseVisualStyleBackColor = true;
+            this.button_clearPayLoad.Click += new System.EventHandler(this.button_clearPayLoad_Click);
             // 
             // FormMain
             // 
@@ -469,5 +481,6 @@
         private System.Windows.Forms.Button button_step6_transMEPtoPay;
         private System.Windows.Forms.Button button_step6_MEPtoPay;
         private System.Windows.Forms.Label label_holidays;
+        private System.Windows.Forms.Button button_clearPayLoad;
     }
 }
