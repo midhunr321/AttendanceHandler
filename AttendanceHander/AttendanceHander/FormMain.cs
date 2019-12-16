@@ -487,7 +487,14 @@ namespace AttendanceHander
             if (dialogResult == DialogResult.OK)
             {
                 var holidays = form_HolidaysSelector.SelectedHolidays;
-                if (MixTimeSheetHandler.Transfer_data_from_multiTrans_to_payLoad(holidays)
+                if (SiGlobalVars.Instance.Holidays == null)
+                    SiGlobalVars.Instance.Holidays = new List<DateTime>();
+
+               Refresh_holiday_dates_display();
+
+                SiGlobalVars.Instance.Holidays = holidays;
+                if (MixTimeSheetHandler
+                    .Transfer_data_from_multiTrans_to_payLoad(SiGlobalVars.Instance.Holidays)
                       == false)
                     MessageBox.Show("Transfer from Multiple Transaction to PayLoad failed");
                 else
@@ -499,6 +506,22 @@ namespace AttendanceHander
                 return;
             }
 
+
+        }
+
+        private void Refresh_holiday_dates_display()
+        {
+            if (SiGlobalVars.Instance.Holidays == null)
+            {
+                label_holidays.Text = "Holidays : Null";
+                return;
+            }
+            label_holidays.Text = "Holidays : ";
+            foreach (var holiday in SiGlobalVars.Instance.Holidays)
+            {
+                label_holidays.Text = label_holidays.Text + 
+                    holiday.ToShortDateString() + ", ";
+            }
 
         }
 

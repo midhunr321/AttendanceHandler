@@ -59,6 +59,7 @@
             this.button_step3 = new System.Windows.Forms.Button();
             this.button_step2_missingData = new System.Windows.Forms.Button();
             this.button_step1_AddSiteNO = new System.Windows.Forms.Button();
+            this.label_holidays = new System.Windows.Forms.Label();
             this.groupBoxMepStyle.SuspendLayout();
             this.groupBoxMultiTrans.SuspendLayout();
             this.groupBox_DailyTrans.SuspendLayout();
@@ -277,6 +278,7 @@
             // 
             // groupBox_steps
             // 
+            this.groupBox_steps.Controls.Add(this.label_holidays);
             this.groupBox_steps.Controls.Add(this.button_step6_transMEPtoPay);
             this.groupBox_steps.Controls.Add(this.button_Step5_MultiTranToPay);
             this.groupBox_steps.Controls.Add(this.button_step2A_siteNo);
@@ -289,14 +291,14 @@
             this.groupBox_steps.Controls.Add(this.button_step1_AddSiteNO);
             this.groupBox_steps.Location = new System.Drawing.Point(12, 532);
             this.groupBox_steps.Name = "groupBox_steps";
-            this.groupBox_steps.Size = new System.Drawing.Size(855, 261);
+            this.groupBox_steps.Size = new System.Drawing.Size(855, 206);
             this.groupBox_steps.TabIndex = 11;
             this.groupBox_steps.TabStop = false;
             this.groupBox_steps.Text = "STEPS";
             // 
             // button_step6_transMEPtoPay
             // 
-            this.button_step6_transMEPtoPay.Location = new System.Drawing.Point(27, 146);
+            this.button_step6_transMEPtoPay.Location = new System.Drawing.Point(27, 94);
             this.button_step6_transMEPtoPay.Name = "button_step6_transMEPtoPay";
             this.button_step6_transMEPtoPay.Size = new System.Drawing.Size(123, 69);
             this.button_step6_transMEPtoPay.TabIndex = 9;
@@ -306,7 +308,7 @@
             // 
             // button_Step5_MultiTranToPay
             // 
-            this.button_Step5_MultiTranToPay.Location = new System.Drawing.Point(662, 59);
+            this.button_Step5_MultiTranToPay.Location = new System.Drawing.Point(662, 19);
             this.button_Step5_MultiTranToPay.Name = "button_Step5_MultiTranToPay";
             this.button_Step5_MultiTranToPay.Size = new System.Drawing.Size(123, 69);
             this.button_Step5_MultiTranToPay.TabIndex = 8;
@@ -316,7 +318,7 @@
             // 
             // button_step2A_siteNo
             // 
-            this.button_step2A_siteNo.Location = new System.Drawing.Point(285, 59);
+            this.button_step2A_siteNo.Location = new System.Drawing.Point(285, 19);
             this.button_step2A_siteNo.Name = "button_step2A_siteNo";
             this.button_step2A_siteNo.Size = new System.Drawing.Size(113, 69);
             this.button_step2A_siteNo.TabIndex = 7;
@@ -326,7 +328,7 @@
             // 
             // button_step4_TransfDataToMep
             // 
-            this.button_step4_TransfDataToMep.Location = new System.Drawing.Point(533, 59);
+            this.button_step4_TransfDataToMep.Location = new System.Drawing.Point(533, 19);
             this.button_step4_TransfDataToMep.Name = "button_step4_TransfDataToMep";
             this.button_step4_TransfDataToMep.Size = new System.Drawing.Size(123, 69);
             this.button_step4_TransfDataToMep.TabIndex = 6;
@@ -336,7 +338,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(748, 229);
+            this.button2.Location = new System.Drawing.Point(748, 166);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(86, 26);
             this.button2.TabIndex = 5;
@@ -346,7 +348,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(678, 229);
+            this.button1.Location = new System.Drawing.Point(678, 166);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(64, 26);
             this.button1.TabIndex = 4;
@@ -358,7 +360,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(9, 229);
+            this.label1.Location = new System.Drawing.Point(24, 166);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(409, 17);
             this.label1.TabIndex = 3;
@@ -366,7 +368,7 @@
             // 
             // button_step3
             // 
-            this.button_step3.Location = new System.Drawing.Point(404, 59);
+            this.button_step3.Location = new System.Drawing.Point(404, 19);
             this.button_step3.Name = "button_step3";
             this.button_step3.Size = new System.Drawing.Size(123, 69);
             this.button_step3.TabIndex = 2;
@@ -377,7 +379,7 @@
             // button_step2_missingData
             // 
             this.button_step2_missingData.Enabled = false;
-            this.button_step2_missingData.Location = new System.Drawing.Point(156, 59);
+            this.button_step2_missingData.Location = new System.Drawing.Point(156, 19);
             this.button_step2_missingData.Name = "button_step2_missingData";
             this.button_step2_missingData.Size = new System.Drawing.Size(123, 69);
             this.button_step2_missingData.TabIndex = 1;
@@ -388,7 +390,7 @@
             // button_step1_AddSiteNO
             // 
             this.button_step1_AddSiteNO.Enabled = false;
-            this.button_step1_AddSiteNO.Location = new System.Drawing.Point(27, 59);
+            this.button_step1_AddSiteNO.Location = new System.Drawing.Point(27, 19);
             this.button_step1_AddSiteNO.Name = "button_step1_AddSiteNO";
             this.button_step1_AddSiteNO.Size = new System.Drawing.Size(123, 69);
             this.button_step1_AddSiteNO.TabIndex = 0;
@@ -396,12 +398,22 @@
             this.button_step1_AddSiteNO.UseVisualStyleBackColor = true;
             this.button_step1_AddSiteNO.Click += new System.EventHandler(this.Button_step1_AddSiteNO_Click);
             // 
+            // label_holidays
+            // 
+            this.label_holidays.AutoSize = true;
+            this.label_holidays.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_holidays.Location = new System.Drawing.Point(24, 183);
+            this.label_holidays.Name = "label_holidays";
+            this.label_holidays.Size = new System.Drawing.Size(70, 17);
+            this.label_holidays.TabIndex = 10;
+            this.label_holidays.Text = "Holidays :";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ClientSize = new System.Drawing.Size(894, 805);
+            this.ClientSize = new System.Drawing.Size(894, 750);
             this.Controls.Add(this.groupBox_steps);
             this.Controls.Add(this.groupBox_payLoad);
             this.Controls.Add(this.groupBox_DailyTrans);
@@ -456,5 +468,6 @@
         private System.Windows.Forms.Button button_Step5_MultiTranToPay;
         private System.Windows.Forms.Button button_step6_transMEPtoPay;
         private System.Windows.Forms.Button button_step6_MEPtoPay;
+        private System.Windows.Forms.Label label_holidays;
     }
 }

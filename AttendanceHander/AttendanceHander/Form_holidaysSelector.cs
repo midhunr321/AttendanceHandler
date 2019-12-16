@@ -33,7 +33,11 @@ namespace AttendanceHander
         }
         private void Button_addHoliday_Click(object sender, EventArgs e)
         {
+
             DateTime selectedDate = dateTimePicker1.Value.Date;
+            if (selectedHolidays == null)
+                selectedHolidays = new List<DateTime>();
+
             selectedHolidays.Add(selectedDate);
             dataGridViewHolidays.Invalidate();
             

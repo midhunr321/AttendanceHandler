@@ -520,6 +520,14 @@ namespace AttendanceHander
 
         internal static bool Transfer_MEPdata_to_payLoad()
         {
+            if (SiGlobalVars.Instance.Holidays == null)
+            {
+                DialogResult dialogResult =
+                      MessageBox.Show("Selected Holidays is null. Continue?", "Warning",
+                      buttons: MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.No)
+                    return false;
+            }
             if (SiGlobalVars.Instance.mepStyleWraps == null ||
                SiGlobalVars.Instance.payLoadWrap == null)
             {
@@ -540,7 +548,7 @@ namespace AttendanceHander
                 {
                     foreach (var payLoadDay in SiGlobalVars.Instance.payLoadWrap.days)
                     {
-
+                       
 
                         foreach (var payLoadDayEmp in payLoadDay.employees)
                         {
@@ -550,8 +558,10 @@ namespace AttendanceHander
                                 //ie same dates.
                                 if (mepWrap.code == payLoadDayEmp.code)
                                 {
+                                    Boolean isHoliday = this_date_is_a_holidayOrFriday(payLoadDay.date.content.Value,
+                                          SiGlobalVars.Instance.Holidays);
                                     write_data_to_payLoadFormat_from_mepStyle
-                                        (payLoadDayEmp,mepWrap,)
+                                        (payLoadDayEmp, mepWrap, isHoliday);
                                 }
 
                             }
