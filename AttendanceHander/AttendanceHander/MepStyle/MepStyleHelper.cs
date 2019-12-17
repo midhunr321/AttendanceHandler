@@ -122,7 +122,7 @@ namespace AttendanceHander
 
                 MepStyleSiteNoCodeAnalyzer codeAnalyzer
                         = new MepStyleSiteNoCodeAnalyzer
-                        (SiGlobalVars.Instance.mepStyleTimesheetMonthYear);
+                        (SiGlobalVars.Instance.mepStyleTimesheetMonthYear.Value);
 
                 MepStyleSiteNoCodeAnalyzer.ExtractedDataWrap extractedDataWrap
                     = new MepStyleSiteNoCodeAnalyzer.ExtractedDataWrap();
@@ -235,8 +235,8 @@ namespace AttendanceHander
                     //if no merge cells then
                     var currMonthYear = SiGlobalVars.Instance
                         .mepStyleTimesheetMonthYear;
-                    int totalMonthDays = DateTime.DaysInMonth(currMonthYear.Year,
-                        currMonthYear.Month);
+                    int totalMonthDays = DateTime.DaysInMonth(currMonthYear.Value.Year,
+                        currMonthYear.Value.Month);
 
                     int overtimeDay;
                     if (int.TryParse(heading.Value.headingName, out overtimeDay)
@@ -250,8 +250,8 @@ namespace AttendanceHander
                        = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         newItem.heading = heading.Value;
                         newItem.date_day = heading.Value.headingName;
-                        DateTime date = new DateTime(currMonthYear.Year,
-                        currMonthYear.Month, overtimeDay);
+                        DateTime date = new DateTime(currMonthYear.Value.Year,
+                        currMonthYear.Value.Month, overtimeDay);
                         newItem.date = date;
                         newItem.fullCell = fullCell;
                         mepStyleWrap.dateOvertimes.Add(newItem);
@@ -610,8 +610,9 @@ namespace AttendanceHander
         private Boolean overtime_dates_are_in_order_and_valid()
         {
 
-            int no_of_days = DateTime.DaysInMonth(SiGlobalVars.Instance.mepStyleTimesheetMonthYear.Year,
-                SiGlobalVars.Instance.mepStyleTimesheetMonthYear.Month);
+            int no_of_days = DateTime.DaysInMonth
+                (SiGlobalVars.Instance.mepStyleTimesheetMonthYear.Value.Year,
+                SiGlobalVars.Instance.mepStyleTimesheetMonthYear.Value.Month);
             int i = 1;
             foreach (var item in SiGlobalVars.Instance.mepStyleHeadings.overtimeDays)
             {
@@ -635,8 +636,8 @@ namespace AttendanceHander
             var timesheetDate = SiGlobalVars.Instance.
                 mepStyleTimesheetMonthYear;
             int currentMonthDaysCount
-                 = DateTime.DaysInMonth(timesheetDate.Year,
-                 timesheetDate.Month);
+                 = DateTime.DaysInMonth(timesheetDate.Value.Year,
+                 timesheetDate.Value.Month);
             EXCEL_HELPER eXCEL_HELPER = new EXCEL_HELPER(worksheet);
 
             for (int day = 1; day <= currentMonthDaysCount; day++)

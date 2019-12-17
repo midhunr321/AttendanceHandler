@@ -116,6 +116,7 @@ namespace AttendanceHander
             SiGlobalVars.Instance.mepStyleHeadings = null;
             SiGlobalVars.Instance.mepStyleCurrentWorkSheet = null;
             SiGlobalVars.Instance.mepStyleWorkbook = null;
+            SiGlobalVars.Instance.mepStyleTimesheetMonthYear = null;
             label_StatusMepSty.BackColor = Color.Gray;
         }
         private void clear_dailyTrans_instance()
@@ -144,6 +145,7 @@ namespace AttendanceHander
             SiGlobalVars.Instance.payLoadWrap = null;
             SiGlobalVars.Instance.payLoadHeadings = null;
             SiGlobalVars.Instance.payLoadWorkbook = null;
+            SiGlobalVars.Instance.Holidays = null;
             label_statusPayLoad.BackColor = Color.Gray;
         }
 
