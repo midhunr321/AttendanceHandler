@@ -382,7 +382,7 @@ namespace AttendanceHander.DailyTransactions
                     else if (heading.Equals(headings.time))
                     {
 
-                        CommonOperations.feed_time_data_to_dataWrap(ref dailyTransWrap.time,
+                       feed_time_data_to_dataWrap(ref dailyTransWrap.time,
                             eXCEL_HELPER, fullCell, heading, (DateTime)dailyTransWrap.date.content);
 
 
