@@ -8,6 +8,10 @@ namespace AttendanceHander.MultipleTransaction
 {
    public class MultiTransWrap
     {
+        public class StrItemWrap : AttendanceHander.StrItemWrap { }
+        public class DateItemWrap : AttendanceHander.DateItemWrap { }
+        public class TimeSpanItemWrap : AttendanceHander.TimeSpanItemWrap { }
+
         public StrItemWrap personnelNo; //Personnel No.
         public StrItemWrap firstName; //First Name - both are same
         public StrItemWrap lastName; //LastName is normally not occupied

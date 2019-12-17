@@ -265,7 +265,7 @@ namespace AttendanceHander
             {
                 //true means already site no heading available
                 if (multiTransWrap.siteNo == null)
-                    multiTransWrap.siteNo = new StrItemWrap();
+                    multiTransWrap.siteNo = new MultiTransWrap.StrItemWrap();
 
                 //for each row..the site no data cell will always be after totalTimeWorked cell.
                 multiTransWrap.siteNo.fullCell = multiTransWrap.totalTimeWorked.fullCell.Next;
@@ -298,15 +298,15 @@ namespace AttendanceHander
                     )
                 {
                     if (multiWrap.siteNo == null)
-                        multiWrap.siteNo = new StrItemWrap();
+                        multiWrap.siteNo = new MultiTransWrap.StrItemWrap();
 
                     multiWrap.siteNo.content = dailyWrap.deviceName.content;
                     if (multiWrap.siteNoMechFormat == null)
                         multiWrap.siteNoMechFormat = new MultiTransWrap.SiteNoMechFormat();
                     if (multiWrap.siteNoMechFormat.longSiteNo == null)
-                        multiWrap.siteNoMechFormat.longSiteNo = new StrItemWrap();
+                        multiWrap.siteNoMechFormat.longSiteNo = new MultiTransWrap.StrItemWrap();
                     if (multiWrap.siteNoMechFormat.shortName == null)
-                        multiWrap.siteNoMechFormat.shortName = new StrItemWrap();
+                        multiWrap.siteNoMechFormat.shortName = new MultiTransWrap.StrItemWrap();
 
                     //now we need to feed the site no in mech format
                     //that means we need to replace 'S' in site no with 'M'

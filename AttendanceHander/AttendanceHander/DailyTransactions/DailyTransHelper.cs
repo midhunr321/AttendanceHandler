@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -199,6 +200,33 @@ namespace AttendanceHander.DailyTransactions
 
             dailyTransWraps.Add(dailyTransWrap);
 
+        }
+
+        private void feed_time_data_to_dataWrap(ref DateItemWrap time_data,
+     EXCEL_HELPER eXCEL_HELPER, Excel.Range fullCell,
+     HeadingWrap heading, DateTime date_of_time)
+        {
+            //that is employee no
+            if (time_data == null)
+                time_data = new MultiTransWrap.DateItemWrap();
+            String extractedDate_in_string
+                = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
+            DateTime result_time;
+
+            if (DateTime.TryParseExact(extractedDate_in_string,
+                "HH:mm", CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.AdjustToUniversal,
+                out result_time)
+            == true)
+                time_data.content = DateTimeHandler
+                    .mix_different_date_and_time(date_of_time, result_time);
+            else
+                time_data.content = null;
+
+            time_data.fullCell = fullCell;
+            time_data.heading = heading;
+            time_data.contentInString =
+                           eXCEL_HELPER.get_value_of_merge_cell(fullCell);
         }
 
         private Boolean feed_datas_of_single_row
