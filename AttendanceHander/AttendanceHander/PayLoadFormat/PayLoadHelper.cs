@@ -132,6 +132,7 @@ namespace AttendanceHander.PayLoadFormat
                 find_headings(ref SiGlobalVars.
                  Instance.payLoadHeadings, out error_found, ref currentSheet);
 
+
                 if (error_found == true)
                     return false;
                 //now we got all the headings
@@ -140,7 +141,11 @@ namespace AttendanceHander.PayLoadFormat
                 //now that we got all headings
                 //we need to start with the rows
 
+
+                find_preTableHeadings();
                 //first Pre-table datas are headings like company, date, section, job
+
+
                 read_preTable_datas(out error_found, ref payLoadWrapDay);
 
                 if (error_found == true)
@@ -649,7 +654,7 @@ namespace AttendanceHander.PayLoadFormat
             return false;
 
         }
-
+    
         private Boolean find_headings(ref PayloadHeadings payLoadHeadings,
             out bool error_found,
            ref Excel.Worksheet currentSheet)
