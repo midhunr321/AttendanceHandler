@@ -556,7 +556,7 @@ namespace AttendanceHander
                                 .Compare_dates_only(payLoadDay.date.content.Value, mepDateOverWrap.date))
                             {
                                 //ie same dates.
-                                if (mepWrap.code == payLoadDayEmp.code)
+                                if (mepWrap.code.content == payLoadDayEmp.code.content)
                                 {
                                     Boolean isHoliday = this_date_is_a_holidayOrFriday(payLoadDay.date.content.Value,
                                           SiGlobalVars.Instance.Holidays);
@@ -586,7 +586,7 @@ namespace AttendanceHander
 
                     foreach (var payLoadWrapDayEmp in payLoadWrapDay.employees)
                     {
-                        if (mepEmpl.code == payLoadWrapDayEmp.code)
+                        if (mepEmpl.code.content == payLoadWrapDayEmp.code.content)
                         {
                             employee_found = true;
                             break;
@@ -750,13 +750,19 @@ namespace AttendanceHander
                 //now we need to write it to payload
 
                 //for worktime
-                payLoadWrapDayEmpl.workTime.content = workTimeCalculated.workTimeHours.content;
-                payLoadWrapDayEmpl.workTime.contentInStr = workTimeCalculated.workTimeHours.content.ToString();
-                payLoadWrapDayEmpl.workTime.fullCell.Value = payLoadWrapDayEmpl.workTime.contentInStr;
+                payLoadWrapDayEmpl.workTime.content 
+                    = workTimeCalculated.workTimeHours.content;
+                payLoadWrapDayEmpl.workTime.contentInStr 
+                    = workTimeCalculated.workTimeHours.content.ToString();
+                payLoadWrapDayEmpl.workTime.fullCell.Value 
+                    = payLoadWrapDayEmpl.workTime.contentInStr;
                 //for overtime
-                payLoadWrapDayEmpl.overTime.content = workTimeCalculated.overTime.content;
-                payLoadWrapDayEmpl.overTime.contentInStr = workTimeCalculated.overTime.content.ToString();
-                payLoadWrapDayEmpl.overTime.fullCell.Value = payLoadWrapDayEmpl.overTime.contentInStr;
+                payLoadWrapDayEmpl.overTime.content 
+                    = workTimeCalculated.overTime.content;
+                payLoadWrapDayEmpl.overTime.contentInStr 
+                    = workTimeCalculated.overTime.content.ToString();
+                payLoadWrapDayEmpl.overTime.fullCell.Value
+                    = payLoadWrapDayEmpl.overTime.contentInStr;
             }
 
 

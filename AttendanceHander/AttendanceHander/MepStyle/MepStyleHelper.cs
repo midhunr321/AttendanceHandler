@@ -99,7 +99,7 @@ namespace AttendanceHander
 
             return false;
         }
-        private Boolean feed_site_transfer_data_of_a_cell(ref List<DateOvertime> dateOvertime,
+        private Boolean feed_site_transfer_data_of_a_cell(ref List<MepStyleWrap.DateOvertime> dateOvertime,
            Excel.Range fullCell, MepStyleHelper.Headings headings,
           out Boolean stopThisRowIteration, ref int no_of_tries_for_siteTransfCode)
         {
@@ -164,7 +164,8 @@ namespace AttendanceHander
             }
             return filtered;
         }
-        private Boolean insert_transfer_dates_into_datawrap(ref List<DateOvertime> dateOvertime,
+        private Boolean insert_transfer_dates_into_datawrap
+            (ref List<MepStyleWrap.DateOvertime> dateOvertime,
             MepStyleSiteNoCodeAnalyzer.ExtractedDataWrap extractedDataWrap)
         {
             DateTime startDate = extractedDataWrap.transferStartDate;
@@ -242,8 +243,8 @@ namespace AttendanceHander
                            == true)
                     {
                         if (mepStyleWrap.dateOvertimes == null)
-                            mepStyleWrap.dateOvertimes = new List<DateOvertime>();
-                        DateOvertime newItem = new DateOvertime();
+                            mepStyleWrap.dateOvertimes = new List<MepStyleWrap.DateOvertime>();
+                        MepStyleWrap.DateOvertime newItem = new MepStyleWrap.DateOvertime();
 
                         newItem.overtime
                        = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
@@ -318,7 +319,7 @@ namespace AttendanceHander
                     {
                         //that is this particular cell is serial no data
                         if (mepStyleWrap.serialNo == null)
-                            mepStyleWrap.serialNo = new StrItemWrap();
+                            mepStyleWrap.serialNo = new MepStyleWrap.StrItemWrap();
                         mepStyleWrap.serialNo.content = eXCEL_HELPER
                             .get_value_of_merge_cell(fullCell);
                         mepStyleWrap.serialNo.fullCell = fullCell;
@@ -329,7 +330,7 @@ namespace AttendanceHander
                     {
                         //that is employee no
                         if (mepStyleWrap.code == null)
-                            mepStyleWrap.code = new StrItemWrap();
+                            mepStyleWrap.code = new MepStyleWrap.StrItemWrap();
                         String extractedEmployeeNo = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         if (CommonOperations.employeeNo_is_valid(extractedEmployeeNo)
                          == false)
@@ -352,7 +353,7 @@ namespace AttendanceHander
                     {
                         //that is employee no
                         if (mepStyleWrap.name == null)
-                            mepStyleWrap.name = new StrItemWrap();
+                            mepStyleWrap.name = new MepStyleWrap.StrItemWrap();
                         String extractedName = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
 
                         if (CommonOperations.name_is_valid(extractedName)
@@ -376,7 +377,7 @@ namespace AttendanceHander
                     {
                         //that is employee no
                         if (mepStyleWrap.designation == null)
-                            mepStyleWrap.designation = new StrItemWrap();
+                            mepStyleWrap.designation = new MepStyleWrap.StrItemWrap();
                         mepStyleWrap.designation.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.designation.fullCell = fullCell;
                         mepStyleWrap.designation.heading = heading;
@@ -387,7 +388,7 @@ namespace AttendanceHander
                     {
                         //that is employee no
                         if (mepStyleWrap.siteNo == null)
-                            mepStyleWrap.siteNo = new StrItemWrap();
+                            mepStyleWrap.siteNo = new MepStyleWrap.StrItemWrap();
                         mepStyleWrap.siteNo.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.siteNo.fullCell = fullCell;
                         mepStyleWrap.siteNo.heading = heading;
@@ -398,7 +399,7 @@ namespace AttendanceHander
                     {
                         //that is employee no
                         if (mepStyleWrap.totalOvertime == null)
-                            mepStyleWrap.totalOvertime = new StrItemWrap();
+                            mepStyleWrap.totalOvertime = new MepStyleWrap.StrItemWrap();
                         mepStyleWrap.totalOvertime.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         mepStyleWrap.totalOvertime.fullCell = fullCell;
                         mepStyleWrap.totalOvertime.heading = heading;
