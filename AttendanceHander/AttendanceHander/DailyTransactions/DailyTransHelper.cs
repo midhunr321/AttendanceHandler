@@ -202,13 +202,13 @@ namespace AttendanceHander.DailyTransactions
 
         }
 
-        private void feed_time_data_to_dataWrap(ref DateItemWrap time_data,
+        private void feed_time_data_to_dataWrap(ref DailyTransWrap.DateItemWrap time_data,
      EXCEL_HELPER eXCEL_HELPER, Excel.Range fullCell,
      HeadingWrap heading, DateTime date_of_time)
         {
             //that is employee no
             if (time_data == null)
-                time_data = new MultiTransWrap.DateItemWrap();
+                time_data = new DailyTransWrap.DateItemWrap();
             String extractedDate_in_string
                 = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
             DateTime result_time;
@@ -288,7 +288,7 @@ namespace AttendanceHander.DailyTransactions
                             return false;
                         }
                         if (dailyTransWrap.personnelNo == null)
-                            dailyTransWrap.personnelNo = new StrItemWrap();
+                            dailyTransWrap.personnelNo = new DailyTransWrap.StrItemWrap();
                         dailyTransWrap.personnelNo.content = eXCEL_HELPER
                             .get_value_of_merge_cell(fullCell);
                         dailyTransWrap.personnelNo.fullCell = fullCell;
@@ -298,7 +298,7 @@ namespace AttendanceHander.DailyTransactions
                     else if (heading.Equals(headings.firstName))
                     {
                         if (dailyTransWrap.firstName == null)
-                            dailyTransWrap.firstName = new StrItemWrap();
+                            dailyTransWrap.firstName = new DailyTransWrap.StrItemWrap();
                         String extractedName = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
 
                         if (CommonOperations.name_is_valid(extractedName)
@@ -321,7 +321,7 @@ namespace AttendanceHander.DailyTransactions
                     else if (heading.Equals(headings.lastName))
                     {
                         if (dailyTransWrap.lastName == null)
-                            dailyTransWrap.lastName = new StrItemWrap();
+                            dailyTransWrap.lastName = new DailyTransWrap.StrItemWrap();
 
                         dailyTransWrap.lastName.content = eXCEL_HELPER
                             .get_value_of_merge_cell(fullCell);
@@ -333,7 +333,7 @@ namespace AttendanceHander.DailyTransactions
                     else if (heading.Equals(headings.position))
                     {
                         if (dailyTransWrap.position == null)
-                            dailyTransWrap.position = new StrItemWrap();
+                            dailyTransWrap.position = new DailyTransWrap.StrItemWrap();
                         dailyTransWrap.position.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         dailyTransWrap.position.fullCell = fullCell;
                         dailyTransWrap.position.heading = heading;
@@ -343,7 +343,7 @@ namespace AttendanceHander.DailyTransactions
                     else if (heading.Equals(headings.department))
                     {
                         if (dailyTransWrap.department == null)
-                            dailyTransWrap.department = new StrItemWrap();
+                            dailyTransWrap.department = new DailyTransWrap.StrItemWrap();
                         dailyTransWrap.department.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         dailyTransWrap.department.fullCell = fullCell;
                         dailyTransWrap.department.heading = heading;
@@ -353,7 +353,7 @@ namespace AttendanceHander.DailyTransactions
                     else if (heading.Equals(headings.date))
                     {
                         if (dailyTransWrap.date == null)
-                            dailyTransWrap.date = new DateItemWrap();
+                            dailyTransWrap.date = new DailyTransWrap.DateItemWrap();
                         String extractedDate_in_string = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         DateTime extractedDAte;
 
@@ -392,7 +392,7 @@ namespace AttendanceHander.DailyTransactions
                     else if (heading.Equals(headings.punchStatus))
                     {
                         if (dailyTransWrap.punchStatus == null)
-                            dailyTransWrap.punchStatus = new StrItemWrap();
+                            dailyTransWrap.punchStatus = new DailyTransWrap.StrItemWrap();
                         dailyTransWrap.punchStatus.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         dailyTransWrap.punchStatus.fullCell = fullCell;
                         dailyTransWrap.punchStatus.heading = heading;
@@ -402,7 +402,7 @@ namespace AttendanceHander.DailyTransactions
                     else if (heading.Equals(headings.workCode))
                     {
                         if (dailyTransWrap.workCode == null)
-                            dailyTransWrap.workCode = new StrItemWrap();
+                            dailyTransWrap.workCode = new DailyTransWrap.StrItemWrap();
                         dailyTransWrap.workCode.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         dailyTransWrap.workCode.fullCell = fullCell;
                         dailyTransWrap.workCode.heading = heading;
@@ -412,7 +412,7 @@ namespace AttendanceHander.DailyTransactions
                     else if (heading.Equals(headings.gpsLocation))
                     {
                         if (dailyTransWrap.gpsLocation == null)
-                            dailyTransWrap.gpsLocation = new StrItemWrap();
+                            dailyTransWrap.gpsLocation = new DailyTransWrap.StrItemWrap();
                         dailyTransWrap.gpsLocation.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         dailyTransWrap.gpsLocation.fullCell = fullCell;
                         dailyTransWrap.gpsLocation.heading = heading;
@@ -422,7 +422,7 @@ namespace AttendanceHander.DailyTransactions
                     else if (heading.Equals(headings.area))
                     {
                         if (dailyTransWrap.area == null)
-                            dailyTransWrap.area = new StrItemWrap();
+                            dailyTransWrap.area = new DailyTransWrap.StrItemWrap();
                         dailyTransWrap.area.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         dailyTransWrap.area.fullCell = fullCell;
                         dailyTransWrap.area.heading = heading;
@@ -432,7 +432,7 @@ namespace AttendanceHander.DailyTransactions
                     else if (heading.Equals(headings.deviceName))
                     {
                         if (dailyTransWrap.deviceName == null)
-                            dailyTransWrap.deviceName = new StrItemWrap();
+                            dailyTransWrap.deviceName = new DailyTransWrap.StrItemWrap();
                         dailyTransWrap.deviceName.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         dailyTransWrap.deviceName.fullCell = fullCell;
                         dailyTransWrap.deviceName.heading = heading;
@@ -442,7 +442,7 @@ namespace AttendanceHander.DailyTransactions
                     else if (heading.Equals(headings.deviceSerialNo))
                     {
                         if (dailyTransWrap.deviceSerialNo == null)
-                            dailyTransWrap.deviceSerialNo = new StrItemWrap();
+                            dailyTransWrap.deviceSerialNo = new DailyTransWrap.StrItemWrap();
                         dailyTransWrap.deviceSerialNo.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         dailyTransWrap.deviceSerialNo.fullCell = fullCell;
                         dailyTransWrap.deviceSerialNo.heading = heading;
@@ -452,7 +452,7 @@ namespace AttendanceHander.DailyTransactions
                     else if (heading.Equals(headings.dataFrom))
                     {
                         if (dailyTransWrap.dataFrom == null)
-                            dailyTransWrap.dataFrom = new StrItemWrap();
+                            dailyTransWrap.dataFrom = new DailyTransWrap.StrItemWrap();
                         dailyTransWrap.dataFrom.content = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
                         dailyTransWrap.dataFrom.fullCell = fullCell;
                         dailyTransWrap.dataFrom.heading = heading;
