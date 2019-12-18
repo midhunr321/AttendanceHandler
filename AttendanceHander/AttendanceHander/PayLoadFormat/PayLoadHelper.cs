@@ -41,7 +41,7 @@ namespace AttendanceHander.PayLoadFormat
             {
 
                 return (new List<HeadingWrap>()
-                {serialNo,
+                {company,date,section,job, serialNo,
                     code,name,design,job_siteNo,
                     workTime,noBreak,overTime}.GetEnumerator());
             }
@@ -142,7 +142,7 @@ namespace AttendanceHander.PayLoadFormat
                 //we need to start with the rows
 
 
-                find_preTableHeadings();
+                
                 //first Pre-table datas are headings like company, date, section, job
 
 
@@ -654,7 +654,7 @@ namespace AttendanceHander.PayLoadFormat
             return false;
 
         }
-    
+     
         private Boolean find_headings(ref PayloadHeadings payLoadHeadings,
             out bool error_found,
            ref Excel.Worksheet currentSheet)
