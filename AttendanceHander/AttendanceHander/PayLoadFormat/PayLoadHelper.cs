@@ -366,7 +366,8 @@ namespace AttendanceHander.PayLoadFormat
                     if (heading.Equals(payLoadHeadings.serialNo))
                     {
                         //that is this particular cell is personal no data
-                        String extractedEmployeeNo = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
+                        String extractedEmployeeNo = eXCEL_HELPER
+                            .get_value_of_merge_cell(fullCell);
 
                         if (CommonOperations.employeeNo_is_valid(extractedEmployeeNo)
                          == false)
