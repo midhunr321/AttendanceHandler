@@ -14,7 +14,7 @@ namespace AttendanceHander.PayLoadFormat
     {
         private Excel.Workbook workbook;
 
-        public PayLoadHelper( Excel.Workbook workbook)
+        public PayLoadHelper(Excel.Workbook workbook)
         {
             this.workbook = workbook;
         }
@@ -104,15 +104,15 @@ namespace AttendanceHander.PayLoadFormat
                 return false;
             }
 
+            var currentSheet = firstSheet;
 
             for (int day = 1; day <= totalDaysinMonth; day++)
             {
-                Excel.Worksheet currentSheet;
                 //sheets should be in order
 
                 if (day != 1)
                 {
-                    currentSheet = firstSheet.Next();
+                    currentSheet = currentSheet.Next;
                     if (currentSheet.Name.Trim() != day.ToString())
                     {
                         MessageBox.Show("Sheets might not be in order; Expected sheet = "
@@ -126,7 +126,7 @@ namespace AttendanceHander.PayLoadFormat
                     currentSheet = firstSheet;
                 }
 
-                PayLoadWrap.Day payLoadWrapDay = new PayLoadWrap.Day( ref currentSheet);
+                PayLoadWrap.Day payLoadWrapDay = new PayLoadWrap.Day(ref currentSheet);
 
 
                 find_headings(ref SiGlobalVars.
@@ -142,7 +142,7 @@ namespace AttendanceHander.PayLoadFormat
                 //we need to start with the rows
 
 
-                
+
                 //first Pre-table datas are headings like company, date, section, job
 
 
@@ -160,6 +160,9 @@ namespace AttendanceHander.PayLoadFormat
                     return false;
 
                 //finaly add to global variable
+                if (SiGlobalVars.Instance.payLoadWrap.days == null)
+                    SiGlobalVars.Instance.payLoadWrap.days = new List<PayLoadWrap.Day>();
+
                 SiGlobalVars.Instance.payLoadWrap.days.Add(payLoadWrapDay);
 
             }
@@ -247,7 +250,7 @@ namespace AttendanceHander.PayLoadFormat
                 Boolean reached_empty_space_area = false;
                 read_row(row,
                     ref payloadWrapDay,
-                    out error_occured, out reached_empty_space_area,ref currentSheet);
+                    out error_occured, out reached_empty_space_area, ref currentSheet);
                 if (error_occured == true)
                     return;
                 if (reached_empty_space_area == true)
@@ -320,6 +323,8 @@ namespace AttendanceHander.PayLoadFormat
                 i++;
             } while (i <= totalNoUsedColumns);
 
+            if (payLoadWrapDay.employees == null)
+                payLoadWrapDay.employees = new List<PayLoadWrap.Day.Employee>();
 
             payLoadWrapDay.employees.Add(payLoadWrapDayEmpl);
         }
@@ -363,7 +368,20 @@ namespace AttendanceHander.PayLoadFormat
 
                     //same column number means the current cell is 
                     //the value for this heading
+
                     if (heading.Equals(payLoadHeadings.serialNo))
+                    {
+                        if (payLoadWrapDayEmpl.serialNo == null)
+                            payLoadWrapDayEmpl.serialNo = new PayLoadWrap.StrItemWrap();
+
+                        payLoadWrapDayEmpl.serialNo.content = eXCEL_HELPER
+                            .get_value_of_merge_cell(fullCell);
+                        payLoadWrapDayEmpl.serialNo.fullCell = fullCell;
+                        payLoadWrapDayEmpl.serialNo.heading = heading;
+
+                        return true;
+                    }
+                    else if (heading.Equals(payLoadHeadings.code))
                     {
                         //that is this particular cell is personal no data
                         String extractedEmployeeNo = eXCEL_HELPER
@@ -380,18 +398,18 @@ namespace AttendanceHander.PayLoadFormat
                             reached_empty_space_or_invalid_data = true;
                             return false;
                         }
-                        if (payLoadWrapDayEmpl.serialNo == null)
-                            payLoadWrapDayEmpl.serialNo = new PayLoadWrap.StrItemWrap();
-                        payLoadWrapDayEmpl.serialNo.content = eXCEL_HELPER
-                            .get_value_of_merge_cell(fullCell);
-                        payLoadWrapDayEmpl.serialNo.fullCell = fullCell;
-                        payLoadWrapDayEmpl.serialNo.heading = heading;
-                        return true;
-                    }
-                    else if (heading.Equals(payLoadHeadings.code))
-                    {
                         if (payLoadWrapDayEmpl.code == null)
                             payLoadWrapDayEmpl.code = new PayLoadWrap.StrItemWrap();
+                        payLoadWrapDayEmpl.code.content = eXCEL_HELPER
+                            .get_value_of_merge_cell(fullCell);
+                        payLoadWrapDayEmpl.code.fullCell = fullCell;
+                        payLoadWrapDayEmpl.code.heading = heading;
+                        return true;
+                    }
+                    else if (heading.Equals(payLoadHeadings.name))
+                    {
+                        if (payLoadWrapDayEmpl.name == null)
+                            payLoadWrapDayEmpl.name = new PayLoadWrap.StrItemWrap();
                         String extractedName = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
 
                         if (CommonOperations.name_is_valid(extractedName)
@@ -405,24 +423,13 @@ namespace AttendanceHander.PayLoadFormat
                             reached_empty_space_or_invalid_data = true;
                             return false;
                         }
-                        payLoadWrapDayEmpl.code.content = extractedName;
-                        payLoadWrapDayEmpl.code.fullCell = fullCell;
-                        payLoadWrapDayEmpl.code.heading = heading;
-
-                        return true;
-                    }
-                    else if (heading.Equals(payLoadHeadings.name))
-                    {
-                        if (payLoadWrapDayEmpl.name == null)
-                            payLoadWrapDayEmpl.name = new PayLoadWrap.StrItemWrap();
-
-                        payLoadWrapDayEmpl.name.content = eXCEL_HELPER
-                            .get_value_of_merge_cell(fullCell);
+                        payLoadWrapDayEmpl.name.content = extractedName;
                         payLoadWrapDayEmpl.name.fullCell = fullCell;
                         payLoadWrapDayEmpl.name.heading = heading;
 
                         return true;
                     }
+                 
                     else if (heading.Equals(payLoadHeadings.design))
                     {
                         if (payLoadWrapDayEmpl.design == null)
@@ -456,12 +463,12 @@ namespace AttendanceHander.PayLoadFormat
                     }
                     else if (heading.Equals(payLoadHeadings.noBreak))
                     {
-                        if (payLoadWrapDayEmpl.workTime == null)
-                            payLoadWrapDayEmpl.workTime = new PayLoadWrap.DecimalItemWrap();
-                        payLoadWrapDayEmpl.workTime.contentInStr
+                        if (payLoadWrapDayEmpl.noBreak == null)
+                            payLoadWrapDayEmpl.noBreak = new PayLoadWrap.DecimalItemWrap();
+                        payLoadWrapDayEmpl.noBreak.contentInStr
                             = eXCEL_HELPER.get_value_of_merge_cell(fullCell);
-                        payLoadWrapDayEmpl.workTime.fullCell = fullCell;
-                        payLoadWrapDayEmpl.workTime.heading = heading;
+                        payLoadWrapDayEmpl.noBreak.fullCell = fullCell;
+                        payLoadWrapDayEmpl.noBreak.heading = heading;
 
                         return true;
                     }
@@ -524,7 +531,7 @@ namespace AttendanceHander.PayLoadFormat
 
             extract_data_from_sheets(out error_found);
 
-
+            
 
 
 
@@ -655,7 +662,7 @@ namespace AttendanceHander.PayLoadFormat
             return false;
 
         }
-     
+
         private Boolean find_headings(ref PayloadHeadings payLoadHeadings,
             out bool error_found,
            ref Excel.Worksheet currentSheet)
@@ -674,6 +681,17 @@ namespace AttendanceHander.PayLoadFormat
                     eXCEL_HELPER.find_fix_column_heading(heading.headingName.Trim(),
                     Excel.XlSearchDirection.xlNext,
                     Excel.XlSearchOrder.xlByRows, false);
+
+                if (search_results.Count > 1)
+                {
+                    // filter the search results by word is matching with the 
+                    //the whole cell content
+
+                    search_results = EXCEL_HELPER
+                        .Filter_searchResults_by_whole_cellContent(heading.headingName.Trim(),
+               search_results);
+                }
+
 
                 if (search_results == null)
                 {
@@ -694,6 +712,7 @@ namespace AttendanceHander.PayLoadFormat
                 }
                 else
                 {
+
                     //TODO: if more than one search results
                     //then show error and abort
                     //in future we can implement some codes to 

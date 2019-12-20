@@ -575,8 +575,28 @@ namespace AttendanceHander
 
         }
 
+        internal static List<Excel.Range> Filter_searchResults_by_whole_cellContent
+            (string wholeWord, List<Excel.Range> search_results)
+        {
+            List<Excel.Range> wholeWord_match_searchResult=null;
+           foreach(var result in search_results)
+            {
+                String temp = result.Value;
+                if (temp.Trim() == wholeWord.Trim())
+                {
+                    //means whole word is matching the cell content
+
+                    if (wholeWord_match_searchResult == null)
+                        wholeWord_match_searchResult = new List<Excel.Range>();
+
+                    wholeWord_match_searchResult.Add(result);
+                }
 
 
+            }
+
+            return wholeWord_match_searchResult;
+        }
     }
 
 }

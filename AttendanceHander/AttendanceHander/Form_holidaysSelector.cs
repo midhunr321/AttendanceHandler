@@ -15,6 +15,7 @@ namespace AttendanceHander
 
         List<DateTime> selectedHolidays;
         private Form previousForm;
+        Boolean printBioWorkTime_in_payLoad=false;
 
         public Form_holidaysSelector(Form previousForm)
         {
@@ -23,6 +24,7 @@ namespace AttendanceHander
         }
 
         public List<DateTime> SelectedHolidays { get => selectedHolidays;  }
+        public bool PrintBioWorkTime_in_payLoad { get => printBioWorkTime_in_payLoad; }
 
         private void bind_dataGridViewHolidays()
         {
@@ -39,6 +41,7 @@ namespace AttendanceHander
                 selectedHolidays = new List<DateTime>();
 
             selectedHolidays.Add(selectedDate);
+            bind_dataGridViewHolidays();
             dataGridViewHolidays.Invalidate();
             
         }
@@ -67,11 +70,17 @@ namespace AttendanceHander
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
-          
+            printBioWorkTime_in_payLoad = checkBox_printBio.Checked;
 
             this.Hide();
             this.DialogResult = DialogResult.OK;
+            if(previousForm!=null)
             previousForm.Activate();
+        }
+
+        private void CheckBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

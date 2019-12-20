@@ -424,7 +424,8 @@ namespace AttendanceHander
         }
 
 
-        internal static Boolean Transfer_data_from_multiTrans_to_payLoad(List<DateTime> holidays)
+        internal static Boolean Transfer_data_from_multiTrans_to_payLoad
+            (List<DateTime> holidays, bool printBio_inPayLoad)
         {
 
             if (all_employees_of_MultiTrans_is_available_with_PayLoad
@@ -470,8 +471,9 @@ namespace AttendanceHander
                                 (payLoadWrapDayEmpl.code.content, multiWrap.personnelNo.content)
                                 == true)
                             {
-                                write_data_to_payLoadFormat_from_MultiTrans(payLoadWrapDayEmpl, multiWrap,
-                                    holidayOrFriday);
+                                write_data_to_payLoadFormat_from_MultiTrans
+                                    (payLoadWrapDayEmpl, multiWrap,
+                                    holidayOrFriday,printBio_inPayLoad);
                             }
 
                         }
@@ -508,7 +510,7 @@ namespace AttendanceHander
 
                     if (employeeFound == false)
                     {
-                        MessageBox.Show("Employee Code = " + multiEmp.personnelNo
+                        MessageBox.Show("Employee Code = " + multiEmp.personnelNo.content
                             + " is not found in PayLoad but the same is available in Multiple Transactions");
                         return false;
                     }
@@ -773,7 +775,8 @@ namespace AttendanceHander
         private static Boolean write_data_to_payLoadFormat_from_MultiTrans
             (PayLoadWrap.Day.Employee payLoadWrapDayEmpl,
             MultiTransWrap multiWrap,
-            Boolean thisDate_is_fridayOrHoliday)
+            Boolean thisDate_is_fridayOrHoliday,
+            bool printBio_inPayLoad)
         {
 
             payLoadWrapDayEmpl.job_siteNo.content
@@ -796,6 +799,17 @@ namespace AttendanceHander
             payLoadWrapDayEmpl.overTime.content = workTimeCalculated.overTime.content;
             payLoadWrapDayEmpl.overTime.contentInStr = workTimeCalculated.overTime.content.ToString();
             payLoadWrapDayEmpl.overTime.fullCell.Value = payLoadWrapDayEmpl.overTime.contentInStr;
+
+            //now sometimes for testing purpose 
+            //we can print the biometric acutal time from the multiple transactions 
+            //to payload excel . this is to cross check if the caluclated overtime is 
+            //correct or not
+            if (printBio_inPayLoad == true)
+            {
+                var bioTimeCell = payLoadWrapDayEmpl.overTime.fullCell.Next;
+                bioTimeCell.Value = multiWrap.totalTimeWorked.contentInString;
+
+            }
 
             return true;
 

@@ -389,7 +389,9 @@ namespace AttendanceHander
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            String simply = "just to break the program";
+            Form_holidaysSelector form_HolidaysSelector
+                 = new Form_holidaysSelector(null);
+            form_HolidaysSelector.Show();
         }
 
         private void Button2_Click(object sender, EventArgs e)
@@ -435,6 +437,7 @@ namespace AttendanceHander
                 SiGlobalVars.Instance.mepStyleWraps == null)
             {
                 MessageBox.Show("Either Multiple Transaction or MEP Timesheet is null");
+                return;
             }
             MixTimeSheetHandler
                   .Transfer_data_from_multiTrans_to_mepStyle
@@ -500,6 +503,7 @@ namespace AttendanceHander
             if (dialogResult == DialogResult.OK)
             {
                 var holidays = form_HolidaysSelector.SelectedHolidays;
+                Boolean printBio_inPayLoad = form_HolidaysSelector.PrintBioWorkTime_in_payLoad;
                 if (SiGlobalVars.Instance.Holidays == null)
                     SiGlobalVars.Instance.Holidays = new List<DateTime>();
 
@@ -507,7 +511,8 @@ namespace AttendanceHander
 
                 SiGlobalVars.Instance.Holidays = holidays;
                 if (MixTimeSheetHandler
-                    .Transfer_data_from_multiTrans_to_payLoad(SiGlobalVars.Instance.Holidays)
+                    .Transfer_data_from_multiTrans_to_payLoad
+                    (SiGlobalVars.Instance.Holidays,printBio_inPayLoad)
                       == false)
                     MessageBox.Show("Transfer from Multiple Transaction to PayLoad failed");
                 else
