@@ -241,6 +241,18 @@ namespace AttendanceHander
 
         }
 
-       
+        internal static bool Given_short_siteNo_is_valid(string shortSiteNo)
+        {
+            StringHandler stringHandler = new StringHandler();
+            if (stringHandler
+                  .is_this_string_alpha_numeric_or_numeric_or_alpha_only(shortSiteNo)
+                  != All_const.str_type.Alphanumeric)
+                return false;
+
+            //TODO in future we need to check if Capital M is available or not
+
+            return true;
+
+        }
     }
 }

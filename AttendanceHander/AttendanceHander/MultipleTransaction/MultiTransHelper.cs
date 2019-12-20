@@ -602,6 +602,38 @@ namespace AttendanceHander.MultipleTransaction
 
         }
 
+        internal static bool ReExtract_siteNos_from_multipleTransactions_cells()
+        {
+            foreach(var multiWrap in SiGlobalVars.Instance.multiTransWraps)
+            {
+                //site no cell will be after total time worked cell
+                //so
+                var siteNoCell = multiWrap.totalTimeWorked.fullCell.Next;
+
+                String shortSiteNo = siteNoCell.Value;
+                shortSiteNo = shortSiteNo.Trim();
+
+               if( CommonOperations.Given_short_siteNo_is_valid(shortSiteNo)
+                    == false)
+                {
+                    MessageBox.Show("This short site No = " + shortSiteNo + " for the employee = "
+                        + multiWrap.personnelNo.content + " in Muliple Transaction is not valid");
+                    return false;
+                }
+
+                if (multiWrap.siteNoMechFormat == null)
+                    multiWrap.siteNoMechFormat = new MultiTransWrap.SiteNoMechFormat();
+
+                if (multiWrap.siteNoMechFormat.shortName == null)
+                    multiWrap.siteNoMechFormat.shortName = new MultiTransWrap.StrItemWrap();
+
+                multiWrap.siteNoMechFormat.shortName.content = shortSiteNo;
+                multiWrap.siteNoMechFormat.shortName.fullCell = siteNoCell;
+
+            }
+            return true;
+        }
+
         private void feed_time_data_to_dataWrap(ref MultiTransWrap.TimeSpanItemWrap time_data,
      EXCEL_HELPER eXCEL_HELPER, Excel.Range fullCell,
      HeadingWrap heading, DateTime date_of_time)

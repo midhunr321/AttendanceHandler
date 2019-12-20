@@ -439,11 +439,24 @@ namespace AttendanceHander
                 //first we have to check if the site no is available for a particular 
                 //employee for a particular date
 
-                if (multiWrap.siteNoMechFormat.shortName == null)
+                if (multiWrap.siteNoMechFormat == null)
                 {
                     MessageBox.Show("The Site No is null for the Employee No = "
-                        + multiWrap.personnelNo
-                           + "; for the Date = " + multiWrap.date.contentInString);
+                        + multiWrap.personnelNo.content
+                           + "; for the Date = " + multiWrap.date.contentInString
+                           +"; Have you run the step to add site No in Multiple Transactions? " +
+                           "if Yes then check if any employees doesn't have site no in the " +
+                           "multiple transactions and fill it up") ;
+                    return false;
+                }
+                else if (multiWrap.siteNoMechFormat.shortName == null)
+                {
+                    MessageBox.Show("The Site No (Short Name) is null for the Employee No = "
+                       + multiWrap.personnelNo.content
+                          + "; for the Date = " + multiWrap.date.contentInString
+                          + "; Have you run the step to add site No in Multiple Transactions? " +
+                           "if Yes then check if any employees doesn't have site no in the " +
+                           "multiple transactions and fill it up");
                     return false;
                 }
 

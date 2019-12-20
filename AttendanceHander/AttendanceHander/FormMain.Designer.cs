@@ -45,6 +45,7 @@
             this.label_StatusDailyTrans = new System.Windows.Forms.Label();
             this.button_OpenDailyTrans = new System.Windows.Forms.Button();
             this.groupBox_payLoad = new System.Windows.Forms.GroupBox();
+            this.button_clearPayLoad = new System.Windows.Forms.Button();
             this.button_testPayLoad = new System.Windows.Forms.Button();
             this.label_statusPayLoad = new System.Windows.Forms.Label();
             this.button_openPayLoad = new System.Windows.Forms.Button();
@@ -60,7 +61,7 @@
             this.button_step3 = new System.Windows.Forms.Button();
             this.button_step2_missingData = new System.Windows.Forms.Button();
             this.button_step1_AddSiteNO = new System.Windows.Forms.Button();
-            this.button_clearPayLoad = new System.Windows.Forms.Button();
+            this.button_Step5A = new System.Windows.Forms.Button();
             this.groupBoxMepStyle.SuspendLayout();
             this.groupBoxMultiTrans.SuspendLayout();
             this.groupBox_DailyTrans.SuspendLayout();
@@ -248,6 +249,16 @@
             this.groupBox_payLoad.TabStop = false;
             this.groupBox_payLoad.Text = "PAY LOAD TIMESHEET";
             // 
+            // button_clearPayLoad
+            // 
+            this.button_clearPayLoad.Location = new System.Drawing.Point(733, 55);
+            this.button_clearPayLoad.Name = "button_clearPayLoad";
+            this.button_clearPayLoad.Size = new System.Drawing.Size(101, 41);
+            this.button_clearPayLoad.TabIndex = 11;
+            this.button_clearPayLoad.Text = "Clear";
+            this.button_clearPayLoad.UseVisualStyleBackColor = true;
+            this.button_clearPayLoad.Click += new System.EventHandler(this.button_clearPayLoad_Click);
+            // 
             // button_testPayLoad
             // 
             this.button_testPayLoad.Enabled = false;
@@ -280,6 +291,7 @@
             // 
             // groupBox_steps
             // 
+            this.groupBox_steps.Controls.Add(this.button_Step5A);
             this.groupBox_steps.Controls.Add(this.label_holidays);
             this.groupBox_steps.Controls.Add(this.button_step6_transMEPtoPay);
             this.groupBox_steps.Controls.Add(this.button_Step5_MultiTranToPay);
@@ -310,7 +322,7 @@
             // 
             // button_step6_transMEPtoPay
             // 
-            this.button_step6_transMEPtoPay.Location = new System.Drawing.Point(27, 94);
+            this.button_step6_transMEPtoPay.Location = new System.Drawing.Point(285, 94);
             this.button_step6_transMEPtoPay.Name = "button_step6_transMEPtoPay";
             this.button_step6_transMEPtoPay.Size = new System.Drawing.Size(123, 69);
             this.button_step6_transMEPtoPay.TabIndex = 9;
@@ -320,11 +332,11 @@
             // 
             // button_Step5_MultiTranToPay
             // 
-            this.button_Step5_MultiTranToPay.Location = new System.Drawing.Point(662, 19);
+            this.button_Step5_MultiTranToPay.Location = new System.Drawing.Point(156, 94);
             this.button_Step5_MultiTranToPay.Name = "button_Step5_MultiTranToPay";
             this.button_Step5_MultiTranToPay.Size = new System.Drawing.Size(123, 69);
             this.button_Step5_MultiTranToPay.TabIndex = 8;
-            this.button_Step5_MultiTranToPay.Text = "STEP 5: Transfer Multi Trans Data to PayLoad";
+            this.button_Step5_MultiTranToPay.Text = "STEP 5B: Transfer Multi Trans Data to PayLoad";
             this.button_Step5_MultiTranToPay.UseVisualStyleBackColor = true;
             this.button_Step5_MultiTranToPay.Click += new System.EventHandler(this.Button_Step5_MultiTranToPay_Click);
             // 
@@ -410,15 +422,15 @@
             this.button_step1_AddSiteNO.UseVisualStyleBackColor = true;
             this.button_step1_AddSiteNO.Click += new System.EventHandler(this.Button_step1_AddSiteNO_Click);
             // 
-            // button_clearPayLoad
+            // button_Step5A
             // 
-            this.button_clearPayLoad.Location = new System.Drawing.Point(733, 55);
-            this.button_clearPayLoad.Name = "button_clearPayLoad";
-            this.button_clearPayLoad.Size = new System.Drawing.Size(101, 41);
-            this.button_clearPayLoad.TabIndex = 11;
-            this.button_clearPayLoad.Text = "Clear";
-            this.button_clearPayLoad.UseVisualStyleBackColor = true;
-            this.button_clearPayLoad.Click += new System.EventHandler(this.button_clearPayLoad_Click);
+            this.button_Step5A.Location = new System.Drawing.Point(27, 94);
+            this.button_Step5A.Name = "button_Step5A";
+            this.button_Step5A.Size = new System.Drawing.Size(123, 69);
+            this.button_Step5A.TabIndex = 11;
+            this.button_Step5A.Text = "STEP 5A: Re-extract SiteNo.s in Multiple Transactions";
+            this.button_Step5A.UseVisualStyleBackColor = true;
+            this.button_Step5A.Click += new System.EventHandler(this.Button_Step5A_Click);
             // 
             // FormMain
             // 
@@ -482,5 +494,6 @@
         private System.Windows.Forms.Button button_step6_MEPtoPay;
         private System.Windows.Forms.Label label_holidays;
         private System.Windows.Forms.Button button_clearPayLoad;
+        private System.Windows.Forms.Button button_Step5A;
     }
 }

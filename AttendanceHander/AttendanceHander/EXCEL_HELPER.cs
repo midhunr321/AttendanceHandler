@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Excel = Microsoft.Office.Interop.Excel;
-using Office = Microsoft.Office.Core;
-using Microsoft.Office.Tools.Excel;
-using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace AttendanceHander
 {
@@ -573,6 +568,24 @@ namespace AttendanceHander
 
             return sresult;
 
+        }
+
+        internal static bool Given_workbooks_are_running_in_background
+            (List<Excel.Workbook> workbooks)
+        {
+          foreach(var workbook in workbooks)
+            {
+                try
+                {
+                    var test = workbook.Name;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+                
+            }
+            return true;
         }
 
         internal static List<Excel.Range> Filter_searchResults_by_whole_cellContent
