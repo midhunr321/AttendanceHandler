@@ -58,7 +58,8 @@ namespace AttendanceHander
         {
             if (dataGridViewHolidays.CurrentRow != null)
             {
-                selectedHolidays.RemoveAt(dataGridViewHolidays.SelectedCells[0].RowIndex);
+                selectedHolidays.RemoveAt(dataGridViewHolidays.CurrentRow.Index);
+                bind_dataGridViewHolidays();
                 dataGridViewHolidays.Invalidate();
             }
         }

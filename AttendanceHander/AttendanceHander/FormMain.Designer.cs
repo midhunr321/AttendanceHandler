@@ -50,6 +50,7 @@
             this.label_statusPayLoad = new System.Windows.Forms.Label();
             this.button_openPayLoad = new System.Windows.Forms.Button();
             this.groupBox_steps = new System.Windows.Forms.GroupBox();
+            this.button_Step5A = new System.Windows.Forms.Button();
             this.label_holidays = new System.Windows.Forms.Label();
             this.button_step6_transMEPtoPay = new System.Windows.Forms.Button();
             this.button_Step5_MultiTranToPay = new System.Windows.Forms.Button();
@@ -61,7 +62,6 @@
             this.button_step3 = new System.Windows.Forms.Button();
             this.button_step2_missingData = new System.Windows.Forms.Button();
             this.button_step1_AddSiteNO = new System.Windows.Forms.Button();
-            this.button_Step5A = new System.Windows.Forms.Button();
             this.groupBoxMepStyle.SuspendLayout();
             this.groupBoxMultiTrans.SuspendLayout();
             this.groupBox_DailyTrans.SuspendLayout();
@@ -81,7 +81,7 @@
             this.groupBoxMepStyle.Controls.Add(this.buttonOpenMepTimesheet);
             this.groupBoxMepStyle.Location = new System.Drawing.Point(12, 12);
             this.groupBoxMepStyle.Name = "groupBoxMepStyle";
-            this.groupBoxMepStyle.Size = new System.Drawing.Size(855, 124);
+            this.groupBoxMepStyle.Size = new System.Drawing.Size(855, 93);
             this.groupBoxMepStyle.TabIndex = 7;
             this.groupBoxMepStyle.TabStop = false;
             this.groupBoxMepStyle.Text = "MEP STYLE TIME SHEET";
@@ -89,7 +89,7 @@
             // 
             // button_clearMepStyle
             // 
-            this.button_clearMepStyle.Location = new System.Drawing.Point(733, 55);
+            this.button_clearMepStyle.Location = new System.Drawing.Point(723, 32);
             this.button_clearMepStyle.Name = "button_clearMepStyle";
             this.button_clearMepStyle.Size = new System.Drawing.Size(101, 41);
             this.button_clearMepStyle.TabIndex = 10;
@@ -100,7 +100,7 @@
             // buttonTestMepStyle
             // 
             this.buttonTestMepStyle.Enabled = false;
-            this.buttonTestMepStyle.Location = new System.Drawing.Point(615, 55);
+            this.buttonTestMepStyle.Location = new System.Drawing.Point(605, 32);
             this.buttonTestMepStyle.Name = "buttonTestMepStyle";
             this.buttonTestMepStyle.Size = new System.Drawing.Size(101, 41);
             this.buttonTestMepStyle.TabIndex = 9;
@@ -112,7 +112,7 @@
             this.label_StatusMepSty.AutoSize = true;
             this.label_StatusMepSty.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label_StatusMepSty.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_StatusMepSty.Location = new System.Drawing.Point(246, 65);
+            this.label_StatusMepSty.Location = new System.Drawing.Point(236, 42);
             this.label_StatusMepSty.Name = "label_StatusMepSty";
             this.label_StatusMepSty.Size = new System.Drawing.Size(325, 20);
             this.label_StatusMepSty.TabIndex = 8;
@@ -120,7 +120,7 @@
             // 
             // buttonOpenMepTimesheet
             // 
-            this.buttonOpenMepTimesheet.Location = new System.Drawing.Point(27, 55);
+            this.buttonOpenMepTimesheet.Location = new System.Drawing.Point(17, 32);
             this.buttonOpenMepTimesheet.Name = "buttonOpenMepTimesheet";
             this.buttonOpenMepTimesheet.Size = new System.Drawing.Size(143, 41);
             this.buttonOpenMepTimesheet.TabIndex = 7;
@@ -134,16 +134,16 @@
             this.groupBoxMultiTrans.Controls.Add(this.buttonTestMultiTrans);
             this.groupBoxMultiTrans.Controls.Add(this.label_StatusMultiTrans);
             this.groupBoxMultiTrans.Controls.Add(this.buttonOpenMultiTrans);
-            this.groupBoxMultiTrans.Location = new System.Drawing.Point(12, 142);
+            this.groupBoxMultiTrans.Location = new System.Drawing.Point(12, 111);
             this.groupBoxMultiTrans.Name = "groupBoxMultiTrans";
-            this.groupBoxMultiTrans.Size = new System.Drawing.Size(855, 124);
+            this.groupBoxMultiTrans.Size = new System.Drawing.Size(855, 74);
             this.groupBoxMultiTrans.TabIndex = 8;
             this.groupBoxMultiTrans.TabStop = false;
             this.groupBoxMultiTrans.Text = "MULTIPLE TRANSACTION";
             // 
             // button_clearMultiTrans
             // 
-            this.button_clearMultiTrans.Location = new System.Drawing.Point(733, 55);
+            this.button_clearMultiTrans.Location = new System.Drawing.Point(723, 19);
             this.button_clearMultiTrans.Name = "button_clearMultiTrans";
             this.button_clearMultiTrans.Size = new System.Drawing.Size(101, 41);
             this.button_clearMultiTrans.TabIndex = 10;
@@ -154,7 +154,7 @@
             // buttonTestMultiTrans
             // 
             this.buttonTestMultiTrans.Enabled = false;
-            this.buttonTestMultiTrans.Location = new System.Drawing.Point(615, 55);
+            this.buttonTestMultiTrans.Location = new System.Drawing.Point(605, 19);
             this.buttonTestMultiTrans.Name = "buttonTestMultiTrans";
             this.buttonTestMultiTrans.Size = new System.Drawing.Size(101, 41);
             this.buttonTestMultiTrans.TabIndex = 9;
@@ -166,7 +166,7 @@
             // 
             this.label_StatusMultiTrans.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label_StatusMultiTrans.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_StatusMultiTrans.Location = new System.Drawing.Point(246, 65);
+            this.label_StatusMultiTrans.Location = new System.Drawing.Point(236, 29);
             this.label_StatusMultiTrans.Name = "label_StatusMultiTrans";
             this.label_StatusMultiTrans.Size = new System.Drawing.Size(325, 20);
             this.label_StatusMultiTrans.TabIndex = 8;
@@ -174,7 +174,7 @@
             // 
             // buttonOpenMultiTrans
             // 
-            this.buttonOpenMultiTrans.Location = new System.Drawing.Point(27, 55);
+            this.buttonOpenMultiTrans.Location = new System.Drawing.Point(17, 19);
             this.buttonOpenMultiTrans.Name = "buttonOpenMultiTrans";
             this.buttonOpenMultiTrans.Size = new System.Drawing.Size(143, 41);
             this.buttonOpenMultiTrans.TabIndex = 7;
@@ -188,16 +188,16 @@
             this.groupBox_DailyTrans.Controls.Add(this.button_TestDailyTrans);
             this.groupBox_DailyTrans.Controls.Add(this.label_StatusDailyTrans);
             this.groupBox_DailyTrans.Controls.Add(this.button_OpenDailyTrans);
-            this.groupBox_DailyTrans.Location = new System.Drawing.Point(12, 272);
+            this.groupBox_DailyTrans.Location = new System.Drawing.Point(12, 191);
             this.groupBox_DailyTrans.Name = "groupBox_DailyTrans";
-            this.groupBox_DailyTrans.Size = new System.Drawing.Size(855, 124);
+            this.groupBox_DailyTrans.Size = new System.Drawing.Size(855, 74);
             this.groupBox_DailyTrans.TabIndex = 9;
             this.groupBox_DailyTrans.TabStop = false;
             this.groupBox_DailyTrans.Text = "DAILY TRANSACTIONS";
             // 
             // button_clearDailyTrans
             // 
-            this.button_clearDailyTrans.Location = new System.Drawing.Point(733, 55);
+            this.button_clearDailyTrans.Location = new System.Drawing.Point(723, 19);
             this.button_clearDailyTrans.Name = "button_clearDailyTrans";
             this.button_clearDailyTrans.Size = new System.Drawing.Size(101, 41);
             this.button_clearDailyTrans.TabIndex = 10;
@@ -208,7 +208,7 @@
             // button_TestDailyTrans
             // 
             this.button_TestDailyTrans.Enabled = false;
-            this.button_TestDailyTrans.Location = new System.Drawing.Point(615, 55);
+            this.button_TestDailyTrans.Location = new System.Drawing.Point(605, 19);
             this.button_TestDailyTrans.Name = "button_TestDailyTrans";
             this.button_TestDailyTrans.Size = new System.Drawing.Size(101, 41);
             this.button_TestDailyTrans.TabIndex = 9;
@@ -220,7 +220,7 @@
             // 
             this.label_StatusDailyTrans.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label_StatusDailyTrans.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_StatusDailyTrans.Location = new System.Drawing.Point(246, 65);
+            this.label_StatusDailyTrans.Location = new System.Drawing.Point(236, 29);
             this.label_StatusDailyTrans.Name = "label_StatusDailyTrans";
             this.label_StatusDailyTrans.Size = new System.Drawing.Size(325, 20);
             this.label_StatusDailyTrans.TabIndex = 8;
@@ -228,7 +228,7 @@
             // 
             // button_OpenDailyTrans
             // 
-            this.button_OpenDailyTrans.Location = new System.Drawing.Point(27, 55);
+            this.button_OpenDailyTrans.Location = new System.Drawing.Point(17, 19);
             this.button_OpenDailyTrans.Name = "button_OpenDailyTrans";
             this.button_OpenDailyTrans.Size = new System.Drawing.Size(143, 41);
             this.button_OpenDailyTrans.TabIndex = 7;
@@ -242,16 +242,16 @@
             this.groupBox_payLoad.Controls.Add(this.button_testPayLoad);
             this.groupBox_payLoad.Controls.Add(this.label_statusPayLoad);
             this.groupBox_payLoad.Controls.Add(this.button_openPayLoad);
-            this.groupBox_payLoad.Location = new System.Drawing.Point(12, 402);
+            this.groupBox_payLoad.Location = new System.Drawing.Point(12, 271);
             this.groupBox_payLoad.Name = "groupBox_payLoad";
-            this.groupBox_payLoad.Size = new System.Drawing.Size(855, 124);
+            this.groupBox_payLoad.Size = new System.Drawing.Size(855, 71);
             this.groupBox_payLoad.TabIndex = 10;
             this.groupBox_payLoad.TabStop = false;
             this.groupBox_payLoad.Text = "PAY LOAD TIMESHEET";
             // 
             // button_clearPayLoad
             // 
-            this.button_clearPayLoad.Location = new System.Drawing.Point(733, 55);
+            this.button_clearPayLoad.Location = new System.Drawing.Point(723, 19);
             this.button_clearPayLoad.Name = "button_clearPayLoad";
             this.button_clearPayLoad.Size = new System.Drawing.Size(101, 41);
             this.button_clearPayLoad.TabIndex = 11;
@@ -262,7 +262,7 @@
             // button_testPayLoad
             // 
             this.button_testPayLoad.Enabled = false;
-            this.button_testPayLoad.Location = new System.Drawing.Point(615, 55);
+            this.button_testPayLoad.Location = new System.Drawing.Point(605, 19);
             this.button_testPayLoad.Name = "button_testPayLoad";
             this.button_testPayLoad.Size = new System.Drawing.Size(101, 41);
             this.button_testPayLoad.TabIndex = 9;
@@ -273,7 +273,7 @@
             // 
             this.label_statusPayLoad.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label_statusPayLoad.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_statusPayLoad.Location = new System.Drawing.Point(246, 65);
+            this.label_statusPayLoad.Location = new System.Drawing.Point(236, 29);
             this.label_statusPayLoad.Name = "label_statusPayLoad";
             this.label_statusPayLoad.Size = new System.Drawing.Size(325, 20);
             this.label_statusPayLoad.TabIndex = 8;
@@ -281,7 +281,7 @@
             // 
             // button_openPayLoad
             // 
-            this.button_openPayLoad.Location = new System.Drawing.Point(27, 55);
+            this.button_openPayLoad.Location = new System.Drawing.Point(17, 19);
             this.button_openPayLoad.Name = "button_openPayLoad";
             this.button_openPayLoad.Size = new System.Drawing.Size(143, 41);
             this.button_openPayLoad.TabIndex = 7;
@@ -303,12 +303,22 @@
             this.groupBox_steps.Controls.Add(this.button_step3);
             this.groupBox_steps.Controls.Add(this.button_step2_missingData);
             this.groupBox_steps.Controls.Add(this.button_step1_AddSiteNO);
-            this.groupBox_steps.Location = new System.Drawing.Point(12, 532);
+            this.groupBox_steps.Location = new System.Drawing.Point(12, 348);
             this.groupBox_steps.Name = "groupBox_steps";
             this.groupBox_steps.Size = new System.Drawing.Size(855, 206);
             this.groupBox_steps.TabIndex = 11;
             this.groupBox_steps.TabStop = false;
             this.groupBox_steps.Text = "STEPS";
+            // 
+            // button_Step5A
+            // 
+            this.button_Step5A.Location = new System.Drawing.Point(27, 94);
+            this.button_Step5A.Name = "button_Step5A";
+            this.button_Step5A.Size = new System.Drawing.Size(123, 69);
+            this.button_Step5A.TabIndex = 11;
+            this.button_Step5A.Text = "STEP 5A: Re-extract SiteNo.s in Multiple Transactions";
+            this.button_Step5A.UseVisualStyleBackColor = true;
+            this.button_Step5A.Click += new System.EventHandler(this.Button_Step5A_Click);
             // 
             // label_holidays
             // 
@@ -422,22 +432,12 @@
             this.button_step1_AddSiteNO.UseVisualStyleBackColor = true;
             this.button_step1_AddSiteNO.Click += new System.EventHandler(this.Button_step1_AddSiteNO_Click);
             // 
-            // button_Step5A
-            // 
-            this.button_Step5A.Location = new System.Drawing.Point(27, 94);
-            this.button_Step5A.Name = "button_Step5A";
-            this.button_Step5A.Size = new System.Drawing.Size(123, 69);
-            this.button_Step5A.TabIndex = 11;
-            this.button_Step5A.Text = "STEP 5A: Re-extract SiteNo.s in Multiple Transactions";
-            this.button_Step5A.UseVisualStyleBackColor = true;
-            this.button_Step5A.Click += new System.EventHandler(this.Button_Step5A_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ClientSize = new System.Drawing.Size(894, 750);
+            this.ClientSize = new System.Drawing.Size(884, 568);
             this.Controls.Add(this.groupBox_steps);
             this.Controls.Add(this.groupBox_payLoad);
             this.Controls.Add(this.groupBox_DailyTrans);
