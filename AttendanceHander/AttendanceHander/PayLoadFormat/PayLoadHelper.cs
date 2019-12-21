@@ -429,7 +429,7 @@ namespace AttendanceHander.PayLoadFormat
 
                         return true;
                     }
-                 
+
                     else if (heading.Equals(payLoadHeadings.design))
                     {
                         if (payLoadWrapDayEmpl.design == null)
@@ -531,7 +531,7 @@ namespace AttendanceHander.PayLoadFormat
 
             extract_data_from_sheets(out error_found);
 
-            
+
 
 
 
@@ -539,7 +539,7 @@ namespace AttendanceHander.PayLoadFormat
 
 
 
-        internal static MixTimeSheetHandler.WorkTimeCalculatedWarp Calculate_worktime_from_bioTotalWorkTime
+        public static MixTimeSheetHandler.WorkTimeCalculatedWarp Calculate_worktime_from_bioTotalWorkTime
             (TimeSpanItemWrap totalTimeWorked, bool thisDate_is_fridayOrHoliday)
         {
             MixTimeSheetHandler.WorkTimeCalculatedWarp workTimeCalculated
@@ -548,8 +548,21 @@ namespace AttendanceHander.PayLoadFormat
             //TODO: Worktime is hardcorded that is 8 hours
             //in future we need it to flexible.
 
+            if (totalTimeWorked.content == null)
+            {
+                //it means biometric data is not available
+                //either this guy was absent on this day or may be this guy might be in vacation
 
-            if (totalTimeWorked.content.Value.Hours < SiGlobalVars.Instance.DEFAULT_WORKING_HOURS)
+                //whether it is friday or holiday, if the totalTimeWorked is zero
+                //then..
+
+                workTimeCalculated.workTimeHours.content = 0;
+                workTimeCalculated.overTime.content = 0;
+
+
+            }
+
+            if (totalTimeWorked.content.Value.Hours <= SiGlobalVars.Instance.DEFAULT_WORKING_HOURS)
             {
                 //i.e case when work time is below 8 hours ...like 7 hours
                 //in this case we only have worktime and the overtime is zero.
@@ -579,8 +592,9 @@ namespace AttendanceHander.PayLoadFormat
                 else
                 {
                     //ie not friday or holiday
-                    //means the time worked will go into normal work time
-                    workTimeCalculated.workTimeHours.content = resultTotalHours;
+                    //means both will be zero
+                    //because payload system automatically considers fridays
+                    workTimeCalculated.workTimeHours.content = 0;
                     workTimeCalculated.overTime.content = 0;
                 }
 

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttendanceHandlerTests_MIX"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttendanceHandlerCommonOperationsTests", "AttendanceHandlerCommonOperationsTests\AttendanceHandlerCommonOperationsTests.csproj", "{EDA3737A-ACE4-4CEB-990F-42A9E2F3151B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PayLoadHelperTest", "PayLoadHelperTest\PayLoadHelperTest.csproj", "{976B08F3-B440-4E8C-AECB-1CC9AA9CEBAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{EDA3737A-ACE4-4CEB-990F-42A9E2F3151B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDA3737A-ACE4-4CEB-990F-42A9E2F3151B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDA3737A-ACE4-4CEB-990F-42A9E2F3151B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{976B08F3-B440-4E8C-AECB-1CC9AA9CEBAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{976B08F3-B440-4E8C-AECB-1CC9AA9CEBAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{976B08F3-B440-4E8C-AECB-1CC9AA9CEBAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{976B08F3-B440-4E8C-AECB-1CC9AA9CEBAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

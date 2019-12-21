@@ -579,7 +579,7 @@ namespace AttendanceHander
                 {
                     var test = workbook.Name;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     return false;
                 }

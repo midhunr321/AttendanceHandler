@@ -509,7 +509,7 @@ namespace AttendanceHander
                 return;
             }
             List<Excel.Workbook> workbooks = new List<Excel.Workbook>()
-            {SiGlobalVars.Instance.dailyTransWorkbook,
+            {SiGlobalVars.Instance.payLoadWorkbook,
             SiGlobalVars.Instance.multiTransWorkbook};
 
             if (EXCEL_HELPER.Given_workbooks_are_running_in_background(workbooks) == false)
