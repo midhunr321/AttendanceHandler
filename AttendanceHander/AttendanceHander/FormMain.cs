@@ -82,8 +82,9 @@ namespace AttendanceHander
         {
             if (SiGlobalVars.Instance.multiTransWorkbook != null)
             {
-                //if excel is open, close it
-                SiGlobalVars.Instance.multiTransWorkbook.Close();
+                CommonOperations
+                    .Close_running_workbook(SiGlobalVars.Instance.multiTransWorkbook);
+            
             }
             SiGlobalVars.Instance.multiTransWraps = null;
             SiGlobalVars.Instance.multiTransHeadings = null;
@@ -97,7 +98,12 @@ namespace AttendanceHander
             if (SiGlobalVars.Instance.payLoadWrap != null)
             {
                 //if excel is open, close it
-                SiGlobalVars.Instance.payLoadWorkbook.Close();
+                if (SiGlobalVars.Instance.multiTransWorkbook != null)
+                {
+                    CommonOperations
+                        .Close_running_workbook(SiGlobalVars.Instance.payLoadWorkbook);
+
+                }
                 SiGlobalVars.Instance.payLoadWrap = null;
                 SiGlobalVars.Instance.payLoadHeadings = null;
                 SiGlobalVars.Instance.payLoadWorkbook = null;
@@ -110,7 +116,9 @@ namespace AttendanceHander
             if (SiGlobalVars.Instance.mepStyleWorkbook != null)
             {
                 //if excel is open, close it
-                SiGlobalVars.Instance.mepStyleWorkbook.Close();
+             
+                CommonOperations
+                       .Close_running_workbook(SiGlobalVars.Instance.mepStyleWorkbook);
             }
             SiGlobalVars.Instance.mepStyleWraps = null;
             SiGlobalVars.Instance.mepStyleHeadings = null;
@@ -124,7 +132,9 @@ namespace AttendanceHander
             if (SiGlobalVars.Instance.dailyTransWorkbook != null)
             {
                 //if excel is open, close it
-                SiGlobalVars.Instance.dailyTransWorkbook.Close();
+                
+                CommonOperations
+                      .Close_running_workbook(SiGlobalVars.Instance.dailyTransWorkbook);
 
             }
             SiGlobalVars.Instance.dailyTransWraps = null;
@@ -139,7 +149,9 @@ namespace AttendanceHander
             if (SiGlobalVars.Instance.payLoadWorkbook != null)
             {
                 //if excel is open, close it
-                SiGlobalVars.Instance.payLoadWorkbook.Close();
+                
+                CommonOperations
+                     .Close_running_workbook(SiGlobalVars.Instance.payLoadWorkbook);
 
             }
             SiGlobalVars.Instance.payLoadWrap = null;

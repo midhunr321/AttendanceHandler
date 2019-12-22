@@ -611,6 +611,12 @@ namespace AttendanceHander.MultipleTransaction
                 var siteNoCell = multiWrap.totalTimeWorked.fullCell.Next;
 
                 String shortSiteNo = siteNoCell.Value;
+                if (shortSiteNo == null)
+                {
+                    MessageBox.Show("Cell value of " + siteNoCell.Address
+                        + "is null");
+                    return false;
+                }
                 shortSiteNo = shortSiteNo.Trim();
 
                if( CommonOperations.Given_short_siteNo_is_valid(shortSiteNo)

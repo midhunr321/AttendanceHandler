@@ -74,6 +74,18 @@ namespace AttendanceHander
             }
             return sourceString.Replace('S', 'M');
         }
+
+        internal static void Close_running_workbook(Excel.Workbook workbook)
+        {
+            List<Excel.Workbook> workbooks =
+                            new List<Excel.Workbook>() { workbook };
+            //if excel is open, close it
+            if (EXCEL_HELPER
+                .Given_workbooks_are_running_in_background
+                (workbooks))
+                workbook.Close();
+        }
+
         public static String replace_first_S_in_siteNo_with_M(StrItemWrap deviceName_in_dailyTransFormat)
         {
             string siteno = deviceName_in_dailyTransFormat.content.Trim();
