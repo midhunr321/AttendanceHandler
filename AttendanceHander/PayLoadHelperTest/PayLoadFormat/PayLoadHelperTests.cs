@@ -27,12 +27,12 @@ namespace AttendanceHander.PayLoadFormat.Tests
         public void calculateWorkTime()
         {
             TimeSpanItemWrap assumedTimeSpan = new TimeSpanItemWrap();
-            assumedTimeSpan.content = new TimeSpan(8, 0, 0);
+            assumedTimeSpan.content = null;
 
             MixTimeSheetHandler.WorkTimeCalculatedWarp result =
                 new MixTimeSheetHandler.WorkTimeCalculatedWarp();
            
-          result =   PayLoadHelper.Calculate_worktime_from_bioTotalWorkTime(assumedTimeSpan, true);
+          result =   PayLoadHelper.Calculate_worktime_from_bioTotalWorkTime(assumedTimeSpan, false);
 
             Assert.Fail();
         }

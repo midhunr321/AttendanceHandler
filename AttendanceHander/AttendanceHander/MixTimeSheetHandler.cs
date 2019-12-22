@@ -486,7 +486,7 @@ namespace AttendanceHander
                             {
                                 write_data_to_payLoadFormat_from_MultiTrans
                                     (payLoadWrapDayEmpl, multiWrap,
-                                    holidayOrFriday,printBio_inPayLoad);
+                                    holidayOrFriday,printBio_inPayLoad,payLoadWrapDay);
                             }
 
                         }
@@ -789,7 +789,7 @@ namespace AttendanceHander
             (PayLoadWrap.Day.Employee payLoadWrapDayEmpl,
             MultiTransWrap multiWrap,
             Boolean thisDate_is_fridayOrHoliday,
-            bool printBio_inPayLoad)
+            bool printBio_inPayLoad, PayLoadWrap.Day payLoadWrapDay)
         {
 
             payLoadWrapDayEmpl.job_siteNo.content
@@ -813,6 +813,16 @@ namespace AttendanceHander
             payLoadWrapDayEmpl.overTime.contentInStr = workTimeCalculated.overTime.content.ToString();
             payLoadWrapDayEmpl.overTime.fullCell.Value = payLoadWrapDayEmpl.overTime.contentInStr;
 
+            //for job
+            payLoadWrapDayEmpl.job_siteNo.content = multiWrap.siteNoMechFormat.shortName.content;
+            payLoadWrapDayEmpl.job_siteNo.fullCell.Value = multiWrap.siteNoMechFormat.shortName.content;
+
+            //for date
+            payLoadWrapDay.date.content = multiWrap.date.content.Value;
+            payLoadWrapDay.date.contentInString = multiWrap.date.content.Value.ToShortDateString();
+            payLoadWrapDay.date.fullCell.Value = payLoadWrapDay.date.contentInString;
+
+            
             //now sometimes for testing purpose 
             //we can print the biometric acutal time from the multiple transactions 
             //to payload excel . this is to cross check if the caluclated overtime is 

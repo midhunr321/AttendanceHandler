@@ -555,10 +555,15 @@ namespace AttendanceHander.PayLoadFormat
 
                 //whether it is friday or holiday, if the totalTimeWorked is zero
                 //then..
+                if (workTimeCalculated.workTimeHours == null)
+                    workTimeCalculated.workTimeHours = new WorkTimeCalculatedWarp.Wrap();
+                if (workTimeCalculated.overTime == null)
+                    workTimeCalculated.overTime = new WorkTimeCalculatedWarp.Wrap();
 
                 workTimeCalculated.workTimeHours.content = 0;
                 workTimeCalculated.overTime.content = 0;
 
+                return workTimeCalculated;
 
             }
 

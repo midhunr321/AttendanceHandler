@@ -527,6 +527,7 @@ namespace AttendanceHander
                 Boolean printBio_inPayLoad = form_HolidaysSelector.PrintBioWorkTime_in_payLoad;
                 if (SiGlobalVars.Instance.Holidays == null)
                     SiGlobalVars.Instance.Holidays = new List<DateTime>();
+                SiGlobalVars.Instance.Holidays = holidays;
 
                 Refresh_holiday_dates_display();
 
