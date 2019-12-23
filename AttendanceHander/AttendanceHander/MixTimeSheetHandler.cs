@@ -438,7 +438,7 @@ namespace AttendanceHander
             {
                 //first we have to check if the site no is available for a particular 
                 //employee for a particular date
-
+                
                 if(TimeSpanHelper.GivenTimeSpan_is_zeroOrNull(multiWrap.totalTimeWorked.content.Value)
                     == false)
                 {

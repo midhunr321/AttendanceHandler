@@ -608,34 +608,33 @@ namespace AttendanceHander.MultipleTransaction
             {
                 //site no cell will be after total time worked cell
                 //so
+                
                 var siteNoCell = multiWrap.totalTimeWorked.fullCell.Next;
 
                 String shortSiteNo = siteNoCell.Value;
-                if (shortSiteNo == null)
-                {
-                    MessageBox.Show("Cell value of " + siteNoCell.Address
-                        + "is null");
-                    return false;
-                }
-                shortSiteNo = shortSiteNo.Trim();
-
-                if (CommonOperations.Given_short_siteNo_is_valid(shortSiteNo)
-                     == false)
-                {
-
-                    if (TimeSpanHelper.GivenTimeSpan_is_zeroOrNull(multiWrap.totalTimeWorked.content.Value)
+                if (TotalWorkTime_for_employee_is_zeroOrNull(multiWrap.totalTimeWorked)
                         == false)
+                {
+                    if (shortSiteNo == null)
+                    {
+                        MessageBox.Show("Cell value of " + siteNoCell.Address
+                            + "is null");
+                        return false;
+                    }
+
+                    shortSiteNo = shortSiteNo.Trim();
+                    if (CommonOperations.Given_short_siteNo_is_valid(shortSiteNo)
+                    == false)
                     {
                         //worktime is non zero or not null
                         //then site no is compulsary
                         MessageBox.Show("This short site No = " + shortSiteNo + " for the employee = "
                        + multiWrap.personnelNo.content + " in Muliple Transaction is not valid");
                         return false;
+
                     }
-
-                   
                 }
-
+                
                 if (multiWrap.siteNoMechFormat == null)
                     multiWrap.siteNoMechFormat = new MultiTransWrap.SiteNoMechFormat();
 
@@ -647,6 +646,15 @@ namespace AttendanceHander.MultipleTransaction
 
             }
             return true;
+        }
+
+        internal static bool TotalWorkTime_for_employee_is_zeroOrNull(MultiTransWrap.TimeSpanItemWrap totalWorkTime)
+        {
+            if (totalWorkTime == null)
+                return true;
+
+            bool result = TimeSpanHelper.GivenTimeSpan_is_zeroOrNull(totalWorkTime.content.Value);
+            return result;
         }
 
         private void feed_time_data_to_dataWrap(ref MultiTransWrap.TimeSpanItemWrap time_data,
