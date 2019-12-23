@@ -266,5 +266,43 @@ namespace AttendanceHander
             return true;
 
         }
+        private static void Refresh_holiday_dates_display(Label label_holidays)
+        {
+            if (SiGlobalVars.Instance.Holidays == null)
+            {
+                label_holidays.Text = "Holidays : Null";
+                return;
+            }
+            label_holidays.Text = "Holidays : ";
+            foreach (var holiday in SiGlobalVars.Instance.Holidays)
+            {
+                label_holidays.Text = label_holidays.Text +
+                    holiday.ToShortDateString() + ", ";
+            }
+
+        }
+
+        internal static Boolean Display_holiday_selectorForm(Form previousForm, 
+            Label label_holidays)
+        {
+
+            Form_holidaysSelector form_HolidaysSelector = new Form_holidaysSelector(previousForm);
+            DialogResult dialogResult = form_HolidaysSelector.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                var holidays = form_HolidaysSelector.SelectedHolidays;
+                if (SiGlobalVars.Instance.Holidays == null)
+                    SiGlobalVars.Instance.Holidays = new List<DateTime>();
+                SiGlobalVars.Instance.Holidays = holidays;
+
+                Refresh_holiday_dates_display(label_holidays);
+
+                SiGlobalVars.Instance.Holidays = holidays;
+
+                return true;
+            }
+
+            return false;
+        }
     }
 }

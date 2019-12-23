@@ -531,23 +531,22 @@ namespace AttendanceHander
                 return;
             }
 
-            Form_holidaysSelector form_HolidaysSelector = new Form_holidaysSelector(this);
-            DialogResult dialogResult = form_HolidaysSelector.ShowDialog();
-            if (dialogResult == DialogResult.OK)
+            
+           if (CommonOperations
+                .Display_holiday_selectorForm(this, label_holidays) == true)
             {
-                var holidays = form_HolidaysSelector.SelectedHolidays;
-                Boolean printBio_inPayLoad = form_HolidaysSelector.PrintBioWorkTime_in_payLoad;
-                if (SiGlobalVars.Instance.Holidays == null)
-                    SiGlobalVars.Instance.Holidays = new List<DateTime>();
-                SiGlobalVars.Instance.Holidays = holidays;
+                Boolean printBio_inPayLoad=false;
+               DialogResult dialogResult=
+                    MessageBox.Show("Print BioWorkTime in Payload?", 
+                    "Print bio", MessageBoxButtons.YesNo);
 
-                Refresh_holiday_dates_display();
+                if (dialogResult == DialogResult.Yes)
+                    printBio_inPayLoad = true;
 
-                SiGlobalVars.Instance.Holidays = holidays;
                 if (MixTimeSheetHandler
-                    .Transfer_data_from_multiTrans_to_payLoad
-                    (SiGlobalVars.Instance.Holidays, printBio_inPayLoad)
-                      == false)
+                   .Transfer_data_from_multiTrans_to_payLoad
+                   (SiGlobalVars.Instance.Holidays, printBio_inPayLoad)
+                     == false)
                     MessageBox.Show("Transfer from Multiple Transaction to PayLoad failed");
                 else
                     MessageBox.Show("Succesfully Transferred from Multiple Transaction to PayLoad");
@@ -558,26 +557,15 @@ namespace AttendanceHander
                 return;
             }
 
+           
+            
+
 
         }
 
       
 
-        private void Refresh_holiday_dates_display()
-        {
-            if (SiGlobalVars.Instance.Holidays == null)
-            {
-                label_holidays.Text = "Holidays : Null";
-                return;
-            }
-            label_holidays.Text = "Holidays : ";
-            foreach (var holiday in SiGlobalVars.Instance.Holidays)
-            {
-                label_holidays.Text = label_holidays.Text +
-                    holiday.ToShortDateString() + ", ";
-            }
-
-        }
+      
 
         private void Button_openPayLoad_Click(object sender, EventArgs e)
         {
@@ -646,8 +634,10 @@ namespace AttendanceHander
                 MessageBox.Show("Multiple Transactions is null");
                 return;
             }
+
+
           if(  MultipleTransaction.MultiTransHelper
-                .ReExtract_siteNos_from_multipleTransactions_cells() == true)
+                .ReExtract_siteNos_from_multipleTransactions_cells(this) == true)
             {
                 MessageBox.Show("Re-extracted Site No.s from the cells of Multiple Transactions");
                 SiGlobalVars.Instance.clearanceFor_step5B_MultiToPay = true;

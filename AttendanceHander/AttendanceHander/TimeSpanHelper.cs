@@ -8,12 +8,15 @@ namespace AttendanceHander
 {
     class TimeSpanHelper
     {
-        internal static bool GivenTimeSpan_is_zeroOrNull(TimeSpan content)
+        internal static bool GivenTimeSpan_is_zeroOrNull(TimeSpan? content)
         {
             if (content == null)
                 return true;
 
-            var compResult = TimeSpan.Compare(content, TimeSpan.Zero);
+            if (content.Value == null)
+                return true;
+
+            var compResult = TimeSpan.Compare(content.Value, TimeSpan.Zero);
             if (compResult == 0 || compResult == -1)
                 return true;
 

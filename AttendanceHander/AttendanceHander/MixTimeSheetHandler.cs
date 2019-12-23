@@ -439,7 +439,7 @@ namespace AttendanceHander
                 //first we have to check if the site no is available for a particular 
                 //employee for a particular date
                 
-                if(TimeSpanHelper.GivenTimeSpan_is_zeroOrNull(multiWrap.totalTimeWorked.content.Value)
+                if(TimeSpanHelper.GivenTimeSpan_is_zeroOrNull(multiWrap.totalTimeWorked.content)
                     == false)
                 {
                     //if there is some worktime available
@@ -482,7 +482,7 @@ namespace AttendanceHander
 
                         //now check if this date is a holiday or friday
                         Boolean holidayOrFriday
-                            = this_date_is_a_holidayOrFriday(payLoadWrapDay.date.content.Value,
+                            = Given_date_is_a_holidayOrFriday(payLoadWrapDay.date.content.Value,
                             holidays);
 
                         //now check for the employee codes
@@ -583,7 +583,7 @@ namespace AttendanceHander
                                 //ie same dates.
                                 if (mepWrap.code.content == payLoadDayEmp.code.content)
                                 {
-                                    Boolean isHoliday = this_date_is_a_holidayOrFriday(payLoadDay.date.content.Value,
+                                    Boolean isHoliday = Given_date_is_a_holidayOrFriday(payLoadDay.date.content.Value,
                                           SiGlobalVars.Instance.Holidays);
                                     write_data_to_payLoadFormat_from_mepStyle
                                         (payLoadDayEmp, mepWrap, isHoliday);
@@ -638,7 +638,7 @@ namespace AttendanceHander
             return true;
         }
 
-        private static bool this_date_is_a_holidayOrFriday(DateTime thisDate, List<DateTime> explicit_holidays)
+        internal static bool Given_date_is_a_holidayOrFriday(DateTime thisDate, List<DateTime> explicit_holidays)
         {
             foreach (var day in SiGlobalVars.Instance.DEFAULT_HOLIDAYS)
             {

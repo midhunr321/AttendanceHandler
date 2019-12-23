@@ -602,13 +602,56 @@ namespace AttendanceHander.MultipleTransaction
 
         }
 
-        internal static bool ReExtract_siteNos_from_multipleTransactions_cells()
+        internal static bool ReExtract_siteNos_from_multipleTransactions_cells
+            (Form previousForm, Label label_holidays)
         {
+            //first display the Re-extract dialog form
+            Boolean autoFillSiteNo=false;
+            Form_ReExtractDialog form_ReExtractDialog
+                = new Form_ReExtractDialog(previousForm);
+
+            DialogResult dialogResult
+                = form_ReExtractDialog.ShowDialog();
+
+            if(dialogResult == DialogResult.OK)
+            {
+
+             autoFillSiteNo = form_ReExtractDialog.AutoFillSiteNo;
+
+            }
+            else
+            {
+                return false;
+            }
+
             foreach(var multiWrap in SiGlobalVars.Instance.multiTransWraps)
             {
                 //site no cell will be after total time worked cell
                 //so
-                
+                if (autoFillSiteNo == true)
+                {
+                    Boolean errorFound = false;
+                    //for fridays and holiday we will fill the site no.s
+
+                    if(SiGlobalVars.Instance.Holidays==null)
+                    {
+                       if( CommonOperations
+                            .Display_holiday_selectorForm(previousForm, 
+                            label_holidays)==false)
+
+                    }
+
+                    Boolean holidayOrFriday
+                            =MixTimeSheetHandler.Given_date_is_a_holidayOrFriday(payLoadWrapDay.date.content.Value,
+                            SiGlobalVars.Instance.Holidays);
+
+                    autoFill_SiteNo_for_holidaysAndFridays(out errorFound,multiWrap);
+
+                    if (errorFound == true)
+                        return false;
+
+                }
+
                 var siteNoCell = multiWrap.totalTimeWorked.fullCell.Next;
 
                 String shortSiteNo = siteNoCell.Value;
@@ -653,7 +696,10 @@ namespace AttendanceHander.MultipleTransaction
             if (totalWorkTime == null)
                 return true;
 
-            bool result = TimeSpanHelper.GivenTimeSpan_is_zeroOrNull(totalWorkTime.content.Value);
+            if (totalWorkTime.content == null)
+                return true;
+
+            bool result = TimeSpanHelper.GivenTimeSpan_is_zeroOrNull(totalWorkTime.content);
             return result;
         }
 

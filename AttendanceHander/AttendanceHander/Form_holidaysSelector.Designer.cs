@@ -34,7 +34,6 @@
             this.button_OK = new System.Windows.Forms.Button();
             this.dataGridViewHolidays = new System.Windows.Forms.DataGridView();
             this.Holidays = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.checkBox_printBio = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewHolidays)).BeginInit();
             this.SuspendLayout();
             // 
@@ -93,25 +92,12 @@
             this.Holidays.HeaderText = "Holidays";
             this.Holidays.Name = "Holidays";
             // 
-            // checkBox_printBio
-            // 
-            this.checkBox_printBio.AutoSize = true;
-            this.checkBox_printBio.Location = new System.Drawing.Point(12, 289);
-            this.checkBox_printBio.Name = "checkBox_printBio";
-            this.checkBox_printBio.Size = new System.Drawing.Size(418, 17);
-            this.checkBox_printBio.TabIndex = 6;
-            this.checkBox_printBio.Text = "Print Biometric Worktime in the last columns of PayLoad inorder for Testing Purpo" +
-    "se";
-            this.checkBox_printBio.UseVisualStyleBackColor = true;
-            this.checkBox_printBio.CheckedChanged += new System.EventHandler(this.CheckBox1_CheckedChanged);
-            // 
             // Form_holidaysSelector
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(455, 391);
-            this.Controls.Add(this.checkBox_printBio);
             this.Controls.Add(this.dataGridViewHolidays);
             this.Controls.Add(this.button_OK);
             this.Controls.Add(this.button_removeHoliday);
@@ -127,7 +113,6 @@
             this.Load += new System.EventHandler(this.Form_holidaysSelector_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewHolidays)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -139,6 +124,5 @@
         private System.Windows.Forms.Button button_OK;
         private System.Windows.Forms.DataGridView dataGridViewHolidays;
         private System.Windows.Forms.DataGridViewTextBoxColumn Holidays;
-        private System.Windows.Forms.CheckBox checkBox_printBio;
     }
 }

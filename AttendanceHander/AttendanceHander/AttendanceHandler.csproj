@@ -187,6 +187,12 @@
     <Compile Include="Form_holidaysSelector.Designer.cs">
       <DependentUpon>Form_holidaysSelector.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_Re-extractDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Re-extractDialog.Designer.cs">
+      <DependentUpon>Form_Re-extractDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="HeadingWrap.cs" />
     <Compile Include="MepStyle\MepStyleSiteNoCodeAnalyzer.cs" />
     <Compile Include="MepStyle\MepStyleHelper.cs" />
@@ -247,6 +253,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_holidaysSelector.resx">
       <DependentUpon>Form_holidaysSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Re-extractDialog.resx">
+      <DependentUpon>Form_Re-extractDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MultipleTransaction\TestMultipleTransactions.resx">
       <DependentUpon>TestMultipleTransactions.cs</DependentUpon>
@@ -313,7 +322,7 @@
     <ManifestKeyFile>AttendanceHandler_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>0120E0C00E8758C4172FBAA8AE80B6207416C5F9</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>CE66C73DF71BD24C70ADEF51CDE873B0509062ED</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

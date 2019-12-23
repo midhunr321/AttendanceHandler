@@ -15,7 +15,6 @@ namespace AttendanceHander
 
         List<DateTime> selectedHolidays;
         private Form previousForm;
-        Boolean printBioWorkTime_in_payLoad=false;
 
         public Form_holidaysSelector(Form previousForm)
         {
@@ -71,7 +70,6 @@ namespace AttendanceHander
 
         private void Button_OK_Click(object sender, EventArgs e)
         {
-            printBioWorkTime_in_payLoad = checkBox_printBio.Checked;
 
             this.Hide();
             this.DialogResult = DialogResult.OK;
