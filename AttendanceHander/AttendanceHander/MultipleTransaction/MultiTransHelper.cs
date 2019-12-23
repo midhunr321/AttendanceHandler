@@ -619,12 +619,21 @@ namespace AttendanceHander.MultipleTransaction
                 }
                 shortSiteNo = shortSiteNo.Trim();
 
-               if( CommonOperations.Given_short_siteNo_is_valid(shortSiteNo)
-                    == false)
+                if (CommonOperations.Given_short_siteNo_is_valid(shortSiteNo)
+                     == false)
                 {
-                    MessageBox.Show("This short site No = " + shortSiteNo + " for the employee = "
-                        + multiWrap.personnelNo.content + " in Muliple Transaction is not valid");
-                    return false;
+
+                    if (TimeSpanHelper.GivenTimeSpan_is_zeroOrNull(multiWrap.totalTimeWorked.content.Value)
+                        == false)
+                    {
+                        //worktime is non zero or not null
+                        //then site no is compulsary
+                        MessageBox.Show("This short site No = " + shortSiteNo + " for the employee = "
+                       + multiWrap.personnelNo.content + " in Muliple Transaction is not valid");
+                        return false;
+                    }
+
+                   
                 }
 
                 if (multiWrap.siteNoMechFormat == null)
