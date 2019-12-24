@@ -252,16 +252,35 @@ namespace AttendanceHander
             return true;
 
         }
-
-        internal static bool Given_short_siteNo_is_valid(string shortSiteNo)
+        /// <summary>
+        /// Given_siteNo_is_validShortSiteNo
+        /// </summary>
+        /// <param name="shortSiteNoToTest">to test</param>
+        /// <param name="department">like M265 or E265 E or M or S</param>
+        internal static bool Given_siteNo_is_validShortSiteNo(string shortSiteNoToTest,
+            Char department)
         {
+            if (shortSiteNoToTest == null)
+                return false;
+            if (String.IsNullOrEmpty(shortSiteNoToTest) ||
+                String.IsNullOrWhiteSpace(shortSiteNoToTest))
+                return false;
+
+            shortSiteNoToTest = shortSiteNoToTest.Trim();
             StringHandler stringHandler = new StringHandler();
             if (stringHandler
-                  .is_this_string_alpha_numeric_or_numeric_or_alpha_only(shortSiteNo)
+                  .is_this_string_alpha_numeric_or_numeric_or_alpha_only(shortSiteNoToTest)
                   != All_const.str_type.Alphanumeric)
                 return false;
 
-            //TODO in future we need to check if Capital M is available or not
+            // we need to check if Capital M is available or not
+
+            if (shortSiteNoToTest.Length < 2)
+                return false;
+
+            if (shortSiteNoToTest[0] != department)
+                return false;
+
 
             return true;
 

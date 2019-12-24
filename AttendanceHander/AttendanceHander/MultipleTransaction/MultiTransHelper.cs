@@ -615,6 +615,12 @@ namespace AttendanceHander.MultipleTransaction
                 var siteNoCell = multiWrap.totalTimeWorked.fullCell.Next;
 
                 String shortSiteNo = siteNoCell.Value;
+
+                //when totla worktime is available then  it is
+                //must to have a valid site no
+                //exception is in the case of holidays and friday
+                //in holidays and fridays even though there is no valid worktime
+                //we might need to mention site no.s
                 if (TotalWorkTime_for_employee_is_zeroOrNull(multiWrap.totalTimeWorked)
                         == false)
                 {
@@ -626,7 +632,7 @@ namespace AttendanceHander.MultipleTransaction
                     }
 
                     shortSiteNo = shortSiteNo.Trim();
-                    if (CommonOperations.Given_short_siteNo_is_valid(shortSiteNo)
+                    if (CommonOperations.Given_siteNo_is_validShortSiteNo(shortSiteNo,'M')
                     == false)
                     {
                         //worktime is non zero or not null
@@ -636,16 +642,23 @@ namespace AttendanceHander.MultipleTransaction
                         return false;
 
                     }
+                  
                 }
 
-                if (multiWrap.siteNoMechFormat == null)
-                    multiWrap.siteNoMechFormat = new MultiTransWrap.SiteNoMechFormat();
+                if (CommonOperations.Given_siteNo_is_validShortSiteNo(shortSiteNo, 'M')
+                    == true)
+                {
+                    if (multiWrap.siteNoMechFormat == null)
+                        multiWrap.siteNoMechFormat = new MultiTransWrap.SiteNoMechFormat();
 
-                if (multiWrap.siteNoMechFormat.shortName == null)
-                    multiWrap.siteNoMechFormat.shortName = new MultiTransWrap.StrItemWrap();
+                    if (multiWrap.siteNoMechFormat.shortName == null)
+                        multiWrap.siteNoMechFormat.shortName = new MultiTransWrap.StrItemWrap();
 
-                multiWrap.siteNoMechFormat.shortName.content = shortSiteNo;
-                multiWrap.siteNoMechFormat.shortName.fullCell = siteNoCell;
+                    multiWrap.siteNoMechFormat.shortName.content = shortSiteNo;
+                    multiWrap.siteNoMechFormat.shortName.fullCell = siteNoCell;
+                }
+                   
+
 
             }
             return true;
@@ -695,17 +708,19 @@ namespace AttendanceHander.MultipleTransaction
 
                 foreach(var multiWrap in SiGlobalVars.Instance.multiTransWraps)
                 {
-                    if( String.IsNullOrEmpty(multiWrap.siteNoMechFormat.shortName.content)
-                        || String.IsNullOrWhiteSpace(multiWrap.siteNoMechFormat.shortName.content))
+                    if(shortSiteNo_is_null(multiWrap.siteNoMechFormat)
+                        ==true)
                     {
                         Boolean holidayOrFriday
                       = MixTimeSheetHandler.Given_date_is_a_holidayOrFriday(multiWrap.date.content.Value,
                       SiGlobalVars.Instance.Holidays);
 
-                        autoFill_SiteNo_for_holidaysAndFridays(out errorFound, multiWrap);
+                        if (holidayOrFriday == false)
+                            continue;
 
-                        if (errorFound == true)
-                            return false;
+                        autoFill_SiteNo_for_holidaysAndFridays( multiWrap);
+
+                       
                     }
 
                    
@@ -717,7 +732,25 @@ namespace AttendanceHander.MultipleTransaction
             return true;
         }
 
-        private static void autoFill_SiteNo_for_holidaysAndFridays(out bool errorFound, MultiTransWrap multiWrap)
+        private static bool shortSiteNo_is_null(MultiTransWrap.SiteNoMechFormat siteNoMechFormat)
+        {
+            if (siteNoMechFormat == null)
+                return true;
+            else if (siteNoMechFormat.shortName == null)
+                return true;
+            else if (siteNoMechFormat.shortName.content == null)
+                return true;
+            else if (siteNoMechFormat.shortName.fullCell == null)
+                return true;
+            else if (String.IsNullOrEmpty(multiWrap.siteNoMechFormat.shortName.content)
+                         || String.IsNullOrWhiteSpace(multiWrap.siteNoMechFormat.shortName.content))
+                return true;
+
+            return false;
+        }
+
+        private static void autoFill_SiteNo_for_holidaysAndFridays
+            ( MultiTransWrap multiWrap)
         {
           if(given_employee_is_present_twoDays_beforeAndAfter(multiWrap) == true)
             {
@@ -725,11 +758,103 @@ namespace AttendanceHander.MultipleTransaction
                 //it means due to friday or holiday his attendance was not marked in the biometric
 
 
-                var siteNo = get_givenEmployee_last_valid_shortSiteNo();
+                String proposedNewShortSiteNo = get_givenEmployee_last_valid_shortSiteNo(multiWrap);
+
+                //now write the new site no
+                if (multiWrap.siteNoMechFormat == null)
+                    multiWrap.siteNoMechFormat = new MultiTransWrap.SiteNoMechFormat();
+                if (multiWrap.siteNoMechFormat.shortName == null)
+                    multiWrap.siteNoMechFormat.shortName = new MultiTransWrap.StrItemWrap();
+
+                multiWrap.siteNoMechFormat.shortName.content = proposedNewShortSiteNo;
+                multiWrap.siteNoMechFormat.shortName.fullCell
+                    = multiWrap.totalTimeWorked.fullCell.Next;
+                multiWrap.siteNoMechFormat.shortName.fullCell.Value
+                    = proposedNewShortSiteNo;
+
+            }
+
+        }
+
+        private static bool given_employee_is_present_twoDays_beforeAndAfter
+            (MultiTransWrap givenEmployeeWrap)
+        {
+            List<DateTime> ThreeDatesBeforeToCheck 
+                = get_3dates_beforeOrAfter(givenEmployeeWrap.date.content.Value,
+                ThreeDaysBefore: true);
+
+            Boolean atleastOncepresent_before3Days
+                = check_if_employee_present_atleastOnce_in_givenDates
+                (ThreeDatesBeforeToCheck, givenEmployeeWrap);
+
+
+            List<DateTime> ThreeDatesAfterToCheck
+                 = get_3dates_beforeOrAfter(givenEmployeeWrap.date.content.Value,false);
+
+            Boolean atleastOncepresent_after3Days
+                = check_if_employee_present_atleastOnce_in_givenDates
+                (ThreeDatesAfterToCheck, givenEmployeeWrap);
+
+            if (atleastOncepresent_before3Days == true
+                && atleastOncepresent_after3Days == true)
+                return true;
+
+            return false;
+
+        }
+
+        private static List<DateTime> get_3dates_beforeOrAfter(DateTime currentDate, 
+            bool ThreeDaysBefore)
+        {
+            List<DateTime> dates = new List<DateTime>();
+
+            DateTime monthFirstDate = DateTimeHandler.Get_firstDate_of_month(date: currentDate);
+            DateTime monthLastDate = DateTimeHandler.Get_lastDate_of_month(date: currentDate);
+            if (ThreeDaysBefore == true)
+            {
+                //means before 3 days
+                for(int i = 1; i <= 3; i++)
+                {
+                   
+                }
+
+            }
+            else
+            {
+                //means after 3 days 
+
+            }
+        }
+
+        private static bool check_if_employee_present_atleastOnce_in_givenDates
+            (List<DateTime> datesToCheck, MultiTransWrap givenEmployeeWrap)
+        {
+            foreach (var date in datesToCheck)
+            {
+
+                foreach (var tempMultiWrap in SiGlobalVars.Instance.multiTransWraps)
+                {
+                    if (tempMultiWrap.personnelNo != givenEmployeeWrap.personnelNo)
+                        continue;
+
+                    if (DateTimeHandler.Compare_dates_only(date, tempMultiWrap.date.content.Value)
+                        == false)
+                        continue;
+
+                    //if both are equal then
+                    //check if the total time worked is valid
+                    if (TimeSpanHelper
+                         .GivenTimeSpan_is_zeroOrNull(tempMultiWrap.totalTimeWorked.content)
+                         == false)
+                        return true;
+
+
+                }
 
 
             }
 
+            return false;//not at all present
         }
 
         internal static bool TotalWorkTime_for_employee_is_zeroOrNull(MultiTransWrap.TimeSpanItemWrap totalWorkTime)
