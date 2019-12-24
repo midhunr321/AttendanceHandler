@@ -11,16 +11,16 @@ using AttendanceHander.MultipleTransaction;
 
 namespace AttendanceHander
 {
-    public partial class Form_ReExtractDialog : Form
+    public partial class Form_AutoFillDialog : Form
     {
         private Form previousForm;
         private Boolean autoFillSiteNo;
-        public Form_ReExtractDialog()
+        public Form_AutoFillDialog()
         {
             InitializeComponent();
         }
 
-        public Form_ReExtractDialog(Form previousForm)
+        public Form_AutoFillDialog(Form previousForm)
         {
             this.previousForm = previousForm;
         }

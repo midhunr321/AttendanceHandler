@@ -1,6 +1,6 @@
 ﻿namespace AttendanceHander
 {
-    partial class Form_ReExtractDialog
+    partial class Form_AutoFillDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.checkBox_autoFillSite = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.checkBox_autoFillSite = new System.Windows.Forms.CheckBox();
             this.button_proceed = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -45,6 +45,15 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(32, 77);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(338, 45);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Software will automatically understand the majority site number of a particular e" +
+    "mployee and place it on fridays and holidays";
+            // 
             // checkBox_autoFillSite
             // 
             this.checkBox_autoFillSite.AutoSize = true;
@@ -54,15 +63,6 @@
             this.checkBox_autoFillSite.TabIndex = 0;
             this.checkBox_autoFillSite.Text = "Auto-Fill Site No.s in Multiple Transactions for Holidays and Fridays";
             this.checkBox_autoFillSite.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.Location = new System.Drawing.Point(32, 77);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(338, 45);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Software will automatically understand the majority site number of a particular e" +
-    "mployee and place it on fridays and holidays";
             // 
             // button_proceed
             // 
@@ -74,7 +74,7 @@
             this.button_proceed.UseVisualStyleBackColor = true;
             this.button_proceed.Click += new System.EventHandler(this.Button_proceed_Click);
             // 
-            // Form_ReExtractDialog
+            // Form_AutoFillDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -82,8 +82,8 @@
             this.ClientSize = new System.Drawing.Size(466, 282);
             this.Controls.Add(this.button_proceed);
             this.Controls.Add(this.groupBox1);
-            this.Name = "Form_ReExtractDialog";
-            this.Text = "Re-Extract Options";
+            this.Name = "Form_AutoFillDialog";
+            this.Text = "Auto Fill Site No. Dialog";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

@@ -84,7 +84,7 @@ namespace AttendanceHander
             {
                 CommonOperations
                     .Close_running_workbook(SiGlobalVars.Instance.multiTransWorkbook);
-            
+
             }
             SiGlobalVars.Instance.multiTransWraps = null;
             SiGlobalVars.Instance.multiTransHeadings = null;
@@ -116,7 +116,7 @@ namespace AttendanceHander
             if (SiGlobalVars.Instance.mepStyleWorkbook != null)
             {
                 //if excel is open, close it
-             
+
                 CommonOperations
                        .Close_running_workbook(SiGlobalVars.Instance.mepStyleWorkbook);
             }
@@ -132,7 +132,7 @@ namespace AttendanceHander
             if (SiGlobalVars.Instance.dailyTransWorkbook != null)
             {
                 //if excel is open, close it
-                
+
                 CommonOperations
                       .Close_running_workbook(SiGlobalVars.Instance.dailyTransWorkbook);
 
@@ -149,7 +149,7 @@ namespace AttendanceHander
             if (SiGlobalVars.Instance.payLoadWorkbook != null)
             {
                 //if excel is open, close it
-                
+
                 CommonOperations
                      .Close_running_workbook(SiGlobalVars.Instance.payLoadWorkbook);
 
@@ -468,7 +468,7 @@ namespace AttendanceHander
 
         private void Button_step2A_siteNo_Click(object sender, EventArgs e)
         {
-            if (SiGlobalVars.Instance.multiTransWraps == null )
+            if (SiGlobalVars.Instance.multiTransWraps == null)
             {
                 MessageBox.Show(" MULTI Trans is null");
                 return;
@@ -514,7 +514,7 @@ namespace AttendanceHander
                 return;
             }
             if (SiGlobalVars.Instance.payLoadWrap == null ||
-                SiGlobalVars.Instance.multiTransWraps==null)
+                SiGlobalVars.Instance.multiTransWraps == null)
             {
                 MessageBox.Show("Either Multiple Transaction or Payload Transaction is null;" +
                     "Hence Task failed");
@@ -531,14 +531,14 @@ namespace AttendanceHander
                 return;
             }
 
-            
-           if (CommonOperations
-                .Display_holiday_selectorForm(this, label_holidays) == true)
+
+            if (CommonOperations
+                 .Display_holiday_selectorForm(this, label_holidays) == true)
             {
-                Boolean printBio_inPayLoad=false;
-               DialogResult dialogResult=
-                    MessageBox.Show("Print BioWorkTime in Payload?", 
-                    "Print bio", MessageBoxButtons.YesNo);
+                Boolean printBio_inPayLoad = false;
+                DialogResult dialogResult =
+                     MessageBox.Show("Print BioWorkTime in Payload?",
+                     "Print bio", MessageBoxButtons.YesNo);
 
                 if (dialogResult == DialogResult.Yes)
                     printBio_inPayLoad = true;
@@ -557,15 +557,15 @@ namespace AttendanceHander
                 return;
             }
 
-           
-            
+
+
 
 
         }
 
-      
 
-      
+
+
 
         private void Button_openPayLoad_Click(object sender, EventArgs e)
         {
@@ -629,20 +629,38 @@ namespace AttendanceHander
 
         private void Button_Step5A_Click(object sender, EventArgs e)
         {
-            if (SiGlobalVars.Instance.multiTransWraps == null )
+            if (SiGlobalVars.Instance.multiTransWraps == null)
             {
                 MessageBox.Show("Multiple Transactions is null");
                 return;
             }
 
 
-          if(  MultipleTransaction.MultiTransHelper
-                .ReExtract_siteNos_from_multipleTransactions_cells(this) == true)
+            if (MultipleTransaction.MultiTransHelper
+                  .ReExtract_siteNos_from_multipleTransactions_cells() == true)
             {
-                MessageBox.Show("Re-extracted Site No.s from the cells of Multiple Transactions");
-                SiGlobalVars.Instance.clearanceFor_step5B_MultiToPay = true;
+
+                if (MultipleTransaction.MultiTransHelper
+                           .AutoFill_SiteNos_for_fridaysAndHolidays() == true)
+                {
+                    MessageBox.Show("The Task Auto Fill Site No.s for fridays & Holidays Successfully Completed ");
+                    SiGlobalVars.Instance.clearanceFor_step5B_MultiToPay = true;
+                    //after running the autofill
+                    //again we have to run re-extract site no.s
+                    MultipleTransaction.MultiTransHelper
+                  .ReExtract_siteNos_from_multipleTransactions_cells();
+                    MessageBox.Show("Successfully Re-extracted Site No.s from the cells of Multiple Transactions");
+
+
+                }
+                else
+                {
+                    MessageBox.Show("Failed to complete the Task Auto Fill Site No.s for fridays & Holidays");
+                }
+
+
             }
-          else
+            else
                 MessageBox.Show("Failed to Re-extract site no.s from the cells of Mulitple " +
                     "Transactions");
 

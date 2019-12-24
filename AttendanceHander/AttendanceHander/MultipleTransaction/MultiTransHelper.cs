@@ -65,7 +65,7 @@ namespace AttendanceHander.MultipleTransaction
         public static Boolean Add_a_heading_column_for_site_no(Excel.Range previousHeading,
             Excel.Worksheet sheet, ref MultiHeadings headingWraps)
         {
-            if(sheet==null)
+            if (sheet == null)
             {
                 MessageBox.Show("Multiple Transaction Excel file is either closed or invalid");
                 return false;
@@ -127,7 +127,7 @@ namespace AttendanceHander.MultipleTransaction
         }
         private DirectoryInfo open_directory_dialog_for_exporting_PDF()
         {
-            DirectoryInfo folder=null;
+            DirectoryInfo folder = null;
             CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
             commonOpenFileDialog.IsFolderPicker = true;
             if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
@@ -602,55 +602,15 @@ namespace AttendanceHander.MultipleTransaction
 
         }
 
-        internal static bool ReExtract_siteNos_from_multipleTransactions_cells
-            (Form previousForm, Label label_holidays)
+        internal static bool ReExtract_siteNos_from_multipleTransactions_cells()
         {
-            //first display the Re-extract dialog form
-            Boolean autoFillSiteNo=false;
-            Form_ReExtractDialog form_ReExtractDialog
-                = new Form_ReExtractDialog(previousForm);
 
-            DialogResult dialogResult
-                = form_ReExtractDialog.ShowDialog();
 
-            if(dialogResult == DialogResult.OK)
-            {
-
-             autoFillSiteNo = form_ReExtractDialog.AutoFillSiteNo;
-
-            }
-            else
-            {
-                return false;
-            }
-
-            foreach(var multiWrap in SiGlobalVars.Instance.multiTransWraps)
+            foreach (var multiWrap in SiGlobalVars.Instance.multiTransWraps)
             {
                 //site no cell will be after total time worked cell
                 //so
-                if (autoFillSiteNo == true)
-                {
-                    Boolean errorFound = false;
-                    //for fridays and holiday we will fill the site no.s
 
-                    if(SiGlobalVars.Instance.Holidays==null)
-                    {
-                       if( CommonOperations
-                            .Display_holiday_selectorForm(previousForm, 
-                            label_holidays)==false)
-
-                    }
-
-                    Boolean holidayOrFriday
-                            =MixTimeSheetHandler.Given_date_is_a_holidayOrFriday(payLoadWrapDay.date.content.Value,
-                            SiGlobalVars.Instance.Holidays);
-
-                    autoFill_SiteNo_for_holidaysAndFridays(out errorFound,multiWrap);
-
-                    if (errorFound == true)
-                        return false;
-
-                }
 
                 var siteNoCell = multiWrap.totalTimeWorked.fullCell.Next;
 
@@ -677,7 +637,7 @@ namespace AttendanceHander.MultipleTransaction
 
                     }
                 }
-                
+
                 if (multiWrap.siteNoMechFormat == null)
                     multiWrap.siteNoMechFormat = new MultiTransWrap.SiteNoMechFormat();
 
@@ -689,6 +649,87 @@ namespace AttendanceHander.MultipleTransaction
 
             }
             return true;
+        }
+
+        internal static Boolean AutoFill_SiteNos_for_fridaysAndHolidays
+            (Form previousForm, out Boolean errorFound, Label label_holidays)
+        {
+            errorFound = false;
+
+            //first display the Re-extract dialog form
+            Boolean autoFillSiteNo = false;
+            Form_AutoFillDialog form_AutoFillDialog
+                = new Form_AutoFillDialog(previousForm);
+
+            DialogResult dialogResult
+                = form_AutoFillDialog.ShowDialog();
+
+            if (dialogResult == DialogResult.OK)
+            {
+
+                autoFillSiteNo = form_AutoFillDialog.AutoFillSiteNo;
+
+            }
+            else
+            {
+                errorFound = true;
+                MessageBox.Show("AutoFill Site No. Dialog was cancelled. Hence this task is interrupted");
+                return false;
+            }
+
+
+            if (autoFillSiteNo == true)
+            {
+                //for fridays and holiday we will fill the site no.s
+
+
+                if (CommonOperations
+                     .Display_holiday_selectorForm(previousForm,
+                     label_holidays) == false)
+                {
+                    errorFound = true;
+                    MessageBox.Show("Holiday Selector Dialog was cancelled." +
+                        " Hence this task is interrupted");
+                    return false;
+                }
+
+                foreach(var multiWrap in SiGlobalVars.Instance.multiTransWraps)
+                {
+                    if( String.IsNullOrEmpty(multiWrap.siteNoMechFormat.shortName.content)
+                        || String.IsNullOrWhiteSpace(multiWrap.siteNoMechFormat.shortName.content))
+                    {
+                        Boolean holidayOrFriday
+                      = MixTimeSheetHandler.Given_date_is_a_holidayOrFriday(multiWrap.date.content.Value,
+                      SiGlobalVars.Instance.Holidays);
+
+                        autoFill_SiteNo_for_holidaysAndFridays(out errorFound, multiWrap);
+
+                        if (errorFound == true)
+                            return false;
+                    }
+
+                   
+                }
+
+               
+
+            }
+            return true;
+        }
+
+        private static void autoFill_SiteNo_for_holidaysAndFridays(out bool errorFound, MultiTransWrap multiWrap)
+        {
+          if(given_employee_is_present_twoDays_beforeAndAfter(multiWrap) == true)
+            {
+                //it means this guy didn't go for vacation and all
+                //it means due to friday or holiday his attendance was not marked in the biometric
+
+
+                var siteNo = get_givenEmployee_last_valid_shortSiteNo();
+
+
+            }
+
         }
 
         internal static bool TotalWorkTime_for_employee_is_zeroOrNull(MultiTransWrap.TimeSpanItemWrap totalWorkTime)
@@ -916,8 +957,8 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.checkOutTime1))
                     {
-                       feed_time_data_to_dataWrap(ref multiTransWrap.checkOutTime1,
-                            eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
+                        feed_time_data_to_dataWrap(ref multiTransWrap.checkOutTime1,
+                             eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
 
 
 
@@ -936,8 +977,8 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.checkInTime2))
                     {
-                       feed_time_data_to_dataWrap(ref multiTransWrap.checkInTime2,
-                            eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
+                        feed_time_data_to_dataWrap(ref multiTransWrap.checkInTime2,
+                             eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
 
 
 
@@ -946,8 +987,8 @@ namespace AttendanceHander.MultipleTransaction
                     }
                     else if (heading.Equals(headings.checkOutTime2))
                     {
-                       feed_time_data_to_dataWrap(ref multiTransWrap.checkOutTime2,
-                            eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
+                        feed_time_data_to_dataWrap(ref multiTransWrap.checkOutTime2,
+                             eXCEL_HELPER, fullCell, heading, (DateTime)multiTransWrap.date.content);
 
 
 

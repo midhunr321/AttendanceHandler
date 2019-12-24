@@ -13,13 +13,13 @@ using Excel = Microsoft.Office.Interop.Excel;
 namespace AttendanceHander
 {
 
-    
-   public class CommonOperations
+
+    public class CommonOperations
     {
         private Excel.Worksheet worksheet;
 
-      
-     
+
+
         public static void modify_value_in_cell(Excel.Range fullCell, String Value,
             Color color)
         {
@@ -27,12 +27,12 @@ namespace AttendanceHander
             fullCell.Font.Color = color;
             fullCell.Font.Italic = true;
             fullCell.Font.Bold = true;
-            
+
         }
         private static String replace_S_in_string_with_M(String sourceString,
             StrItemWrap deviceName_in_dailyTransFormat)
         {
-           
+
             int count = sourceString.Count(x => x == 'S');
             if (count > 1)
             {
@@ -47,7 +47,7 @@ namespace AttendanceHander
                         + " Content = " + deviceName_in_dailyTransFormat.content);
                 return null;
             }
-           else if (count ==0)
+            else if (count == 0)
             {
                 //that means there is no 'S'
                 // means invalid site no
@@ -126,12 +126,12 @@ namespace AttendanceHander
                 //means example if like this S223
                 //then no need to filter any thing
                 //only change 'S' to 'M'
-             
+
                 siteNo = replace_S_in_string_with_M(siteNo,
                     deviceName_in_dailyTransFormat);
                 if (siteNo == null)
                     return null;
-               
+
             }
             else if (count == 1)
             {
@@ -142,14 +142,14 @@ namespace AttendanceHander
                 //now trim unwanted spaces
                 siteNo = siteNo.Trim();
                 //now replace s with M
-                siteNo = replace_S_in_string_with_M(siteNo, 
+                siteNo = replace_S_in_string_with_M(siteNo,
                     deviceName_in_dailyTransFormat);
             }
 
             return siteNo;
         }
         public static Boolean compare_multiTrans_employeeNo_to_MepAndPayLoad_employeeNo
-            (String mepOrPayLoad_employeeNo, String multiTrans_employeeNo )
+            (String mepOrPayLoad_employeeNo, String multiTrans_employeeNo)
         {
             //String mep_Trimmed = mepStyle_employeeNo.Trim('/');
             String mep_Trimmed = mepOrPayLoad_employeeNo
@@ -177,7 +177,7 @@ namespace AttendanceHander
             this.worksheet = worksheet;
         }
 
-        
+
         public static Excel.Range filter_searchResult_by_comparing_row_no_of_adjacent_headings
             (List<Excel.Range> searchResults,
             Excel.Range adjacentHeadingCell1, Excel.Range adjacentHeadingCell2)
@@ -186,9 +186,9 @@ namespace AttendanceHander
             //if all are in same row means they are in the heading row
 
             List<Excel.Range> filtered_search_result = new List<Excel.Range>();
-            foreach(Excel.Range result in searchResults)
+            foreach (Excel.Range result in searchResults)
             {
-                if(result.Row == adjacentHeadingCell1.Row &&
+                if (result.Row == adjacentHeadingCell1.Row &&
                     result.Row == adjacentHeadingCell2.Row)
                 {
                     filtered_search_result.Add(result);
@@ -203,7 +203,7 @@ namespace AttendanceHander
                 MessageBox.Show("Multiple search results even after filtering in the same row");
                 return null;
             }
-           else if (filtered_search_result.Count ==0)
+            else if (filtered_search_result.Count == 0)
             {
                 StackTrace stackTrace = new StackTrace();
                 Console.WriteLine(stackTrace.ToString());
@@ -213,7 +213,7 @@ namespace AttendanceHander
             return filtered_search_result[0];
         }
 
-       
+
 
         public static bool employeeNo_is_valid(string extractedEmployeeNo)
         {
@@ -282,25 +282,42 @@ namespace AttendanceHander
 
         }
 
-        internal static Boolean Display_holiday_selectorForm(Form previousForm, 
+        internal static Boolean Display_holiday_selectorForm(Form previousForm,
             Label label_holidays)
         {
-
-            Form_holidaysSelector form_HolidaysSelector = new Form_holidaysSelector(previousForm);
-            DialogResult dialogResult = form_HolidaysSelector.ShowDialog();
-            if (dialogResult == DialogResult.OK)
+            Boolean displayHolidaySelectorDialog = true;
+            if (SiGlobalVars.Instance.Holidays != null)
             {
-                var holidays = form_HolidaysSelector.SelectedHolidays;
-                if (SiGlobalVars.Instance.Holidays == null)
-                    SiGlobalVars.Instance.Holidays = new List<DateTime>();
-                SiGlobalVars.Instance.Holidays = holidays;
+                displayHolidaySelectorDialog = false;
 
-                Refresh_holiday_dates_display(label_holidays);
+                var messageResult =
+                    MessageBox.Show("It seems like you have already selected the holidays." +
+                    " Would you like to Re-select?", "Re-select Holidays?", MessageBoxButtons.YesNo);
 
-                SiGlobalVars.Instance.Holidays = holidays;
+                if (messageResult == DialogResult.Yes)
+                    displayHolidaySelectorDialog = true;
 
-                return true;
             }
+
+            if (displayHolidaySelectorDialog == true)
+            {
+                Form_holidaysSelector form_HolidaysSelector = new Form_holidaysSelector(previousForm);
+                DialogResult dialogResult = form_HolidaysSelector.ShowDialog();
+                if (dialogResult == DialogResult.OK)
+                {
+                    var holidays = form_HolidaysSelector.SelectedHolidays;
+                    if (SiGlobalVars.Instance.Holidays == null)
+                        SiGlobalVars.Instance.Holidays = new List<DateTime>();
+                    SiGlobalVars.Instance.Holidays = holidays;
+
+                    Refresh_holiday_dates_display(label_holidays);
+
+                    SiGlobalVars.Instance.Holidays = holidays;
+
+                    return true;
+                }
+            }
+
 
             return false;
         }
