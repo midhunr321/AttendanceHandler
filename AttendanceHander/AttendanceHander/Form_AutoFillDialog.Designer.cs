@@ -84,6 +84,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "Form_AutoFillDialog";
             this.Text = "Auto Fill Site No. Dialog";
+            this.Load += new System.EventHandler(this.Form_AutoFillDialog_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

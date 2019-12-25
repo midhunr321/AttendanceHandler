@@ -15,14 +15,12 @@ namespace AttendanceHander
     {
         private Form previousForm;
         private Boolean autoFillSiteNo;
-        public Form_AutoFillDialog()
-        {
-            InitializeComponent();
-        }
-
+       
         public Form_AutoFillDialog(Form previousForm)
         {
             this.previousForm = previousForm;
+            InitializeComponent();
+
         }
 
         public bool AutoFillSiteNo { get => autoFillSiteNo;  }
@@ -33,6 +31,11 @@ namespace AttendanceHander
             this.Hide();
             this.DialogResult = DialogResult.OK;
             previousForm.Activate();
+        }
+
+        private void Form_AutoFillDialog_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

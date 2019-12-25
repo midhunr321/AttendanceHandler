@@ -711,7 +711,8 @@ namespace AttendanceHander.MultipleTransaction
                         == true)
                     {
                         Boolean holidayOrFriday
-                      = MixTimeSheetHandler.Given_date_is_a_holidayOrFriday(multiWrap.date.content.Value,
+                      = MixTimeSheetHandler
+                      .Given_date_is_a_holidayOrFriday(multiWrap.date.content.Value,
                       SiGlobalVars.Instance.Holidays);
 
                         if (holidayOrFriday == false)

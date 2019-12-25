@@ -406,9 +406,9 @@ namespace AttendanceHander
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            Form_holidaysSelector form_HolidaysSelector
-                 = new Form_holidaysSelector(null);
-            form_HolidaysSelector.Show();
+            Form_AutoFillDialog form_AutoFillDialog
+                = new Form_AutoFillDialog(this);
+            form_AutoFillDialog.ShowDialog();
         }
 
         private void Button2_Click(object sender, EventArgs e)
