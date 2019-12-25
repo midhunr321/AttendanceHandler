@@ -23,7 +23,6 @@ namespace AttendanceHander
         }
 
         public List<DateTime> SelectedHolidays { get => selectedHolidays;  }
-        public bool PrintBioWorkTime_in_payLoad { get => printBioWorkTime_in_payLoad; }
 
         private void bind_dataGridViewHolidays()
         {

@@ -71,6 +71,7 @@ namespace AttendanceHander
         public decimal DEFAULT_BREAK_HOURS = 1;
         public List<DayOfWeek> DEFAULT_HOLIDAYS = new List<DayOfWeek>() { DayOfWeek.Friday };
         public List<DateTime> Holidays;
+        public Char DEFAULT_MECHANICAL_SITE_CHAR = 'M';
 
         //CLEARANCE
         public Boolean clearanceFor_step5B_MultiToPay = false;

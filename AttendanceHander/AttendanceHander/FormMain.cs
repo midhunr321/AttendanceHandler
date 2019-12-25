@@ -641,7 +641,7 @@ namespace AttendanceHander
             {
 
                 if (MultipleTransaction.MultiTransHelper
-                           .AutoFill_SiteNos_for_fridaysAndHolidays() == true)
+                           .AutoFill_SiteNos_for_fridaysAndHolidays(this,label_holidays) == true)
                 {
                     MessageBox.Show("The Task Auto Fill Site No.s for fridays & Holidays Successfully Completed ");
                     SiGlobalVars.Instance.clearanceFor_step5B_MultiToPay = true;
