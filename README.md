@@ -11,4 +11,4 @@ Step2: Application understands the count of excel sheets in the file
 Step3: for each excel sheet occupied rows and columns are iterated
 Step4: heading for the table is found from the excel sheets
 Step5: corresponding datas for each table headings are parsed
-Step6: after extracting datas from this excel sheet, it is converted to another excel formats.
+Step6: after extracting data from this excel sheet, it is converted to another excel formats.
